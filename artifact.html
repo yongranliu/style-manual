@@ -191,6 +191,32 @@ ul.tick.no li::before { content: "−"; color: var(--bad) }
 .breakdown div { background: var(--paper); border-radius: 10px; padding: 10px 12px; font-size: .88rem }
 .breakdown b { display: block; font-size: .74rem; letter-spacing: .12em; color: var(--muted); font-weight: 500; margin-bottom: 2px }
 
+/* 灵感墙 */
+.drop { border: 1.5px dashed var(--line); border-radius: 14px; padding: 22px; display: grid; gap: 6px; justify-items: center; text-align: center; background: var(--card); cursor: pointer }
+.drop.over { border-color: var(--tape); background: color-mix(in srgb, var(--tape) 10%, var(--card)) }
+.board { columns: 260px; column-gap: 16px }
+.pin { break-inside: avoid; margin-bottom: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: grid; box-shadow: var(--shadow) }
+.pin img { width: 100%; height: auto; display: block; background: var(--soft); min-height: 120px }
+.pin-body { padding: 12px 14px 14px; display: grid; gap: 8px }
+.pin-body textarea { min-height: 52px; font-size: .86rem; padding: 6px 8px }
+.pin-body select { font-size: .85rem; padding: 5px 8px }
+.pin-notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px }
+.pin-notes .field > label { font-size: .74rem; letter-spacing: .1em }
+.thumbs { display: flex; gap: 8px; flex-wrap: wrap }
+.thumbs img { width: 72px; height: 96px; object-fit: cover; border-radius: 8px; border: 1px solid var(--line) }
+
+/* 真人照片 */
+.photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px }
+.photo { border: 0; padding: 0; cursor: zoom-in; border-radius: 10px; overflow: hidden; aspect-ratio: 3 / 4; background: var(--soft); max-width: 100% }
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease }
+.photo:hover img { transform: scale(1.04) }
+.style-card .photos { margin: -6px -6px 4px }
+.lightbox { position: fixed; inset: 0; z-index: 35; background: rgba(10,12,16,.82); display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)) }
+.lightbox figure { margin: 0; display: grid; gap: 10px; justify-items: center; max-height: 100% }
+.lightbox img { max-width: min(92vw, 640px); max-height: 80vh; border-radius: 12px; display: block }
+.lightbox figcaption { color: #ECECE7; font-size: .88rem; text-align: center; display: grid; gap: 2px }
+.lightbox figcaption a { color: #ECECE7 }
+
 /* 课堂 */
 .progress { height: 8px; background: var(--soft); border-radius: 99px; overflow: hidden }
 .progress > i { display: block; height: 100%; background: var(--tape); border-radius: 99px; transition: width .4s }
@@ -292,6 +318,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
 <nav class="tabs" aria-label="页面">
   <div class="wrap"><div class="tabs-in" role="tablist" id="tabs">
     <button class="tab" role="tab" data-v="look">穿搭灵感</button>
+    <button class="tab" role="tab" data-v="board">灵感墙</button>
     <button class="tab" role="tab" data-v="train">练眼力</button>
     <button class="tab" role="tab" data-v="learn">审美课堂</button>
     <button class="tab" role="tab" data-v="profile">我的档案</button>
@@ -312,6 +339,21 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     </div>
     <div class="filters" id="lookFilters"></div>
     <div class="looks" id="looks"></div>
+  </section>
+
+  <section class="view" id="v-board" hidden>
+    <div class="view-head">
+      <p class="eyebrow">Moodboard</p>
+      <h2>我的灵感墙</h2>
+      <p class="muted">把在小红书、Pinterest、杂志上看到的真人穿搭截图存进来，每张按「颜色 → 廓形 → 材质 → 细节」写一句拆解。存满 30 张，你会发现自己反复喜欢的是同一类东西，那就是你的风格。</p>
+    </div>
+    <label class="drop" id="dropZone" for="boardFile">
+      <b>拖进图片、直接粘贴截图，或点这里选择</b>
+      <span class="small muted" id="boardWhere"></span>
+      <input type="file" id="boardFile" accept="image/*" multiple hidden>
+    </label>
+    <div class="row" id="boardFilters"></div>
+    <div class="board" id="board"></div>
   </section>
 
   <section class="view" id="v-train" hidden>
@@ -466,8 +508,9 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
     </div>
   </section>
 </main>
-<footer><div class="wrap row" style="justify-content:space-between"><span>豪然形象手册 · 插画均为示意，颜色与比例仅供参考</span><span id="footNote"></span></div></footer>
+<footer><div class="wrap row" style="justify-content:space-between"><span>豪然形象手册 · 插画均为示意；街拍照片来自 Unsplash，摄影师见每张照片</span><span id="footNote"></span></div></footer>
 <div id="sheet"></div>
+<div id="lightbox"></div>
 <div class="toast" id="toast" hidden></div>
 
 <script>
@@ -817,6 +860,27 @@ const LOOKS = [
     ['藏青条纹＋米白，图案本身就是点缀', '条纹衫不塞，配直筒裤，休闲松弛', '厚实的布列塔尼条纹棉衫', '有了条纹，其他单品都要素净'],
     '一件条纹衫等于一次「点缀色」，别再加其他图案。', '海魂衫 条纹衫 穿搭')
 ];
+/* 真人街拍：Unsplash 授权，文件在 photos/，来源见 photos/CREDITS.md */
+const PHOTOS = [
+  {"id": "XITosdOCS8Q", "style": "极简", "user": "Fray Bekele", "un": "frayb_", "desc": "驼色大衣配深色牛仔，雪地街拍"},
+  {"id": "c5cJsF2naEQ", "style": "极简", "user": "Mohammad Hossein Mirzagol", "un": "mirza_graphy", "desc": "灰绿长大衣配黑围巾"},
+  {"id": "v-ITYFOj1Fg", "style": "日系 City Boy", "user": "Ihor Rapita", "un": "rapitaihor", "desc": "长衬衫外搭配黑色阔腿裤、白袜"},
+  {"id": "jhMkxP4rLO0", "style": "日系 City Boy", "user": "Ihor Rapita", "un": "rapitaihor", "desc": "卷袖亚麻长衬衫叠穿黑 T"},
+  {"id": "0wC6FXsLAM0", "style": "美式复古", "user": "Irham Setyaki", "un": "setyaki", "desc": "格纹里衬夹克配米白 T、原色牛仔"},
+  {"id": "QmMuxzPmsfY", "style": "美式复古", "user": "Ravi Sharma", "un": "ravinepz", "desc": "棕色麂皮夹克配单车"},
+  {"id": "j8pksmCohBM", "style": "学院 / 老钱", "user": "otabek xatipov", "un": "arrogant_7007", "desc": "黑色针织配卡其西裤、乐福鞋"},
+  {"id": "zhdhhzDh2Dw", "style": "学院 / 老钱", "user": "Xin", "un": "s1n", "desc": "费尔岛提花毛衣"},
+  {"id": "NMLdqdyyvzc", "style": "户外机能", "user": "Jeffrey Grospe", "un": "jgrospe", "desc": "银灰色防风夹克"},
+  {"id": "bQpLRVoz1NA", "style": "户外机能", "user": "Wildan Ramdani Akbar", "un": "wildannr_a", "desc": "黑色套头冲锋衣"},
+  {"id": "IL1oeY0pN2k", "style": "街头", "user": "Good Faces", "un": "goodfacesagency", "desc": "黑色羽绒服配宽裤"},
+  {"id": "4ecCpwg62Kk", "style": "街头", "user": "K X I T H V I S U A L S", "un": "keithlwm", "desc": "黑夹克白 T、白球鞋"},
+  {"id": "AZVU2iGedz8", "style": "韩系清爽", "user": "Amir Esrafili", "un": "amirvisuals", "desc": "深色长大衣配白衬衫、灰西裤"},
+  {"id": "s39naY41Qn0", "style": "韩系清爽", "user": "Bùi Hoàng Long", "un": "dxaxoxfz", "desc": "白衬衫斜挎包，背影"},
+  {"id": "MYMEeE1_1V4", "style": "商务休闲", "user": "Let hho", "un": "let_hho", "desc": "黑色西装外套配白 T"},
+  {"id": "J_9xThkkGEM", "style": "商务休闲", "user": "Bibek Thakuri", "un": "bibekthakuri", "desc": "三件套西装"}
+];
+const photoSrc = ph => 'photos/' + ph.id + '.jpg';
+const photosOf = st => PHOTOS.filter(ph => ph.style === st);
 const TYPE_NAME = { coat: '大衣', trench: '风衣', blazer: '西装外套', jacket: '短夹克', chore: '工装夹克', cardigan: '开衫', shell: '冲锋衣', tee: 'T 恤', shirt: '衬衫', knit: '针织衫', hoodie: '卫衣', polo: 'Polo 衫', turtle: '高领针织', stripe: '条纹衫', straight: '直筒裤', wide: '阔腿裤', slim: '锥形裤', shorts: '短裤', skirt: '半身裙', pleated: '百褶裙', sneaker: '板鞋', loafer: '乐福鞋', boot: '靴子', derby: '德比鞋', runner: '跑鞋' };
 const PART_CAT = { o: ['外套'], t: ['上衣', '衬衫', '针织/卫衣'], b: ['裤装', '裙装'], s: ['鞋'] };
 
@@ -971,8 +1035,8 @@ const EXAMPLE_PROFILE = {
   styles: ['极简', '日系 City Boy'], scenes: ['通勤上班', '居家休闲'], budget: 'mid',
   faceWidth: 138, chest: 92, waist: 78, hip: 94, shoulder: 45, inseam: 78, shoe: 42, notes: ''
 };
-const S = { profile: { ...EXAMPLE_PROFILE }, progress: { lessons: {}, quizBest: 0, abBest: 0, saved: [] }, closet: { items: [], wish: [] } };
-const KEYS = ['profile', 'progress', 'closet'];
+const S = { profile: { ...EXAMPLE_PROFILE }, progress: { lessons: {}, quizBest: 0, abBest: 0, saved: [] }, closet: { items: [], wish: [] }, board: { items: [] } };
+const KEYS = ['profile', 'progress', 'closet', 'board'];
 const P = { db: null, uid: null, timers: {}, chains: {} };
 const lsGet = k => { try { return JSON.parse(localStorage.getItem('xing_' + k)) } catch (e) { return null } };
 const lsSet = (k, v) => { try { localStorage.setItem('xing_' + k, JSON.stringify(v)) } catch (e) {} };
@@ -981,6 +1045,7 @@ function merge(k, v) {
   if (k === 'profile') S.profile = { ...EXAMPLE_PROFILE, ...v };
   if (k === 'progress') S.progress = { lessons: {}, quizBest: 0, abBest: 0, saved: [], ...v };
   if (k === 'closet') S.closet = { items: Array.isArray(v.items) ? v.items : [], wish: Array.isArray(v.wish) ? v.wish : [] };
+  if (k === 'board') S.board = { items: Array.isArray(v.items) ? v.items : [] };
 }
 KEYS.forEach(k => merge(k, lsGet(k)));
 function setSync(s) {
@@ -1007,6 +1072,7 @@ async function initCloud() {
     if (!db || !user) return;
     const id = await user.id(); if (!id) return;
     P.db = db; P.uid = id;
+    IMG.assets = await claude.use('assets').catch(() => null);
     for (const k of KEYS) {
       const snap = await db.doc(`data/users/${id}/${k}`).get();
       if (snap.exists) { merge(k, JSON.parse(JSON.stringify(snap.data()))); lsSet(k, S[k]) }
@@ -1129,16 +1195,92 @@ function openLook(id) {
         <div class="breakdown">${['颜色', '廓形', '材质', '细节'].map((k, i) => `<div><b>${k}</b>${l.why[i]}</div>`).join('')}</div></div>
       <div class="blk"><div class="blk-h"><h4>怎么复刻</h4></div><p class="small">${l.copy}</p>
         ${subs.length ? `<ul class="items-l small">${subs.join('')}</ul>` : `<p class="small muted">在「我的衣橱」登记衣服后，这里会列出你能直接用来代替的单品。</p>`}</div>
+      ${photosOf(l.style).length ? `<div class="blk"><div class="blk-h"><h4>同风格实拍</h4><span class="small muted">${l.style}</span></div><div class="photos" style="max-width:300px">${photosOf(l.style).map(ph => photoBtn(ph)).join('')}</div></div>` : ''}
+      ${S.board.items.some(i => i.look === l.id) ? `<div class="blk"><div class="blk-h"><h4>我存的实拍</h4></div><div class="thumbs">${S.board.items.filter(i => i.look === l.id).slice(0, 6).map(i => `<img data-src="${esc(i.src)}" alt="灵感图片">`).join('')}</div></div>` : ''}
       <div class="row">
         <button class="btn sm ${saved ? 'ghost' : 'tape'}" data-save="${l.id}">${saved ? '取消收藏' : '收藏'}</button>
         <a class="btn ghost sm" href="https://www.pinterest.com/search/pins/?q=${q}" target="_blank" rel="noopener">Pinterest 找实拍</a>
         <a class="btn ghost sm" href="https://www.xiaohongshu.com/search_result?keyword=${q}" target="_blank" rel="noopener">小红书找实拍</a>
       </div>
     </div></div></div>`;
+  fillImgs($('#sheet'));
   document.body.style.overflow = 'hidden';
   $('#sheet .close').focus();
 }
 function closeSheet() { $('#sheet').innerHTML = ''; document.body.style.overflow = '' }
+
+/* ============ 真人照片 ============ */
+function photoBtn(ph) { return `<button class="photo" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}"><img src="${photoSrc(ph)}" alt="${esc(ph.style)}街拍：${esc(ph.desc)}" loading="lazy"></button>` }
+function openPhoto(id) {
+  const ph = PHOTOS.find(x => x.id === id); if (!ph) return;
+  $('#lightbox').innerHTML = `<div class="lightbox" data-lbclose="1"><figure><img src="${photoSrc(ph)}" alt="${esc(ph.desc)}"><figcaption><b>${esc(ph.style)} · ${esc(ph.desc)}</b><span>摄影 <a href="https://unsplash.com/@${esc(ph.un)}" target="_blank" rel="noopener">${esc(ph.user)}</a> · <a href="https://unsplash.com/photos/${esc(ph.id)}" target="_blank" rel="noopener">Unsplash 原图</a></span></figcaption></figure></div>`;
+}
+
+/* ============ 灵感墙 ============ */
+// 图片：在 Claude 里存为 artifact 资源（a:id），网页版存在本浏览器的 IndexedDB（l:key）
+const IMG = { assets: null, urls: {} };
+let boardStyle = '', pendingDel = '';
+function idb() { return new Promise((res, rej) => { const r = indexedDB.open('xing', 1); r.onupgradeneeded = () => r.result.createObjectStore('imgs'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error) }) }
+async function idbDo(mode, fn) { const d = await idb(); return new Promise((res, rej) => { const tx = d.transaction('imgs', mode), st = tx.objectStore('imgs'), q = fn(st); tx.oncomplete = () => res(q && q.result); tx.onerror = () => rej(tx.error) }) }
+async function imgURL(src) {
+  if (src.startsWith('a:')) return '/_blob/' + src.slice(2);
+  if (IMG.urls[src]) return IMG.urls[src];
+  try { const b = await idbDo('readonly', st => st.get(src.slice(2))); if (b) return IMG.urls[src] = URL.createObjectURL(b) } catch (e) {}
+  return '';
+}
+async function shrink(file) {
+  const bmp = await createImageBitmap(file), k = Math.min(1, 1400 / Math.max(bmp.width, bmp.height));
+  const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  return new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(), 'image/jpeg', .86));
+}
+async function addImages(files) {
+  const list = [...files].filter(f => f.type.startsWith('image/'));
+  if (!list.length) { toast('只能放图片'); return }
+  toast(`正在保存 ${list.length} 张…`);
+  for (const f of list) {
+    let blob; try { blob = await shrink(f) } catch (e) { blob = f }
+    let src = '';
+    if (IMG.assets) {
+      try { const r = await IMG.assets.upload(blob, { type: blob.type === 'image/jpeg' ? 'image/jpeg' : (blob.type || 'image/jpeg') }); src = 'a:' + r.id }
+      catch (e) { toast(e && e.code === 'quota_or_state' ? '存储空间满了，先删掉几张' : e && e.code === 'too_large' ? '图片太大了' : '上传失败，先存在本浏览器') }
+    }
+    if (!src) { try { const k = uid(); await idbDo('readwrite', st => st.put(blob, k)); src = 'l:' + k } catch (e) { toast('这个浏览器不能保存图片'); return } }
+    S.board.items.unshift({ id: uid(), src, note: { c: '', s: '', m: '', d: '' }, look: '', style: boardStyle || '', at: Date.now() });
+  }
+  save('board'); renderBoard(); toast('已加到灵感墙');
+}
+async function fillImgs(root) {
+  for (const im of root.querySelectorAll('img[data-src]')) { const u = await imgURL(im.dataset.src); if (u) im.src = u; else im.alt = '图片在另一台设备或浏览器里' }
+}
+function renderBoard() {
+  const where = $('#boardWhere');
+  if (where) where.textContent = IMG.assets ? '图片会存进这个页面，只有你和你分享的人能看到。' : '网页版：图片只存在这个浏览器里，换设备不会同步。';
+  const items = S.board.items.filter(i => !boardStyle || i.style === boardStyle);
+  const counts = {}; S.board.items.forEach(i => { if (i.style) counts[i.style] = (counts[i.style] || 0) + 1 });
+  $('#boardFilters').innerHTML = `<span class="small muted">${S.board.items.length} 张</span><div class="chips"><button class="chip" data-bstyle="" aria-pressed="${!boardStyle}">全部</button>${STYLES.map(s => `<button class="chip" data-bstyle="${esc(s.k)}" aria-pressed="${boardStyle === s.k}">${esc(s.k)}${counts[s.k] ? ` · ${counts[s.k]}` : ''}</button>`).join('')}</div>`;
+  const N = [['c', '颜色'], ['s', '廓形'], ['m', '材质'], ['d', '细节']];
+  $('#board').innerHTML = items.length ? items.map(i => `
+    <div class="pin" data-pin="${esc(i.id)}">
+      <img data-src="${esc(i.src)}" alt="灵感图片">
+      <div class="pin-body">
+        <div class="row">
+          <select data-pf="style" aria-label="风格" style="width:auto;flex:1">${opt([['', '选风格'], ...STYLES.map(s => [s.k, s.k])], i.style)}</select>
+          <select data-pf="look" aria-label="关联搭配" style="width:auto;flex:1">${opt([['', '关联插画搭配'], ...LOOKS.map(l => [l.id, l.name])], i.look)}</select>
+        </div>
+        <div class="pin-notes">${N.map(([k, n]) => `<div class="field"><label for="pn-${esc(i.id)}-${k}">${n}</label><textarea id="pn-${esc(i.id)}-${k}" data-pn="${k}" placeholder="${{ c: '几个颜色？什么关系？', s: '哪个字母？腰线在哪？', m: '光滑还是粗糙？厚还是薄？', d: '卷袖、塞衣角、袜子…' }[k]}">${esc(i.note[k])}</textarea></div>`).join('')}</div>
+        <div class="row" style="justify-content:space-between"><span class="small muted">${new Date(i.at).toLocaleDateString('zh-CN')}</span>
+          ${pendingDel === i.id ? `<span class="row"><button class="btn sm ghost" data-pdel-no="1">取消</button><button class="btn sm" data-pdel-yes="${esc(i.id)}">确认删除</button></span>` : `<button class="btn sm ghost" data-pdel="${esc(i.id)}">删除</button>`}</div>
+      </div>
+    </div>`).join('') : `<div class="empty" style="column-span:all"><b>${boardStyle ? '这个风格下还没有图' : '还没有图片'}</b><span>去小红书或 Pinterest 搜「风格名 + 单品」，比如「city boy 宽松衬衫」，截几张最喜欢的图拖进来。</span><span>每套插画搭配的详情里也有搜实拍的按钮。</span></div>`;
+  fillImgs($('#board'));
+}
+async function delPin(id) {
+  const it = S.board.items.find(x => x.id === id); if (!it) return;
+  S.board.items = S.board.items.filter(x => x.id !== id); pendingDel = ''; save('board'); renderBoard();
+  try { if (it.src.startsWith('a:') && IMG.assets) await IMG.assets.delete(it.src.slice(2)); else if (it.src.startsWith('l:')) await idbDo('readwrite', st => st.delete(it.src.slice(2))) } catch (e) {}
+  toast('已删除');
+}
 
 /* ============ 练眼力 ============ */
 const ABS = { i: 0, score: 0, pick: null, order: AB.map(() => Math.random() < .5) };
@@ -1269,6 +1411,7 @@ function renderLearn() {
     </details>`).join('');
   $('#styleMap').innerHTML = STYLES.map(s => `
     <div class="style-card${S.profile.styles.includes(s.k) ? ' mine' : ''}">
+      <div class="photos">${photosOf(s.k).map(ph => photoBtn(ph)).join('')}</div>
       <div class="bar">${s.col.map(c => `<i style="background:${c}"></i>`).join('')}</div>
       <div class="row" style="justify-content:space-between"><h3>${s.k}</h3><span class="latin muted small">${s.en}</span></div>
       <dl><dt>关键词</dt><dd>${s.kw}</dd><dt>单品</dt><dd>${s.items}</dd><dt>参考</dt><dd>${s.ref}</dd></dl>
@@ -1618,7 +1761,7 @@ ${q}`;
 }
 
 /* ============ 导航与事件 ============ */
-const VIEWS = ['look', 'train', 'learn', 'profile', 'shop', 'glasses', 'hair', 'closet', 'ask'];
+const VIEWS = ['look', 'board', 'train', 'learn', 'profile', 'shop', 'glasses', 'hair', 'closet', 'ask'];
 function show(v, scroll) {
   if (!VIEWS.includes(v)) v = 'look';
   VIEWS.forEach(x => { $('#v-' + x).hidden = x !== v });
@@ -1631,7 +1774,7 @@ function renderDerived() {
   renderHead(); renderBanner(); renderIdCard(); renderLearn(); evalLab(); renderSizeCard(); renderGlasses(); renderHair(); renderCloset(); renderLooks();
 }
 function renderAll(full) {
-  renderProfileForm(); renderMeasureForm(); renderLookFilters(); renderDerived(); renderQuiz(); renderAB(); renderFit();
+  renderProfileForm(); renderMeasureForm(); renderLookFilters(); renderDerived(); renderBoard(); renderQuiz(); renderAB(); renderFit();
   if (full) renderLab();
 }
 function setProfile(k, v) {
@@ -1647,25 +1790,41 @@ document.addEventListener('input', e => {
     else if (!t.closest('#v-glasses')) renderGlasses();
   }
   if (t.id === 'g-fw') { clearTimeout(window._gfw); window._gfw = setTimeout(() => { renderGlasses(); const el = $('#g-fw'); el.focus(); try { el.setSelectionRange(99, 99) } catch (e) {} }, 600) }
+  if (t.dataset.pn) { const it = S.board.items.find(x => x.id === t.closest('[data-pin]').dataset.pin); if (it) { it.note[t.dataset.pn] = t.value.slice(0, 300); save('board') } }
   if (t.id === 'c-name') CF.name = t.value;
   if (t.id === 'c-note') CF.note = t.value;
   if (t.id === 'c-cat') CF.cat = t.value;
 });
 document.addEventListener('change', e => {
+  if (e.target.dataset.pf) { const it = S.board.items.find(x => x.id === e.target.closest('[data-pin]').dataset.pin); if (it) { it[e.target.dataset.pf] = e.target.value; save('board'); if (e.target.dataset.pf === 'style') renderBoard() } return }
+  if (e.target.id === 'boardFile') { addImages(e.target.files); e.target.value = ''; return }
   if (e.target.id === 'ask-img') { const f = e.target.files[0]; ASK.img = f || null; const th = $('#ask-thumb'); if (f) { th.src = URL.createObjectURL(f); th.hidden = false } else th.hidden = true }
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#sheet').innerHTML) closeSheet() });
+document.addEventListener('paste', e => {
+  if ($('#v-board').hidden || e.target.closest('textarea, input')) return;
+  const fs = [...(e.clipboardData?.files || [])]; if (fs.length) { e.preventDefault(); addImages(fs) }
+});
+['dragover', 'dragenter'].forEach(ev => document.addEventListener(ev, e => { const z = e.target.closest && e.target.closest('#dropZone'); if (z) { e.preventDefault(); z.classList.add('over') } }));
+document.addEventListener('dragleave', e => { const z = e.target.closest && e.target.closest('#dropZone'); if (z) z.classList.remove('over') });
+document.addEventListener('drop', e => { const z = e.target.closest && e.target.closest('#dropZone'); if (z) { e.preventDefault(); z.classList.remove('over'); addImages(e.dataTransfer.files) } });
+document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; if ($('#lightbox').innerHTML) $('#lightbox').innerHTML = ''; else if ($('#sheet').innerHTML) closeSheet() });
 document.addEventListener('click', e => {
+  if (e.target.dataset && e.target.dataset.lbclose) { $('#lightbox').innerHTML = ''; return }
   if (e.target.dataset && e.target.dataset.close) { closeSheet(); return }
   const t = e.target.closest('button'); if (!t) return;
   if (t.classList.contains('tab')) return show(t.dataset.v);
   if (t.dataset.go) return show(t.dataset.go, true);
+  if (t.dataset.photo) return openPhoto(t.dataset.photo);
   if (t.dataset.look) return openLook(t.dataset.look);
   if (t.dataset.save) {
     const sv = S.progress.saved = S.progress.saved || [], i = sv.indexOf(t.dataset.save);
     if (i >= 0) sv.splice(i, 1); else sv.push(t.dataset.save);
     save('progress'); openLook(t.dataset.save); renderLooks(); toast(i >= 0 ? '已取消收藏' : '已收藏'); return;
   }
+  if (t.dataset.bstyle !== undefined) { boardStyle = t.dataset.bstyle; renderBoard(); return }
+  if (t.dataset.pdel) { pendingDel = t.dataset.pdel; renderBoard(); return }
+  if (t.dataset.pdelNo) { pendingDel = ''; renderBoard(); return }
+  if (t.dataset.pdelYes) return delPin(t.dataset.pdelYes);
   if (t.dataset.lf) { LF[t.dataset.lf] = t.dataset.val; renderLookFilters(); renderLooks(); return }
   if (t.dataset.stylego) { LF.style = t.dataset.stylego; LF.sort = 'fit'; renderLookFilters(); renderLooks(); show('look', true); return }
   const multi = t.closest('[data-multi]');

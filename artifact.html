@@ -262,6 +262,17 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
 </style>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <linearGradient id="shd" x1="0" y1="0" x2="1" y2="0.25"><stop offset="0" stop-color="#fff" stop-opacity=".2"/><stop offset=".42" stop-color="#fff" stop-opacity="0"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".24"/></linearGradient>
+  <filter id="ill" x="-5%" y="-3%" width="110%" height="106%">
+    <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="w"/>
+    <feDisplacementMap in="SourceGraphic" in2="w" scale="1.8" xChannelSelector="R" yChannelSelector="G" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="3" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  .32 0 0 0 -.13" result="na"/>
+    <feComposite in="na" in2="d" operator="in" result="gm"/>
+    <feMerge><feMergeNode in="d"/><feMergeNode in="gm"/></feMerge>
+  </filter>
+</defs></svg>
 <div class="tape" aria-hidden="true"><div class="tape-nums" id="tapeNums"></div></div>
 <header class="hero">
   <div class="wrap hero-grid">
@@ -516,124 +527,189 @@ const LAB_COLORS = [
   ['宝蓝','#2350A8',0,'c'],['雾霾蓝','#8FA6BF',0,'c'],['冰蓝','#CFE3F2',0,'c'],['薰衣草','#B7A6D3',0,'c'],['灰粉','#D8B4B4',0,'c']
 ].map(([n, h, neu, t]) => ({ n, h, neutral: !!neu, temp: t }));
 
-/* ============ 穿搭插画 ============ */
-const SKIN = '#E4C2A3', HAIRC = '#2A2420';
-const ST = 'stroke="#15171C" stroke-opacity=".24" stroke-width="1.1" stroke-linejoin="round"';
-const LN = 'fill="none" stroke="#15171C" stroke-opacity=".28" stroke-width="1.1" stroke-linecap="round"';
+/* ============ 穿搭插画（杂志插图画法：左上受光、手绘线条、纸纹） ============ */
+const SKIN = '#E8C3A2', HAIRC = '#221C19';
+const INK = 'stroke="#2A2420" stroke-opacity=".72" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"';
 let figN = 0;
 function shade(h, k) { const [r, g, b] = rgb(h).map(v => Math.max(0, Math.min(255, Math.round(v * k)))); return `rgb(${r},${g},${b})` }
-const mir = s => `${s}<g transform="translate(200,0) scale(-1,1)">${s}</g>`;
+const mir = s => `<g transform="translate(200,0) scale(-1,1)">${s}</g>`;
+// 填色 + 受光渐变 + 墨线
+const sh = (d, c) => `<path d="${d}" fill="${c}"/><path d="${d}" fill="url(#shd)"/><path d="${d}" fill="none" ${INK}/>`;
+// 褶皱、缝线等细线
+const fl = (d, o = .4, w = .9, c = '#2A2420') => `<path d="${d}" fill="none" stroke="${c}" stroke-opacity="${o}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+// 阴影块
+const sd = (d, o = .16) => `<path d="${d}" fill="#1A1410" fill-opacity="${o}"/>`;
+// 手臂：L 是左臂自然下垂（右臂下垂时镜像），P 是右手插兜
+const ARM = {
+  skin: { L: 'M69 84 L61 155 L57 229 L66 231 L71 157 L79 118 Z', P: 'M131 84 L146 156 L132 210 L124 206 L136 158 L122 118 Z' },
+  long: { L: 'M66 81 L55 92 L50 228 L66 230 L72 156 L80 120 Z', P: 'M134 81 L148 92 L153 158 L134 214 L121 207 L137 159 L121 120 Z' },
+  short: { L: 'M66 81 L53 93 L50 134 L68 136 L74 116 Z', P: 'M134 81 L147 93 L151 134 L132 137 L126 116 Z' },
+  outer: { L: 'M64 79 L51 92 L45 231 L67 233 L73 156 L80 122 Z', P: 'M136 79 L151 92 L157 158 L136 219 L118 211 L138 160 L120 122 Z' }
+};
+function arms(kind, c, pose) {
+  let s = sh(ARM[kind].L, c) + (pose === 'P' ? sh(ARM[kind].P, c) : mir(sh(ARM[kind].L, c)));
+  if (kind === 'short') return s + fl('M52 128 L68 130', .45) + (pose === 'P' ? fl('M149 128 L133 131', .45) : mir(fl('M52 128 L68 130', .45)));
+  const o = kind === 'outer' ? 1.6 : 0;
+  const cuffL = fl(`M${51 - o * 3} ${221 + o} L${66 + o} ${223 + o}`, .5), elbL = fl('M58 150 Q63 155 69 152', .35) + fl('M59 160 Q64 163 69 160', .25);
+  s += cuffL + elbL + (pose === 'P' ? fl('M134 210 L122 204', .5) + fl('M140 154 Q146 150 151 156', .35) + fl('M138 164 Q144 161 149 166', .25) : mir(cuffL + elbL));
+  return s;
+}
 function drawFig(f) {
   const id = 'f' + (++figN), o = f.o, t = f.t, b = f.b, s = f.s, a = f.acc || {};
-  const over = t[0] === 'hoodie' && !f.tuck || f.big;
-  const sL = over ? 60 : 66, sR = 200 - sL;
-  const hY = b[0] === 'shorts' ? 300 : f.pool ? 433 : f.crop ? 408 : 426;
-  let out = '';
-  // 兜帽（在头后面）
-  if (t[0] === 'hoodie' && !o) out += `<path d="M78 84 Q78 62 100 60 Q122 62 122 84 Z" fill="${shade(t[1], .9)}" ${ST}/>`;
-  if (o && o[0] === 'shell') out += `<path d="M74 86 Q72 50 100 46 Q128 50 126 86 Z" fill="${shade(o[1], .88)}" ${ST}/>`;
-  // 腿、手臂、脖子、头
-  out += mir(`<path d="M72 250 L99 258 L96 432 L80 432 Z" fill="${SKIN}" ${ST}/>`);
-  out += mir(`<path d="M${sL + 2} 86 L52 226 L63 229 L76 120 Z" fill="${SKIN}" ${ST}/>`);
-  out += `<path d="M92 52 H108 V82 H92 Z" fill="${shade(SKIN, .94)}"/>`;
-  out += `<ellipse cx="100" cy="36" rx="15.5" ry="19.5" fill="${SKIN}" ${ST}/>`;
-  out += `<path d="M84 36 Q82 14 100 13 Q119 13 116 36 Q114 22 101 22 Q90 23 84 36 Z" fill="${HAIRC}"/>`;
+  const pose = f.pose || (a.bag ? 'H' : 'P');
+  const big = (t[0] === 'hoodie' && !f.tuck) || f.big;
+  const sL = big ? 60 : 66, sR = 200 - sL;
+  const hY = b[0] === 'shorts' ? 302 : f.pool ? 433 : f.crop ? 410 : 427;
+  let g = '';
+  if (f.hair === 'long') g += `<path d="M83 28 Q77 66 80 100 Q90 106 100 103 Q110 106 120 100 Q123 66 117 28 Z" fill="${HAIRC}"/>`;
+  if (t[0] === 'hoodie' && !o) g += sh('M76 86 Q74 60 100 57 Q126 60 124 86 Z', shade(t[1], .86));
+  if (o && o[0] === 'shell') g += sh('M72 88 Q68 46 100 42 Q132 46 128 88 Z', shade(o[1], .84));
+  // 腿与手臂（皮肤）
+  g += sh('M70 252 L99 260 L92 433 L80 433 Z', SKIN) + sh('M101 260 L130 252 L123 433 L111 433 Z', SKIN);
+  g += sh(ARM.skin.L, SKIN) + (pose === 'P' ? sh(ARM.skin.P, SKIN) : mir(sh(ARM.skin.L, SKIN)));
+  // 脖子、耳朵、脸
+  g += sh('M93 44 L107 44 L108 80 L92 80 Z', SKIN) + sd('M93 47 Q100 58 107 47 L107 57 Q100 64 93 57 Z', .2);
+  const ear = sh('M86.5 32 Q82 32 82.8 38.5 Q84 43 87.5 42 Z', SKIN);
+  g += ear + mir(ear);
+  g += sh('M86 30 Q86 14 100 14 Q114 14 114 30 Q114 44 106 50 Q100 54 94 50 Q86 44 86 30 Z', SKIN);
+  g += sd('M108.5 23 Q114.5 31 112.5 42 Q109.5 48 104 51.5 Q110.5 40 108.5 23 Z', .13);
+  g += fl('M91.5 30.4 Q94.5 28.8 97.6 30.2', .8, 1.25) + fl('M102.4 30.2 Q105.5 28.8 108.5 30.4', .8, 1.25);
+  g += fl('M92.6 34.6 Q95 33.5 97.2 34.6', .9, 1.15) + fl('M102.8 34.6 Q105 33.5 107.4 34.6', .9, 1.15);
+  g += fl('M100.6 34.5 Q98.8 40.6 101.6 41.6', .45, .9);
+  g += `<path d="M96.4 45.4 Q100 47.6 103.6 45.4 Q100 46.4 96.4 45.4 Z" fill="#A8604F" fill-opacity=".75"/>`;
+  // 头发
+  g += `<path d="M85 33 Q81.5 12 101 10.5 Q119.5 11 116.5 31 Q114 21 105.5 19.5 Q99 25 90 22.5 Q87 27 85 33 Z" fill="${HAIRC}"/>`;
+  g += fl('M93 15.5 Q101 12.2 109.5 16.5', .22, 1.3, '#FFFFFF') + fl('M97 13.5 Q104 12.5 111 18.5', .14, 1, '#FFFFFF');
+  if (f.hair === 'long') { const side = `<path d="M85 31 Q83 52 85 70 L90.5 67 Q88 49 89.5 28 Z" fill="${HAIRC}"/>`; g += side + mir(side) }
   // 袜子
-  if (a.socks && hY < 430) out += mir(`<path d="M80 ${hY - 2} H96 V430 H80 Z" fill="${a.socks}" ${ST}/>`);
-  // 下装与上装（塞衣角时上衣在下装之下）
+  if (a.socks && hY < 430) g += sh(`M80 ${hY - 2} H92 L92 431 H80 Z`, a.socks) + sh(`M111 ${hY - 2} H123 L123 431 H111 Z`, a.socks);
+  // 上衣、下装（塞衣角时上衣身片在下装之下；袖子总在最上）
+  const top = drawTop(t, f.tuck ? 210 : big ? 252 : 240, sL, sR, id, pose);
   const bottom = drawBottom(b, hY, f.pool);
-  const top = drawTop(t, f.tuck ? 210 : over ? 252 : 240, sL, sR, id, !!o);
-  out += f.tuck ? top + bottom : bottom + top;
-  if (f.tuck && a.belt) out += `<path d="M70 199 H130 V207 H70 Z" fill="${a.belt}" ${ST}/><path d="M97 199 H103 V207 H97 Z" fill="#C9B27A"/>`;
-  if (a.scarf) out += `<path d="M64 84 Q100 100 136 84 L136 94 Q100 112 64 94 Z" fill="${a.scarf}" ${ST}/><path d="M95 104 L90 132 L99 128 L108 133 L104 104 Z" fill="${a.scarf}" ${ST}/>`;
-  if (o) out += drawOuter(o, sL, sR);
+  g += f.tuck ? top.body + bottom : bottom + top.body;
+  g += top.sleeves;
+  if (f.tuck && a.belt) g += sh('M70 199 H130 V207 H70 Z', a.belt) + `<rect x="96" y="198.5" width="8" height="9" rx="1.2" fill="none" stroke="#C9B27A" stroke-width="1.6"/>`;
+  if (a.scarf) g += sh('M64 84 Q100 100 136 84 L136 94 Q100 112 64 94 Z', a.scarf) + sh('M95 104 L90 132 L99 128 L108 133 L104 104 Z', a.scarf) + fl('M70 90 Q100 104 130 90', .3);
+  if (o) g += drawOuter(o, sL, sR, pose);
   // 鞋
-  out += mir(drawShoe(s));
+  g += drawShoe(s, 86, 1) + drawShoe(s, 117, -1);
   // 手
-  out += mir(`<ellipse cx="57.5" cy="237" rx="5.8" ry="8" fill="${SKIN}" ${ST}/>`);
-  if (a.bag) out += `<path d="M146 246 Q147 228 154 228 Q161 228 162 246" ${LN} stroke-width="2"/><path d="M137 244 H171 L169 288 H139 Z" fill="${a.bag}" ${ST}/>`;
-  if (a.cap) out += `<path d="M83 28 Q84 10 100 9 Q117 10 117 28 Z" fill="${a.cap}" ${ST}/><path d="M83 26 H124 Q122 31 83 31 Z" fill="${shade(a.cap, .85)}" ${ST}/>`;
-  if (a.glasses) out += `<g fill="none" stroke="${a.glasses === 1 ? '#1C1C1E' : a.glasses}" stroke-width="1.6"><rect x="87" y="35" width="11" height="8" rx="3"/><rect x="102" y="35" width="11" height="8" rx="3"/><path d="M98 38 H102"/></g>`;
-  return `<svg viewBox="0 0 200 448" role="img" aria-label="穿搭插画">${out}</svg>`;
+  const hand = `<ellipse cx="61" cy="239" rx="5.4" ry="8.6" fill="${SKIN}" ${INK}/>` + fl('M57.5 236 Q57 241 59 244', .35);
+  g += hand + (pose === 'P' ? sd('M121 204 Q127 212 134 209 L133 213 Q126 216 120 208 Z', .25) : mir(hand));
+  if (a.bag) g += fl('M134 246 Q135 229 141 229 Q147 229 149 246', .8, 2.2) + sh('M126 245 H161 L159 291 H128 Z', a.bag) + sd('M150 246 H161 L159 291 H152 Z', .14) + fl('M129 252 H158', .3);
+  if (a.cap) g += sh('M85 26 Q86 8.5 100 8 Q115 8.5 116 26 Z', a.cap) + sh('M84 25 H125 Q122 30.5 84 29.5 Z', shade(a.cap, .82)) + fl('M100 8.5 V25', .3);
+  if (a.glasses) { const gc = a.glasses === 1 ? '#1C1C1E' : a.glasses; g += `<g fill="none" stroke="${gc}" stroke-width="1.5"><rect x="89.3" y="31.2" width="9.2" height="7" rx="2.6"/><rect x="101.5" y="31.2" width="9.2" height="7" rx="2.6"/><path d="M98.5 33.6 H101.5 M89.3 33 L86.5 32.5 M110.7 33 L113.5 32.5"/></g><path d="M90 32 L94 31.6" stroke="#fff" stroke-opacity=".35"/>` }
+  return `<svg viewBox="0 0 200 452" role="img" aria-label="穿搭插画"><ellipse cx="102" cy="442" rx="46" ry="5" fill="#1A1410" fill-opacity=".14"/><g filter="url(#ill)">${g}</g></svg>`;
 }
-function drawTop(t, hem, sL, sR, id, covered) {
-  const [k, c] = t, dk = shade(c, .86);
-  const hL = sL + 4, hR = sR - 4;
-  let s = '';
-  const shortSl = ['tee', 'polo', 'stripe'].includes(k) && !covered;
-  const sleeve = shortSl ? `<path d="M${sL} 82 L${sL - 12} 92 L${sL - 15} 134 L${sL + 2} 136 L${sL + 8} 112 Z" fill="${c}" ${ST}/>`
-    : `<path d="M${sL} 82 L${sL - 13} 92 L50 228 L65 230 L${sL + 10} 124 Z" fill="${c}" ${ST}/>`;
-  s += mir(sleeve);
-  const body = `M${sL} 82 Q100 72 ${sR} 82 L${hR} ${hem} L${hL} ${hem} Z`;
-  s += `<path d="${body}" fill="${c}" ${ST}/>`;
-  if (k === 'stripe') {
-    s += `<clipPath id="${id}"><path d="${body}"/></clipPath><g clip-path="url(#${id})">${Array.from({ length: 14 }, (_, i) => `<rect x="50" y="${96 + i * 11}" width="100" height="4" fill="#1F2A44"/>`).join('')}</g>`;
-    if (shortSl) s += mir(`<rect x="${sL - 15}" y="118" width="20" height="4" fill="#1F2A44" transform="rotate(4 ${sL - 5} 120)"/>`);
-  }
+function drawTop(t, hem, sL, sR, id, pose) {
+  const [k, c] = t, dk = shade(c, .82), lt = shade(c, 1.07);
+  const hL = sL + 4, hR = sR - 4, shortSl = ['tee', 'polo', 'stripe'].includes(k);
+  const bd = `M${sL} 82 Q100 72 ${sR} 82 Q${sR + 1} 150 ${hR} ${hem} L${hL} ${hem} Q${sL - 1} 150 ${sL} 82 Z`;
+  let s = sh(bd, c);
+  if (k === 'stripe') s += `<clipPath id="${id}"><path d="${bd}"/></clipPath><g clip-path="url(#${id})">${Array.from({ length: 15 }, (_, i) => `<path d="M40 ${97 + i * 10.5} Q100 ${100 + i * 10.5} 160 ${97 + i * 10.5}" stroke="#1F2A44" stroke-width="3.6" fill="none"/>`).join('')}</g><path d="${bd}" fill="url(#shd)"/>`;
+  s += sd(`M${sR - 15} 92 Q${sR - 1} 150 ${hR} ${hem} L${hR - 11} ${hem} Q${sR - 11} 150 ${sR - 15} 92 Z`, .1);
+  s += fl(`M${sL + 4} 88 L${sL + 8} 96`, .3) + fl(`M${sR - 4} 88 L${sR - 8} 96`, .3);
+  if (hem > 215) s += fl(`M${hL + 9} ${hem - 5} Q${hL + 15} ${hem - 24} ${hL + 12} ${hem - 40}`, .25) + fl(`M${hR - 10} ${hem - 4} Q${hR - 17} ${hem - 21} ${hR - 13} ${hem - 36}`, .25);
+  else s += fl('M78 207 Q86 199 93 206 Q100 199 107 206 Q114 199 122 207', .3);
   if (k === 'shirt' || k === 'polo') {
-    s += mir(`<path d="M92 76 L100 94 L86 92 L88 78 Z" fill="${shade(c, 1.05)}" ${ST}/>`);
-    s += `<path d="M100 94 V${k === 'polo' ? 122 : hem}" ${LN}/>`;
-    s += [104, 124, 150, 176, 202, 226].filter(y => y < (k === 'polo' ? 122 : hem - 4)).map(y => `<circle cx="102" cy="${y}" r="1.4" fill="#15171C" fill-opacity=".35"/>`).join('');
+    const col = sh('M91.5 75 L100 94 L85.5 91 L87 77.5 Z', lt);
+    s += col + mir(col);
+    s += fl(`M98 94 V${k === 'polo' ? 122 : hem}`, .35) + fl(`M103 94 V${k === 'polo' ? 122 : hem}`, .35);
+    s += [104, 126, 150, 174, 198, 222].filter(y => y < (k === 'polo' ? 122 : hem - 4)).map(y => `<circle cx="100.5" cy="${y}" r="1.5" fill="${dk}" stroke="#2A2420" stroke-opacity=".4" stroke-width=".5"/>`).join('');
+    if (k === 'shirt') s += fl('M109 108 H122 V124 Q115.5 127 109 124 Z', .4);
   } else if (k === 'turtle') {
-    s += `<path d="M90 58 H110 L111 84 Q100 88 89 84 Z" fill="${dk}" ${ST}/>`;
+    s += sh('M89.5 54 H110.5 L111.5 84 Q100 89 88.5 84 Z', dk) + fl('M90 62 Q100 65 110 62', .35) + fl('M93 58 V82 M97 58 V84 M101 58 V85 M105 58 V84 M109 58 V82', .14);
+  } else if (k === 'hoodie') {
+    s += sh('M84 80 Q100 99 116 80 Q113 93 100 97 Q87 93 84 80 Z', dk);
+    s += fl('M95 95 L94 120', .6, 1.1) + fl('M105 95 L106 120', .6, 1.1) + `<rect x="92.8" y="119" width="2.4" height="5" fill="#D8D3C4"/><rect x="104.8" y="119" width="2.4" height="5" fill="#D8D3C4"/>`;
+    s += fl(`M78 ${hem - 48} H122 L128 ${hem - 13} H72 Z`, .45) + fl(`M84 ${hem - 48} Q82 ${hem - 30} 76 ${hem - 13}`, .25) + fl(`M116 ${hem - 48} Q118 ${hem - 30} 124 ${hem - 13}`, .25);
   } else {
-    s += `<path d="M89 79 Q100 92 111 79" fill="none" stroke="${dk}" stroke-width="4"/>`;
+    s += `<path d="M88.5 78 Q100 92 111.5 78 Q100 87.5 88.5 78 Z" fill="${dk}" ${INK}/>`;
   }
   if (k === 'knit' || k === 'turtle' || k === 'hoodie') {
-    s += `<path d="M${hL + 1} ${hem - 8} H${hR - 1} V${hem} H${hL + 1} Z" fill="${dk}" fill-opacity=".9"/>`;
-    if (!covered) s += mir(`<path d="M50 220 L65 222 L64 230 L49 228 Z" fill="${dk}"/>`);
+    s += sh(`M${hL + 1} ${hem - 9} H${hR - 1} V${hem} H${hL + 1} Z`, dk);
+    s += Array.from({ length: 12 }, (_, i) => fl(`M${hL + 6 + i * (hR - hL - 10) / 11} ${hem - 8} V${hem - 1}`, .15)).join('');
   }
-  if (k === 'hoodie') {
-    s += `<path d="M78 ${hem - 46} H122 L127 ${hem - 12} H73 Z" fill="none" stroke="${dk}" stroke-width="1.6"/>`;
-    s += `<path d="M95 88 V112 M105 88 V112" ${LN} stroke-width="1.4"/>`;
-  }
-  return s;
+  if (k === 'polo') s += `<circle cx="100.5" cy="104" r="1.4" fill="${dk}"/><circle cx="100.5" cy="114" r="1.4" fill="${dk}"/>`;
+  let sl = arms(shortSl ? 'short' : 'long', c, pose);
+  if (k === 'knit' || k === 'turtle' || k === 'hoodie') sl += sh('M50.5 220 L66 222 L66 230 L50 228 Z', dk) + (pose === 'P' ? sh('M135 213 L122 206 L120 208 L133 215 Z', dk) : mir(sh('M50.5 220 L66 222 L66 230 L50 228 Z', dk)));
+  if (k === 'stripe') sl += fl('M51.5 120 L68.5 122', .9, 3.4, '#1F2A44') + (pose === 'P' ? fl('M150 120 L133 123', .9, 3.4, '#1F2A44') : mir(fl('M51.5 120 L68.5 122', .9, 3.4, '#1F2A44')));
+  return { body: s, sleeves: sl };
 }
 function drawBottom(b, hY, pool) {
-  const [k, c] = b, dk = shade(c, .84);
-  let p;
-  if (k === 'wide') p = `M70 200 H130 L136 255 L144 ${hY} H104 L100 262 L96 ${hY} H56 L64 255 Z`;
-  else if (k === 'slim') p = `M70 200 H130 L132 255 L124 ${hY} H106 L100 262 L94 ${hY} H76 L68 255 Z`;
-  else if (k === 'shorts') p = `M70 200 H130 L134 255 L137 ${hY} H103 L100 262 L97 ${hY} H63 L66 255 Z`;
-  else if (k === 'skirt') p = `M72 200 H128 L148 362 H52 Z`;
-  else if (k === 'pleated') p = `M72 200 H128 L144 350 H56 Z`;
-  else p = `M70 200 H130 L133 255 L132 ${hY} H104 L100 262 L96 ${hY} H68 L67 255 Z`;
-  let s = `<path d="${p}" fill="${c}" ${ST}/><path d="M70 208 H130" stroke="${dk}" stroke-width="1.4"/>`;
-  if (k === 'pleated') s += [66, 78, 90, 100, 110, 122, 134].map((x, i) => `<path d="M${88 + i * 4} 210 L${x} 348" ${LN}/>`).join('');
-  if (k === 'skirt') s += `<path d="M86 212 Q84 300 78 360 M114 212 Q116 300 122 360" ${LN}/>`;
-  if (['straight', 'wide', 'slim'].includes(k) && !b[2]) s += mir(`<path d="M84 266 L${k === 'wide' ? 78 : k === 'slim' ? 86 : 83} ${hY - 4}" ${LN} stroke-opacity=".18"/>`);
-  if (b[2] === 'jeans') s += mir(`<path d="M74 212 Q80 226 92 222" fill="none" stroke="#D9A85C" stroke-opacity=".7" stroke-width="1"/><path d="M68 ${hY - 3} H96" stroke="${shade(c, 1.25)}" stroke-width="3"/>`);
-  if (b[2] === 'cargo') s += mir(`<path d="M64 300 H82 V330 H65 Z" fill="${dk}" ${ST}/>`);
-  if (pool) s += mir(`<path d="M70 408 Q82 412 95 406 M69 418 Q82 423 96 416" ${LN} stroke-opacity=".4"/>`);
-  return s;
-}
-function drawOuter(o, sL, sR) {
-  const [k, c] = o, dk = shade(c, .85);
-  const hem = { jacket: 232, chore: 250, blazer: 254, cardigan: 246, shell: 246, coat: 338, trench: 344 }[k] || 240;
-  const fl = (k === 'coat' || k === 'trench') ? 6 : 0;
-  let s = mir(`<path d="M${sL - 2} 80 L${sL - 16} 92 L45 230 L66 232 L${sL + 10} 122 Z" fill="${c}" ${ST}/>`);
-  if (k === 'shell') {
-    s += `<path d="M${sL - 2} 80 Q100 70 ${sR + 2} 80 L${sR + 4} ${hem} L${sL - 4} ${hem} Z" fill="${c}" ${ST}/>`;
-    s += `<path d="M100 76 V${hem}" stroke="${dk}" stroke-width="2"/><path d="M80 ${hem - 10} H120" ${LN}/><path d="M118 108 H130" stroke="${dk}" stroke-width="2"/>`;
+  const [k, c, v] = b, dk = shade(c, .8), cL = 86, cR = 117;
+  let s;
+  if (k === 'skirt' || k === 'pleated') {
+    const yh = k === 'skirt' ? 364 : 352, sp = k === 'skirt' ? 22 : 16;
+    const p = `M72 200 H128 L${128 + sp} ${yh} H${72 - sp} Z`;
+    s = sh(p, c) + sd(`M116 210 L${128 + sp} ${yh} L${118 + sp} ${yh} Z`, .14) + fl('M72 208 H128', .5);
+    if (k === 'pleated') s += [56, 66, 76, 86, 96, 106, 116, 126, 136].map((x, i) => fl(`M${80 + i * 5} 212 L${x + 4} ${yh - 1}`, .3)).join('');
+    else s += fl(`M86 214 Q83 300 76 ${yh - 2}`, .3) + fl(`M114 214 Q118 300 126 ${yh - 2}`, .3) + fl('M100 212 V300', .15);
     return s;
   }
-  s += mir(`<path d="M${sL - 2} 80 Q82 74 94 79 L${k === 'cardigan' ? 98 : 95} ${hem} L${sL - 6 - fl} ${hem} Z" fill="${c}" ${ST}/>`);
-  if (k === 'blazer' || k === 'coat' || k === 'trench') s += mir(`<path d="M94 79 L83 132 L95 ${k === 'blazer' ? 168 : 150}" fill="none" stroke="${dk}" stroke-width="1.6"/><path d="M83 104 L88 100" ${LN}/>`);
-  if (k === 'jacket' || k === 'chore') s += mir(`<path d="M93 78 L84 98 L74 88 Z" fill="${dk}" ${ST}/>`);
-  if (k === 'jacket') s += mir(`<path d="M${sL - 4} ${hem - 10} H95" stroke="${dk}" stroke-width="3"/>`);
-  if (k === 'chore') s += mir(`<path d="M68 196 H88 V222 H69 Z" fill="none" stroke="${dk}" stroke-width="1.4"/><path d="M72 130 H88 V146 H73 Z" fill="none" stroke="${dk}" stroke-width="1.4"/>`);
-  if (k === 'cardigan') s += [110, 140, 170, 200, 228].map(y => `<circle cx="96" cy="${y}" r="1.6" fill="${dk}"/>`).join('');
-  if (k === 'blazer') s += `<circle cx="96" cy="196" r="2" fill="${dk}"/><path d="M${sL + 2} 212 H86" ${LN}/><path d="M${sR - 2} 212 H114" ${LN}/>`;
-  if (k === 'trench') s += `<path d="M${sL - 6} 196 H${sR + 6} V206 H${sL - 6} Z" fill="${dk}" ${ST}/>`;
-  if (k === 'coat') s += mir(`<path d="M${sL} 240 H86" ${LN}/>`);
+  const sho = k === 'shorts', w = sho ? 16 : { wide: 17, slim: 7 }[k] || 11, L = sho ? 83 : cL, R = sho ? 118 : cR, y = sho ? 302 : hY;
+  const p = `M70 200 H130 L133 255 L${R + w} ${y} L${R - w} ${y} L100 266 L${L + w} ${y} L${L - w} ${y} L67 255 Z`;
+  s = sh(p, c);
+  s += sd(`M96 252 L100 266 L104 252 Z`, .2) + sd(`M${R + w - 7} 270 L${R + w} ${y} L${R + w - 6} ${y} L${R + 2} 270 Z`, .1);
+  s += fl('M70 208 H130', .5) + fl('M100 208 Q99.5 236 96.5 248', .38);
+  s += fl('M73 211 Q78 224 85 230', .4) + fl('M127 211 Q122 224 115 230', .4);
+  s += [76, 92, 108, 124].map(x => fl(`M${x} 199 V209`, .4, 1.4)).join('');
+  if (!v && !sho) s += fl(`M85 266 L${L} ${y - 4}`, .2) + fl(`M116 266 L${R} ${y - 4}`, .2);
+  if (!sho) s += fl(`M${L - 6} 342 Q${L} 345 ${L + 5} 341`, .25) + fl(`M${R - 5} 341 Q${R} 345 ${R + 6} 342`, .25);
+  if (v === 'jeans') {
+    const st = '#D9A85C';
+    s += fl('M73 212 Q79 227 88 228', .8, .9, st) + fl('M127 212 Q121 227 112 228', .8, .9, st) + fl(`M68 258 L${L - w + 1} ${y - 6}`, .55, .8, st) + fl(`M132 258 L${R + w - 1} ${y - 6}`, .55, .8, st);
+    s += sh(`M${L - w} ${y - 7} H${L + w} V${y} H${L - w} Z`, shade(c, 1.22)) + sh(`M${R - w} ${y - 7} H${R + w} V${y} H${R - w} Z`, shade(c, 1.22));
+  }
+  if (v === 'cargo') s += sh(`M${L - w - 2} 300 H${L - w + 16} L${L - w + 15} 332 H${L - w - 1} Z`, dk) + sh(`M${R + w - 16} 300 H${R + w + 2} L${R + w + 1} 332 H${R + w - 15} Z`, dk);
+  if (sho) s += fl(`M${L - w + 2} ${y - 5} H${L + w - 2}`, .3) + fl(`M${R - w + 2} ${y - 5} H${R + w - 2}`, .3);
+  if (pool) s += [0, 1, 2].map(i => fl(`M${L - w} ${404 + i * 9} Q${L} ${409 + i * 9} ${L + w} ${402 + i * 9}`, .45) + fl(`M${R - w} ${402 + i * 9} Q${R} ${409 + i * 9} ${R + w} ${404 + i * 9}`, .45)).join('');
   return s;
 }
-function drawShoe(s) {
-  const [k, c] = s, sole = light(c) > 80 ? '#D6D4CC' : '#F2F1EC';
-  if (k === 'boot') return `<path d="M78 400 H97 V432 Q97 440 89 440 H64 Q61 432 70 426 L78 420 Z" fill="${c}" ${ST}/><path d="M62 437 H97" stroke="#2A2420" stroke-width="3"/>`;
-  if (k === 'loafer' || k === 'derby') return `<path d="M79 426 H97 V434 Q97 440 90 440 H64 Q62 433 72 429 Z" fill="${c}" ${ST}/>${k === 'derby' ? '<path d="M84 429 L92 428" stroke="#F2F1EC" stroke-opacity=".5"/>' : '<path d="M80 431 H92" stroke="#15171C" stroke-opacity=".25"/>'}`;
-  if (k === 'runner') return `<path d="M78 422 H97 V432 Q97 440 89 440 H62 Q59 430 70 425 Z" fill="${c}" ${ST}/><path d="M60 435 Q78 441 97 435 V440 H61 Z" fill="${sole}"/><path d="M70 430 L86 426" stroke="${sole}" stroke-width="2"/>`;
-  return `<path d="M78 423 H97 V433 Q97 440 89 440 H63 Q60 431 70 426 Z" fill="${c}" ${ST}/><path d="M61 436 H97 V440 H62 Z" fill="${sole}"/>`;
+function drawOuter(o, sL, sR, pose) {
+  const [k, c] = o, dk = shade(c, .8), lt = shade(c, 1.08);
+  const hem = { jacket: 232, chore: 250, blazer: 254, cardigan: 246, shell: 246, coat: 338, trench: 344 }[k] || 240;
+  const fla = (k === 'coat' || k === 'trench') ? 6 : 0;
+  let s = '';
+  if (k === 'shell') {
+    s += sh(`M${sL - 2} 80 Q100 70 ${sR + 2} 80 Q${sR + 5} 160 ${sR + 4} ${hem} L${sL - 4} ${hem} Q${sL - 5} 160 ${sL - 2} 80 Z`, c);
+    s += sd(`M${sR - 14} 90 Q${sR + 3} 160 ${sR + 4} ${hem} L${sR - 8} ${hem} Q${sR - 6} 160 ${sR - 14} 90 Z`, .12);
+    s += fl(`M100 76 V${hem}`, .7, 1.6) + fl('M84 120 L94 132', .5, 1.2) + fl(`M${sL + 2} ${hem - 10} H${sR - 2}`, .35) + fl(`M76 ${hem - 30} L90 ${hem - 22}`, .45) + fl(`M124 ${hem - 30} L110 ${hem - 22}`, .45);
+    s += `<circle cx="${sL + 2}" cy="${hem - 4}" r="2" fill="#2A2420"/><circle cx="${sR - 2}" cy="${hem - 4}" r="2" fill="#2A2420"/>`;
+    return s + arms('outer', c, pose);
+  }
+  const panel = `M${sL - 2} 80 Q82 74 93 79 L${k === 'cardigan' ? 98 : 96} ${hem} L${sL - 6 - fla} ${hem} Z`;
+  s += sd(`M93 80 L96 ${hem} L100 ${hem} L97 80 Z`, .2) + mir(sd(`M93 80 L96 ${hem} L100 ${hem} L97 80 Z`, .2));
+  s += sh(panel, c) + mir(sh(panel, c));
+  s += mir(sd(`M${sL + 6} 92 L${sL - 2 - fla} ${hem} L${sL + 8 - fla} ${hem} L${sL + 14} 96 Z`, .12));
+  if (k === 'blazer' || k === 'coat' || k === 'trench') {
+    const lap = k === 'blazer' ? 'M93 79 L80 98 L84 104 L80 111 L95 168 Z' : k === 'coat' ? 'M93 79 L75 100 L81 107 L74 118 L94 152 Z' : 'M93 79 L71 96 L77 104 L70 122 L93 150 Z';
+    s += sh(lap, lt) + mir(sh(lap, lt));
+  }
+  if (k === 'blazer') s += `<circle cx="94" cy="190" r="1.8" fill="${dk}"/><circle cx="94" cy="214" r="1.8" fill="${dk}"/>` + fl(`M${sL + 3} 216 H86`, .5) + fl(`M${sR - 3} 216 H114`, .5) + fl('M114 128 H126', .5);
+  if (k === 'coat') s += `<circle cx="94" cy="170" r="2" fill="${dk}"/><circle cx="94" cy="210" r="2" fill="${dk}"/>` + fl(`M${sL + 1} 248 H86`, .5) + fl(`M${sR - 1} 248 H114`, .5);
+  if (k === 'trench') {
+    s += sh(`M${sL - 7} 196 H${sR + 7} V206 H${sL - 7} Z`, dk) + `<rect x="95" y="195" width="10" height="12" rx="1.5" fill="none" stroke="#2A2420" stroke-opacity=".6" stroke-width="1.3"/>`;
+    s += fl(`M${sL - 1} 83 L82 80`, .6, 3) + fl(`M${sR + 1} 83 L118 80`, .6, 3) + [150, 172, 224].map(y => `<circle cx="90" cy="${y}" r="1.7" fill="${dk}"/><circle cx="110" cy="${y}" r="1.7" fill="${dk}"/>`).join('');
+  }
+  if (k === 'jacket' || k === 'chore') { const col = sh('M93 78 L84 99 L72 89 L76 80 Z', dk); s += col + mir(col) }
+  if (k === 'jacket') {
+    s += sh(`M${sL - 5} ${hem - 11} H95.5 V${hem} H${sL - 6} Z`, dk) + mir(sh(`M${sL - 5} ${hem - 11} H95.5 V${hem} H${sL - 6} Z`, dk));
+    const pk = sh('M72 116 H88 V122 L80 126 L72 122 Z', dk);
+    s += pk + mir(pk) + fl('M93 79 L96 220', .4, .8, '#D9A85C') + mir(fl('M93 79 L96 220', .4, .8, '#D9A85C'));
+  }
+  if (k === 'chore') { const pk = fl('M70 198 H89 V226 H71 Z', .55, 1.1) + fl('M73 124 H88 V142 H74 Z', .55, 1.1); s += pk + mir(fl('M70 198 H89 V226 H71 Z', .55, 1.1)) + [110, 140, 170, 200, 228].map(y => `<circle cx="94" cy="${y}" r="1.7" fill="${dk}"/>`).join('') }
+  if (k === 'cardigan') { s += fl(`M94 80 L97.5 ${hem}`, .4, 3) + mir(fl(`M94 80 L97.5 ${hem}`, .4, 3)) + [112, 140, 168, 196, 224].map(y => `<circle cx="96" cy="${y}" r="1.7" fill="${dk}"/>`).join(''); s += fl(`M${sL - 4} ${hem - 6} H96`, .3) + fl('M72 196 H88 V218 H73 Z', .4) }
+  return s + arms('outer', c, pose);
+}
+function drawShoe(s, x, t) {
+  const [k, c] = s, sole = light(c) > 80 ? '#D4D1C7' : '#F1EFE8';
+  let d;
+  if (k === 'boot') d = sh('M-6 402 H9 V434 Q9 441 2 441 H-16 Q-19 433 -9 428 L-6 420 Z', c) + sh('M-18 437 H9 V442 H-17 Z', '#2A2420') + fl('M-4 408 L6 408 M-4 414 L6 414 M-4 420 L6 420', .45);
+  else if (k === 'loafer' || k === 'derby') d = sh('M8 427 V434 Q8 440 2 440 H-15 Q-18 433 -7 429 Z', c) + sh('M-16 437 H8 V441 H-15 Z', '#2A2420') + (k === 'derby' ? fl('M-5 430 L3 428 M-4 432 L4 430', .5, .8, '#F1EFE8') : fl('M-7 431 Q0 428 6 430', .5));
+  else if (k === 'runner') d = sh('M8 421 V432 Q8 439 2 439 H-17 Q-20 430 -9 425 Z', c) + sh('M-20 434 Q-6 442 9 434 V442 H-19 Z', sole) + fl('M-13 431 Q-3 426 5 428', .5, 1.4, sole === '#F1EFE8' ? '#FFFFFF' : '#2A2420') + fl('M-6 424 L3 423', .4);
+  else d = sh('M8 423 V433 Q8 440 2 440 H-16 Q-19 432 -9 426 Q-2 423 8 423 Z', c) + sh('M-18 436 H8 V441 H-17 Z', sole) + fl('M-5 427 L4 425.5 M-4 430 L5 428.5', .45) + fl('M-15 433 Q-11 429 -8 428', .3);
+  return `<g transform="translate(${x},0) scale(${t},1)">${d}</g>`;
 }
 
 /* ============ 灵感库：25 套 ============ */
@@ -729,11 +805,11 @@ const LOOKS = [
     ['卡其＋白＋浅牛仔，春天最经典的配色', '风衣腰带系起来能做出腰线，敞开穿更随性', '棉质华达呢风衣，配水洗牛仔', '白鞋让整体更轻快'],
     '风衣是男女都能穿的经典单品，卡其色最百搭。', '风衣 牛仔裤 白T'),
   L('l23', '高领配半裙', '极简', ['冬', '秋'], '约会聚会', 'f',
-    { t: ['turtle', '#1C1C1E'], b: ['skirt', '#B48A5E'], s: ['boot', '#1C1C1E'], tuck: 1 },
+    { t: ['turtle', '#1C1C1E'], b: ['skirt', '#B48A5E'], s: ['boot', '#1C1C1E'], tuck: 1, hair: 'long' },
     ['黑＋驼，一冷一暖都很沉稳', '高领塞进中长 A 字裙，腰线高，下摆有摆动感', '针织高领＋羊毛呢半裙', '黑靴与上衣同色，上下呼应'],
     '中长 A 字裙配高领，是秋冬最显比例的穿法之一。', '高领毛衣 半身裙 靴子'),
   L('l24', '开衫百褶裙', '韩系清爽', ['春'], '校园', 'f',
-    { o: ['cardigan', '#D8B4B4'], t: ['tee', '#F7F7F5'], b: ['pleated', '#EDE6D6'], s: ['loafer', '#1C1C1E'], acc: { socks: '#F7F7F5' } },
+    { o: ['cardigan', '#D8B4B4'], t: ['tee', '#F7F7F5'], b: ['pleated', '#EDE6D6'], s: ['loafer', '#1C1C1E'], hair: 'long', acc: { socks: '#F7F7F5' } },
     ['灰粉＋白＋米白，柔和的低饱和色', '短开衫＋百褶裙，上短下长', '薄针织配有垂感的百褶', '白袜＋黑乐福，学院感的细节'],
     '百褶裙最好配短上衣或把上衣塞进去，避免上衣盖住腰。', '开衫 百褶裙 乐福鞋'),
   L('l25', '海魂衫', '日系 City Boy', ['春', '夏'], '居家休闲', 'u',

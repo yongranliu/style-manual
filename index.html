@@ -1,0 +1,1670 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<title>豪然形象手册</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,500&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap">
+<style>
+/* Layout: 试衣间 — 顶部卷尺；首屏是一排拱形试衣镜，里面站着本周推荐的搭配；下面是胶囊式标签页，每页一张工作台 */
+:root {
+  --paper: #F3F2EE;
+  --card: #FFFFFF;
+  --ink: #15171C;
+  --muted: #5D626B;
+  --line: #DEDDD6;
+  --soft: #E9E8E2;
+  --tape: #E9B52A;
+  --tape-ink: #1A1A14;
+  --good: #2D7A4B;
+  --warn: #A86A12;
+  --bad: #B3261E;
+  --focus: #2C55D6;
+  --shadow: 0 1px 2px rgba(21,23,28,.05), 0 8px 24px -12px rgba(21,23,28,.18);
+  --f-display: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --f-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --f-latin: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #121418; --card: #1B1E24; --ink: #ECECE7; --muted: #A0A6AF; --line: #2D323A; --soft: #252930;
+  --tape: #E9B52A; --tape-ink: #1A1A14; --good: #5DBB84; --warn: #E0A54A; --bad: #F07A70; --focus: #7C9BFF;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #121418; --card: #1B1E24; --ink: #ECECE7; --muted: #A0A6AF; --line: #2D323A; --soft: #252930;
+  --tape: #E9B52A; --tape-ink: #1A1A14; --good: #5DBB84; --warn: #E0A54A; --bad: #F07A70; --focus: #7C9BFF;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6); color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.7 }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper) }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.25; font-weight: 600 }
+h2 { font-size: clamp(1.5rem, 3.4vw, 2rem); font-weight: 900; letter-spacing: .01em }
+h3 { font-size: 1.1rem }
+p { margin: 0 }
+button, input, select, textarea { font: inherit; color: inherit }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums }
+.muted { color: var(--muted) }
+.small { font-size: .87rem }
+.eyebrow { font-size: .74rem; letter-spacing: .14em; color: var(--muted); text-transform: uppercase; font-weight: 500 }
+.latin { font-family: var(--f-latin); font-style: italic; letter-spacing: 0; text-transform: none; font-weight: 500 }
+
+/* 卷尺 */
+.tape { height: 30px; background-color: var(--tape); color: var(--tape-ink); position: relative; overflow: hidden;
+  background-image:
+    repeating-linear-gradient(90deg, var(--tape-ink) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(90deg, var(--tape-ink) 0 1px, transparent 1px 20px),
+    repeating-linear-gradient(90deg, var(--tape-ink) 0 1px, transparent 1px 4px);
+  background-size: 100% 14px, 100% 9px, 100% 5px; background-repeat: no-repeat }
+.tape-nums { position: absolute; left: 0; bottom: 2px; display: flex; font-family: var(--f-mono); font-size: 10px; white-space: nowrap }
+.tape-nums span { width: 40px; padding-left: 3px }
+
+/* 首屏 */
+header.hero { padding-block: 36px 28px }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 32px; align-items: end }
+@media (max-width: 900px) { .hero-grid { grid-template-columns: minmax(0, 1fr) } }
+.hero h1 { font-size: clamp(2.4rem, 7vw, 4.4rem); font-weight: 900; letter-spacing: .02em; line-height: 1.08 }
+.hero h1 .latin { display: block; font-size: .36em; color: var(--muted); margin-top: 10px; letter-spacing: .01em }
+.hero .lede { color: var(--muted); max-width: 30em; margin-top: 16px; font-size: 1.02rem }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; align-items: center }
+.stat { display: inline-flex; align-items: baseline; gap: 6px; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 3px 12px; font-size: .85rem }
+.stat b { font-family: var(--f-mono); font-weight: 600 }
+.sync { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; color: var(--muted) }
+.sync i { width: 8px; height: 8px; border-radius: 50%; background: var(--warn); display: inline-block }
+.sync[data-s="cloud"] i { background: var(--good) }
+.sync[data-s="err"] i { background: var(--bad) }
+.mirrors { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px }
+.mirror { border: 0; padding: 16px 6px 0; cursor: pointer; border-radius: 999px 999px 10px 10px; background: var(--tint, var(--soft)); display: grid; gap: 6px; justify-items: center; align-content: end; aspect-ratio: 1 / 2.05; position: relative; overflow: hidden; max-width: 100%; transition: transform .25s ease }
+.mirror:hover { transform: translateY(-4px) }
+.mirror svg { width: 92%; height: auto; display: block }
+.mirror .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 8px 9px; font-size: .78rem; text-align: center; background: linear-gradient(transparent, color-mix(in srgb, var(--card) 88%, transparent) 55%); line-height: 1.35 }
+.mirror .cap b { display: block; font-family: var(--f-display); font-size: .9rem }
+@media (max-width: 520px) { .mirrors { grid-template-columns: repeat(2, minmax(0, 1fr)) } .mirror:nth-child(n+3) { display: none } }
+
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line) }
+.tabs-in { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; padding-block: 10px }
+.tabs-in::-webkit-scrollbar { display: none }
+.tab { flex: none; border: 1px solid transparent; background: none; padding: 6px 14px; cursor: pointer; color: var(--muted); border-radius: 999px; font-weight: 500; white-space: nowrap }
+.tab:hover { color: var(--ink); background: var(--soft) }
+.tab[aria-selected="true"] { color: var(--paper); background: var(--ink) }
+
+main { padding-block: 34px 72px }
+section.view { display: grid; gap: 26px }
+.view-head { display: grid; gap: 6px; max-width: 54em }
+.view-head .muted { font-size: .97rem }
+.sub-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 10px; margin-top: 14px }
+.sub-head h2 { font-size: 1.45rem }
+
+.grid-2 { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 22px; align-items: start }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px }
+@media (max-width: 860px) { .grid-2 { grid-template-columns: minmax(0, 1fr) } }
+
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px; display: grid; gap: 16px; min-width: 0; box-shadow: var(--shadow) }
+.sticky-side { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 72px) }
+@media (max-width: 860px) { .sticky-side { position: static } }
+
+.form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px }
+.form .full { grid-column: 1 / -1 }
+@media (max-width: 520px) { .form { grid-template-columns: minmax(0, 1fr) } }
+.fs { display: grid; gap: 12px; padding-top: 18px; border-top: 1px solid var(--line) }
+.fs:first-child { border-top: 0; padding-top: 0 }
+.fs > h3 { font-size: 1rem; display: flex; gap: 8px; align-items: baseline }
+.fs > h3 small { font-family: var(--f-body); font-weight: 400; color: var(--muted); font-size: .8rem }
+.field { display: grid; gap: 5px; min-width: 0 }
+.field > label, .field > .lab { font-size: .82rem; color: var(--muted); font-weight: 500 }
+input[type="text"], input[type="number"], select, textarea { width: 100%; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-width: 0 }
+textarea { resize: vertical; min-height: 80px }
+input[type="number"] { font-family: var(--f-mono) }
+.hint { font-size: .8rem; color: var(--muted) }
+.chips { display: flex; flex-wrap: wrap; gap: 6px }
+.chip { border: 1px solid var(--line); background: var(--paper); border-radius: 999px; padding: 4px 12px; font-size: .85rem; cursor: pointer }
+.chip:hover { border-color: var(--muted) }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink) }
+.btn { border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 999px; padding: 8px 18px; cursor: pointer; font-weight: 500 }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line) }
+.btn.ghost:hover { border-color: var(--ink) }
+.btn.tape { background: var(--tape); color: var(--tape-ink); border-color: var(--tape) }
+.btn:disabled { opacity: .5; cursor: default }
+.btn.sm { padding: 4px 12px; font-size: .85rem }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+a { color: inherit; text-decoration-color: var(--tape); text-decoration-thickness: 2px; text-underline-offset: 3px }
+
+details.how { border-top: 1px dashed var(--line); padding-top: 10px }
+details.how summary { cursor: pointer; font-size: .85rem; color: var(--muted) }
+details.how[open] summary { margin-bottom: 8px }
+.banner { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; border: 1px solid color-mix(in srgb, var(--tape) 60%, transparent); background: color-mix(in srgb, var(--tape) 14%, var(--card)); padding: 12px 16px; border-radius: 12px; font-size: .92rem }
+
+/* 形象卡 */
+.card-id { display: grid; gap: 20px }
+.card-id .who { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; border-bottom: 2px solid var(--ink); padding-bottom: 10px }
+.card-id .who h3 { font-size: 1.4rem; font-weight: 900 }
+.blk { display: grid; gap: 8px }
+.blk-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap }
+.blk-h h4 { margin: 0; font-size: .8rem; letter-spacing: .12em; color: var(--muted); font-weight: 500 }
+.swatches { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px }
+.sw { aspect-ratio: 1 / 1.3; border-radius: 6px; border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); max-width: 100% }
+.sw-names { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; font-size: .68rem; color: var(--muted); text-align: center; line-height: 1.3 }
+@media (max-width: 420px) { .swatches, .sw-names { grid-template-columns: repeat(4, minmax(0, 1fr)) } }
+ul.tick { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px }
+ul.tick li { padding-left: 20px; position: relative }
+ul.tick li::before { content: "+"; position: absolute; left: 2px; top: 0; font-family: var(--f-mono); color: var(--good); font-weight: 600 }
+ul.tick.no li::before { content: "−"; color: var(--bad) }
+.pill { display: inline-block; border-radius: 999px; padding: 1px 9px; font-size: .76rem; border: 1px solid var(--line); background: var(--paper); white-space: nowrap }
+.pill.good { color: var(--good); border-color: color-mix(in srgb, var(--good) 40%, transparent) }
+.pill.warn { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 40%, transparent) }
+.pill.bad { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, transparent) }
+.pill.hot { background: var(--tape); color: var(--tape-ink); border-color: var(--tape) }
+.frames { display: flex; flex-wrap: wrap; gap: 12px }
+.frame { display: grid; justify-items: center; gap: 2px; font-size: .78rem; color: var(--muted) }
+.frame svg { width: 92px; height: 38px; color: var(--ink) }
+.frame.big svg { width: 130px; height: 54px }
+
+/* 灵感库 */
+.filters { display: grid; gap: 10px }
+.filters .row > .lab { font-size: .8rem; color: var(--muted); width: 3em; flex: none }
+.looks { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 18px }
+.look { border: 0; background: none; padding: 0; text-align: left; cursor: pointer; display: grid; gap: 10px; align-content: start; min-width: 0 }
+.look .arch { border-radius: 999px 999px 12px 12px; background: var(--tint); padding: 22px 12px 8px; display: grid; justify-items: center; position: relative; transition: transform .25s ease }
+.look:hover .arch { transform: translateY(-3px) }
+.look .arch svg { width: 74%; height: auto; display: block }
+.look .arch .badge { position: absolute; top: 14px; right: 10px }
+.look .meta { display: grid; gap: 3px; padding: 0 4px }
+.look .meta b { font-family: var(--f-display); font-size: 1.02rem; font-weight: 600 }
+.look .meta span { font-size: .8rem; color: var(--muted) }
+.look .dots { display: flex; gap: 3px }
+.look .dots i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--ink) 15%, transparent) }
+
+.sheet-bg { position: fixed; inset: 0; background: rgba(10,12,16,.45); z-index: 30; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)) }
+.sheet { background: var(--card); border-radius: 18px; max-width: 920px; width: 100%; max-height: 100%; overflow: auto; display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); box-shadow: 0 30px 80px -20px rgba(0,0,0,.5) }
+@media (max-width: 720px) { .sheet { grid-template-columns: minmax(0, 1fr) } .sheet .arch { max-height: 380px } .sheet .arch svg { max-height: 340px; width: auto } }
+.sheet .arch { background: var(--tint); display: grid; place-items: end center; padding: 30px 20px 10px; border-radius: 18px 0 0 18px }
+@media (max-width: 720px) { .sheet .arch { border-radius: 18px 18px 0 0 } }
+.sheet .arch svg { width: 100%; height: auto }
+.sheet-body { padding: 26px; display: grid; gap: 16px; align-content: start; min-width: 0 }
+.sheet-body h2 { font-size: 1.7rem }
+.close { position: sticky; top: 0; justify-self: end; border: 1px solid var(--line); background: var(--card); border-radius: 50%; width: 34px; height: 34px; cursor: pointer; font-size: 1.1rem; line-height: 1 }
+.items-l { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none }
+.items-l li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 10px; align-items: center }
+.items-l i { width: 16px; height: 16px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--ink) 15%, transparent) }
+.breakdown { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px }
+@media (max-width: 520px) { .breakdown { grid-template-columns: minmax(0, 1fr) } }
+.breakdown div { background: var(--paper); border-radius: 10px; padding: 10px 12px; font-size: .88rem }
+.breakdown b { display: block; font-size: .74rem; letter-spacing: .12em; color: var(--muted); font-weight: 500; margin-bottom: 2px }
+
+/* 课堂 */
+.progress { height: 8px; background: var(--soft); border-radius: 99px; overflow: hidden }
+.progress > i { display: block; height: 100%; background: var(--tape); border-radius: 99px; transition: width .4s }
+.lessons { display: grid; gap: 10px }
+details.lesson { background: var(--card); border: 1px solid var(--line); border-radius: 14px }
+details.lesson summary { list-style: none; cursor: pointer; padding: 16px 20px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: center }
+details.lesson summary::-webkit-details-marker { display: none }
+.lesson .lt { display: grid; gap: 1px; min-width: 0 }
+.lesson .lt b { font-family: var(--f-display); font-size: 1.08rem; font-weight: 600 }
+.lesson .lt small { color: var(--muted); font-size: .84rem }
+.lesson-body { padding: 0 20px 20px; display: grid; gap: 12px; max-width: 62em }
+.lesson-body ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px }
+.practice { border-left: 3px solid var(--tape); padding: 8px 12px; background: var(--paper); border-radius: 0 8px 8px 0 }
+.style-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 8px; align-content: start }
+.style-card .bar { display: flex; height: 12px; border-radius: 4px; overflow: hidden }
+.style-card .bar i { flex: 1 }
+.style-card dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 3px 10px; font-size: .86rem }
+.style-card dt { color: var(--muted) }
+.style-card dd { margin: 0 }
+.style-card.mine { border-color: var(--tape); box-shadow: 0 0 0 1px var(--tape) }
+.quiz-opts { display: grid; gap: 8px }
+.opt { text-align: left; border: 1px solid var(--line); background: var(--paper); border-radius: 10px; padding: 9px 14px; cursor: pointer }
+.opt.right { border-color: var(--good); color: var(--good) }
+.opt.wrong { border-color: var(--bad); color: var(--bad) }
+.table-scroll { overflow-x: auto }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; min-width: 520px }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { font-weight: 500; color: var(--muted); font-size: .8rem }
+
+/* 练眼力 */
+.ab { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px }
+.ab-pick { border: 2px solid transparent; background: var(--soft); border-radius: 999px 999px 14px 14px; padding: 20px 10px 10px; cursor: pointer; display: grid; justify-items: center; gap: 6px; font-weight: 500 }
+.ab-pick:hover { border-color: var(--line) }
+.ab-pick svg { width: 70%; max-width: 170px; height: auto }
+.ab-pick.right { border-color: var(--good) }
+.ab-pick.wrong { border-color: var(--bad) }
+.lab { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 24px; align-items: start }
+@media (max-width: 640px) { .lab { grid-template-columns: minmax(0, 1fr) } .lab .fig { max-width: 180px; margin: 0 auto } }
+.fig { background: var(--soft); border-radius: 999px 999px 12px 12px; padding: 22px 14px 8px }
+.fig svg { width: 100%; height: auto; max-width: 100%; display: block }
+.pick { display: grid; gap: 6px }
+.pick-row { display: flex; flex-wrap: wrap; gap: 5px }
+.dot { width: 26px; height: 26px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent); cursor: pointer; padding: 0 }
+.dot[aria-pressed="true"] { outline: 2px solid var(--ink); outline-offset: 2px }
+.dot.none { background: repeating-linear-gradient(45deg, var(--paper) 0 4px, var(--line) 4px 6px) }
+.score { display: flex; align-items: baseline; gap: 10px }
+.score b { font-family: var(--f-display); font-size: 2.6rem; line-height: 1 }
+
+/* 衣橱 */
+.items { display: grid; gap: 6px }
+.item { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper) }
+.item .c { width: 16px; height: 16px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent) }
+.item .n { min-width: 0; overflow-wrap: anywhere }
+.x { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; line-height: 1; padding: 4px 6px }
+.x:hover { color: var(--bad) }
+.empty { border: 1px dashed var(--line); border-radius: 10px; padding: 18px; color: var(--muted); font-size: .9rem; display: grid; gap: 6px }
+.cat-bars { display: grid; gap: 4px }
+.cat-bar { display: grid; grid-template-columns: 4.5em minmax(0, 1fr) 2em; gap: 8px; align-items: center; font-size: .82rem }
+.cat-bar span:nth-child(2) { height: 8px; background: var(--soft); border-radius: 4px; overflow: hidden }
+.cat-bar span:nth-child(2) i { display: block; height: 100%; background: var(--ink) }
+.colorstrip { display: flex; height: 14px; border-radius: 4px; overflow: hidden; border: 1px solid var(--line) }
+
+/* 顾问 */
+.answer { white-space: pre-wrap; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-height: 120px; overflow-wrap: anywhere }
+.thumb { max-width: 160px; max-height: 160px; border-radius: 8px; border: 1px solid var(--line) }
+.toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 8px 16px; border-radius: 999px; font-size: .88rem; z-index: 40 }
+.script { background: var(--paper); border: 1px dashed var(--line); border-radius: 10px; padding: 10px 12px; white-space: pre-wrap; font-size: .9rem }
+footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var(--muted); font-size: .82rem }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
+</style>
+
+<div class="tape" aria-hidden="true"><div class="tape-nums" id="tapeNums"></div></div>
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Personal Style Manual · <span id="todayLabel"></span></p>
+      <h1>豪然<br>形象手册<span class="latin">a fitting room of one</span></h1>
+      <p class="lede">先看好的穿搭，再拆开它为什么好看；记下自己的身材、脸型和肤色，买衣服、配眼镜、去理发前翻到对应那一页。</p>
+      <div class="hero-meta" id="headStats"></div>
+    </div>
+    <div>
+      <div class="row" style="justify-content:space-between;margin-bottom:10px"><span class="eyebrow">本周试衣镜 · 为你挑的四套</span><button class="btn ghost sm" data-go="look">看全部 25 套</button></div>
+      <div class="mirrors" id="mirrors"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="页面">
+  <div class="wrap"><div class="tabs-in" role="tablist" id="tabs">
+    <button class="tab" role="tab" data-v="look">穿搭灵感</button>
+    <button class="tab" role="tab" data-v="train">练眼力</button>
+    <button class="tab" role="tab" data-v="learn">审美课堂</button>
+    <button class="tab" role="tab" data-v="profile">我的档案</button>
+    <button class="tab" role="tab" data-v="shop">买衣服</button>
+    <button class="tab" role="tab" data-v="glasses">选眼镜</button>
+    <button class="tab" role="tab" data-v="hair">理发</button>
+    <button class="tab" role="tab" data-v="closet">我的衣橱</button>
+    <button class="tab" role="tab" data-v="ask">问顾问</button>
+  </div></div>
+</nav>
+
+<main class="wrap">
+  <section class="view" id="v-look" hidden>
+    <div class="view-head">
+      <p class="eyebrow">Lookbook</p>
+      <h2>25 套值得学的穿搭</h2>
+      <p class="muted">点开任意一套，能看到单品清单、按「颜色 → 廓形 → 材质 → 细节」的拆解，以及怎么用你衣橱里的东西复刻。带黄色标签的是按你的档案算出来最适合的。</p>
+    </div>
+    <div class="filters" id="lookFilters"></div>
+    <div class="looks" id="looks"></div>
+  </section>
+
+  <section class="view" id="v-train" hidden>
+    <div class="view-head">
+      <p class="eyebrow">Train your eye</p>
+      <h2>二选一：哪套更好？</h2>
+      <p class="muted">每题两套只差一个地方。先凭直觉选，再看解释。做多了，你在街上一眼就能看出问题在哪。</p>
+    </div>
+    <div class="panel" id="abPanel" style="max-width:760px"></div>
+    <div class="sub-head"><div class="view-head"><p class="eyebrow">Color lab</p><h2>配色实验</h2><p class="muted">给小人换颜色，按你的肤调和身高打分，并解释原因。</p></div></div>
+    <div class="panel">
+      <div class="lab">
+        <div class="fig" id="labFig"></div>
+        <div style="display:grid;gap:16px;min-width:0">
+          <div id="labPick" style="display:grid;gap:12px"></div>
+          <div class="row"><button class="btn ghost sm" id="labRandom">随机一套</button><button class="btn ghost sm" id="labMine">用我的色板配一套</button></div>
+          <div id="labEval" style="display:grid;gap:10px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sub-head"><div class="view-head"><p class="eyebrow">Quiz</p><h2>知识小测验</h2></div></div>
+    <div class="panel" id="quiz" style="max-width:760px"></div>
+  </section>
+
+  <section class="view" id="v-learn" hidden>
+    <div class="view-head">
+      <p class="eyebrow">Lessons</p>
+      <h2>九节课，练出自己的眼光</h2>
+      <p class="muted">每节都有一个小练习。学完点「标记已学」，进度会记下来。</p>
+    </div>
+    <div style="display:grid;gap:8px">
+      <div class="row" style="justify-content:space-between"><span id="learnCount" class="small muted"></span><span id="quizBest" class="small muted"></span></div>
+      <div class="progress"><i id="learnBar" style="width:0"></i></div>
+    </div>
+    <div class="lessons" id="lessons"></div>
+    <div class="sub-head"><div class="view-head"><p class="eyebrow">Style map</p><h2>八种常见风格</h2><p class="muted">黄框是你在档案里选的风格。定一个主风格、一个副风格，衣橱会更统一。</p></div></div>
+    <div class="grid-3" id="styleMap"></div>
+  </section>
+
+  <section class="view" id="v-profile" hidden>
+    <div class="view-head">
+      <p class="eyebrow">Measurements</p>
+      <h2>先把自己量清楚</h2>
+      <p class="muted">所有推荐都从这里算出来。改动会自动保存，右边的形象卡即时更新。</p>
+    </div>
+    <div id="exampleBanner"></div>
+    <div class="grid-2">
+      <div class="panel" id="profileForm"></div>
+      <div class="panel sticky-side" id="idCard"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-shop" hidden>
+    <div class="view-head">
+      <p class="eyebrow">Shopping</p>
+      <h2>进试衣间之前看这一页</h2>
+      <p class="muted">先量一次自己的尺寸，以后看尺码表就不用猜。</p>
+    </div>
+    <div class="grid-2">
+      <div class="panel">
+        <h3>我的尺寸</h3>
+        <div class="form" id="measureForm"></div>
+        <details class="how"><summary>怎么量？</summary>
+          <ul class="small" style="margin:0;padding-left:1.2em;display:grid;gap:4px">
+            <li>胸围：软尺过腋下，绕胸部最丰满处一圈，正常呼吸时读数。</li>
+            <li>腰围：肚脐上方约 2cm 最细处一圈，不要吸肚子。</li>
+            <li>臀围：臀部最高点水平一圈。</li>
+            <li>肩宽：背后从左肩峰骨量到右肩峰骨（耸肩时肩膀最高的骨点）。</li>
+            <li>裤内长：裆底到脚踝骨下沿。量一条你觉得长度正好的裤子最准。</li>
+          </ul>
+        </details>
+      </div>
+      <div class="panel" id="sizeCard"></div>
+    </div>
+    <div class="panel">
+      <div class="row" style="justify-content:space-between"><h3>合身检查清单</h3><span class="small muted">选品类</span></div>
+      <div class="chips" id="fitCats"></div>
+      <div id="fitList"></div>
+    </div>
+    <div class="grid-2">
+      <div class="panel">
+        <h3>试衣间五个动作</h3>
+        <ul class="small" style="margin:0;padding-left:1.2em;display:grid;gap:5px">
+          <li><b>双手上举</b>：上衣下摆不应露出腰部，腋下不勒。</li>
+          <li><b>双臂前伸抱拳</b>：背部不紧绷，袖口不缩到小臂。</li>
+          <li><b>坐下</b>：裤腰不卡肚子，大腿不绷出横褶，裤脚不缩过脚踝太多。</li>
+          <li><b>转身看背面</b>：后领不离颈，后背没有横向拉扯纹。</li>
+          <li><b>侧面照镜</b>：肩线是否落在你想要的位置，衣长在身体哪一点切断。</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>买之前问自己三句</h3>
+        <ul class="small" style="margin:0;padding-left:1.2em;display:grid;gap:5px">
+          <li>它能和我衣橱里<b>至少三件</b>衣服搭吗？</li>
+          <li>颜色在我的<b>个人色板</b>里吗？（或者是中性色）</li>
+          <li>价格 ÷ 预计穿的次数 = 单次成本，我能接受吗？</li>
+        </ul>
+        <p class="small muted">「我的衣橱」页的心愿单会帮你算这三项。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="v-glasses" hidden>
+    <div class="view-head">
+      <p class="eyebrow">Eyewear</p>
+      <h2>眼镜是脸上面积最大的配饰</h2>
+      <p class="muted">形状看脸型，尺寸看脸宽，颜色看肤调。三项都对上，基本不会买错。</p>
+    </div>
+    <div id="glassesView" style="display:grid;gap:22px"></div>
+  </section>
+
+  <section class="view" id="v-hair" hidden>
+    <div class="view-head">
+      <p class="eyebrow">Haircut</p>
+      <h2>带着这段话去理发店</h2>
+      <p class="muted">发型按脸型和发质推荐。「跟理发师这样说」可以直接复制，或者截图给理发师看。</p>
+    </div>
+    <div id="hairView" style="display:grid;gap:22px"></div>
+  </section>
+
+  <section class="view" id="v-closet" hidden>
+    <div class="view-head">
+      <p class="eyebrow">Wardrobe</p>
+      <h2>我有什么，我还缺什么</h2>
+      <p class="muted">把常穿的衣服登记进来，灵感库会告诉你哪件能用来复刻，顾问回答时也会参考。</p>
+    </div>
+    <div class="grid-2">
+      <div class="panel">
+        <h3>添加单品</h3>
+        <div class="form" id="closetForm"></div>
+        <div id="closetList" style="display:grid;gap:14px"></div>
+      </div>
+      <div style="display:grid;gap:22px">
+        <div class="panel" id="closetStats"></div>
+        <div class="panel" id="wishPanel"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="v-ask" hidden>
+    <div class="view-head">
+      <p class="eyebrow">Stylist</p>
+      <h2>拿不准的时候问一句</h2>
+      <p class="muted">顾问会读你的档案和衣橱再回答。可以附一张图：想买的衣服、试戴的眼镜、喜欢的发型。</p>
+    </div>
+    <div class="grid-2">
+      <div class="panel" id="askPanel"></div>
+      <div class="panel">
+        <div class="row" style="justify-content:space-between"><h3>回答</h3><span class="small muted" id="askState"></span></div>
+        <div class="answer" id="askOut">还没有提问。左边选一个常见问题，或者自己写。</div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap row" style="justify-content:space-between"><span>豪然形象手册 · 插画均为示意，颜色与比例仅供参考</span><span id="footNote"></span></div></footer>
+<div id="sheet"></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ============ 基础数据 ============ */
+const FACES = {
+  oval: { n: '椭圆脸', d: '脸长约为颧骨宽的 1.5 倍，额头和下颌略窄于颧骨，线条圆润' },
+  round: { n: '圆脸', d: '脸长和脸宽接近，下颌线圆，没有明显棱角' },
+  square: { n: '方脸', d: '脸长和脸宽接近，额头、颧骨、下颌宽度相近，下颌角明显' },
+  long: { n: '长脸', d: '脸长明显大于宽（约 1.6 倍以上），额头较高或下巴较长' },
+  heart: { n: '心形脸', d: '额头最宽，往下逐渐收窄，下巴偏尖（倒三角）' },
+  diamond: { n: '菱形脸', d: '颧骨最宽，额头和下巴都较窄' }
+};
+const BODIES = {
+  V: { n: '倒三角（V）', d: '肩明显宽于臀',
+    yes: ['下半身用直筒、阔腿或浅色裤增加分量', '上身选简洁深色、V 领或开领', '外套选无垫肩、落肩或软肩'],
+    no: ['垫肩、肩章、横条纹上衣', '紧身小脚裤配宽大上衣'] },
+  H: { n: '矩形（H）', d: '肩、腰、臀宽度接近',
+    yes: ['用短外套、前塞衣角、腰带做出腰线', '叠穿制造层次', '有结构的夹克、西装外套撑出轮廓'],
+    no: ['上下一样宽松的直筒长款', '全身同一廓形没有变化'] },
+  A: { n: '梨形（A）', d: '臀宽于肩，下半身更有分量',
+    yes: ['有肩线的外套、浅色或有图案的上衣把视线往上带', '下身深色直筒或微喇', '上衣长度停在胯骨以上或盖过臀部'],
+    no: ['浅色紧身裤', '上衣下摆刚好停在臀部最宽处'] },
+  O: { n: '圆形（O）', d: '腰腹较突出，四肢相对纤细',
+    yes: ['竖向线条：V 领、开襟外套敞着穿、竖条纹', '挺括面料，单色或同色系', '裤子选中高腰直筒，腰头不勒'],
+    no: ['贴身弹力薄面料', '腰部横向分割、粗腰带、短而紧的上衣'] },
+  X: { n: '匀称（X）', d: '肩臀相近，腰线清晰',
+    yes: ['合身剪裁就好看，可以展示腰线', '收腰外套、修身针织', '大多数风格都能驾驭'],
+    no: ['全身超大 oversize，把身形完全藏起来'] }
+};
+const PALETTES = {
+  spring: { n: '暖·浅（春季型）', sw: [['珊瑚','#E9785F'],['桃粉','#F2B6A0'],['奶油黄','#F1E3A8'],['浅驼','#CFA77A'],['象牙白','#F4EEDC'],['草绿','#8DB255'],['湖水蓝','#4FB3B0'],['暖灰','#A39A8E']], avoid: '大面积纯黑、冷灰、荧光色' },
+  summer: { n: '冷·浅（夏季型）', sw: [['雾霾蓝','#8FA6BF'],['薰衣草','#B7A6D3'],['灰粉','#D8B4B4'],['玫瑰灰','#B08A93'],['浅灰','#C9CBCD'],['柔藏青','#3C4A6B'],['薄荷绿','#A8D5BA'],['柔白','#F2F2EF']], avoid: '橙色、芥末黄、强烈黑白对比' },
+  autumn: { n: '暖·深（秋季型）', sw: [['驼色','#B48A5E'],['焦糖','#A8642A'],['橄榄绿','#6B6B3A'],['砖红','#A0482E'],['芥末黄','#C9A227'],['深棕','#5A3E2B'],['墨绿','#2F4A3A'],['米白','#EDE6D6']], avoid: '纯白、亮粉、冰蓝' },
+  winter: { n: '冷·深（冬季型）', sw: [['纯黑','#1C1C1E'],['纯白','#FAFAFA'],['宝蓝','#2350A8'],['酒红','#6E1F2E'],['正红','#C62B2B'],['炭灰','#3E4147'],['冰蓝','#CFE3F2'],['祖母绿','#11735A']], avoid: '驼色、橙棕、浑浊的大地色' },
+  neutral: { n: '中性调', sw: [['藏青','#1F2A44'],['白','#F7F7F5'],['中灰','#8A8D91'],['卡其','#C3B091'],['牛仔蓝','#46628A'],['鼠尾草','#8F9E86'],['灰褐','#8C7B6B'],['柔粉','#E2C4BE']], avoid: '过于荧光、高饱和的颜色' }
+};
+const STYLES = [
+  { k: '极简', en: 'Minimal', kw: '干净、无 logo、廓形准', items: '无图案针织、直筒西裤、极简皮鞋、廓形大衣', col: ['#1C1C1E','#8A8D91','#EDE6D6','#1F2A44'], ref: 'COS、Uniqlo U、Lemaire' },
+  { k: '日系 City Boy', en: 'City Boy', kw: '宽松、层次、松弛', items: '宽松衬衫、阔腿裤、帆布托特、复古跑鞋', col: ['#46628A','#C3B091','#F4EEDC','#6B6B3A'], ref: 'Beams、Nanamica、POPEYE 杂志' },
+  { k: '美式复古', en: 'Amekaji', kw: '牛仔、工装、军装、耐穿', items: '原色牛仔、工装夹克、法兰绒衬衫、工装靴', col: ['#2B3A55','#6B6B3A','#5A3E2B','#A0482E'], ref: "Levi's Vintage、Red Wing、Carhartt" },
+  { k: '学院 / 老钱', en: 'Preppy', kw: '体面、低调、经典', items: '牛津纺衬衫、V 领针织、海军蓝外套、乐福鞋', col: ['#1F2A44','#F7F7F5','#B48A5E','#6E1F2E'], ref: 'Ralph Lauren、J.Crew、Brooks Brothers' },
+  { k: '户外机能', en: 'Gorpcore', kw: '功能、防护、科技面料', items: '冲锋衣、抓绒、尼龙裤、越野跑鞋', col: ['#2F4A3A','#3E4147','#C9A227','#8A8D91'], ref: "Arc'teryx、Salomon、Snow Peak" },
+  { k: '街头', en: 'Streetwear', kw: '宽大、图形、球鞋文化', items: '大号卫衣、印花 T、工装裤、篮球鞋', col: ['#1C1C1E','#F7F7F5','#C62B2B','#8A8D91'], ref: 'Stüssy、Supreme、Nike' },
+  { k: '韩系清爽', en: 'K-casual', kw: '干净、比例好、柔和', items: '西装外套配卫衣、直筒西裤、德训鞋', col: ['#C9CBCD','#F2F2EF','#3C4A6B','#D8B4B4'], ref: '首尔街拍、Musinsa 编辑精选' },
+  { k: '商务休闲', en: 'Smart Casual', kw: '得体、不死板', items: '休闲西装、Polo 衫、卡其裤、麂皮鞋', col: ['#1F2A44','#C3B091','#F7F7F5','#5A3E2B'], ref: 'Suitsupply、Massimo Dutti' }
+];
+const SCENES = ['通勤上班', '校园', '商务正式', '约会聚会', '运动户外', '居家休闲'];
+const SEASONS = ['春', '夏', '秋', '冬'];
+const BUDGETS = { low: '平价（单件 200 元内）', mid: '中等（200–800 元）', midhigh: '中高（800–2000 元）', high: '高（2000 元以上）' };
+
+const LAB_COLORS = [
+  ['黑','#1C1C1E',1,'n'],['炭灰','#3E4147',1,'n'],['中灰','#8A8D91',1,'n'],['浅灰','#C9CBCD',1,'n'],['白','#F7F7F5',1,'n'],['米白','#EDE6D6',1,'w'],
+  ['藏青','#1F2A44',1,'c'],['原色牛仔','#2B3A55',1,'n'],['牛仔蓝','#46628A',1,'n'],['浅牛仔','#8EA9C8',1,'n'],['浅蓝','#A9C3DD',1,'c'],
+  ['驼色','#B48A5E',1,'w'],['卡其','#C3B091',1,'w'],['深棕','#5A3E2B',1,'w'],
+  ['酒红','#6E1F2E',0,'c'],['正红','#C62B2B',0,'c'],['砖红','#A0482E',0,'w'],['珊瑚','#E9785F',0,'w'],['焦糖','#A8642A',0,'w'],
+  ['芥末黄','#C9A227',0,'w'],['奶油黄','#F1E3A8',0,'w'],['橄榄绿','#6B6B3A',0,'w'],['墨绿','#2F4A3A',0,'c'],['森林绿','#2E6B47',0,'c'],['薄荷绿','#A8D5BA',0,'c'],
+  ['宝蓝','#2350A8',0,'c'],['雾霾蓝','#8FA6BF',0,'c'],['冰蓝','#CFE3F2',0,'c'],['薰衣草','#B7A6D3',0,'c'],['灰粉','#D8B4B4',0,'c']
+].map(([n, h, neu, t]) => ({ n, h, neutral: !!neu, temp: t }));
+
+/* ============ 穿搭插画 ============ */
+const SKIN = '#E4C2A3', HAIRC = '#2A2420';
+const ST = 'stroke="#15171C" stroke-opacity=".24" stroke-width="1.1" stroke-linejoin="round"';
+const LN = 'fill="none" stroke="#15171C" stroke-opacity=".28" stroke-width="1.1" stroke-linecap="round"';
+let figN = 0;
+function shade(h, k) { const [r, g, b] = rgb(h).map(v => Math.max(0, Math.min(255, Math.round(v * k)))); return `rgb(${r},${g},${b})` }
+const mir = s => `${s}<g transform="translate(200,0) scale(-1,1)">${s}</g>`;
+function drawFig(f) {
+  const id = 'f' + (++figN), o = f.o, t = f.t, b = f.b, s = f.s, a = f.acc || {};
+  const over = t[0] === 'hoodie' && !f.tuck || f.big;
+  const sL = over ? 60 : 66, sR = 200 - sL;
+  const hY = b[0] === 'shorts' ? 300 : f.pool ? 433 : f.crop ? 408 : 426;
+  let out = '';
+  // 兜帽（在头后面）
+  if (t[0] === 'hoodie' && !o) out += `<path d="M78 84 Q78 62 100 60 Q122 62 122 84 Z" fill="${shade(t[1], .9)}" ${ST}/>`;
+  if (o && o[0] === 'shell') out += `<path d="M74 86 Q72 50 100 46 Q128 50 126 86 Z" fill="${shade(o[1], .88)}" ${ST}/>`;
+  // 腿、手臂、脖子、头
+  out += mir(`<path d="M72 250 L99 258 L96 432 L80 432 Z" fill="${SKIN}" ${ST}/>`);
+  out += mir(`<path d="M${sL + 2} 86 L52 226 L63 229 L76 120 Z" fill="${SKIN}" ${ST}/>`);
+  out += `<path d="M92 52 H108 V82 H92 Z" fill="${shade(SKIN, .94)}"/>`;
+  out += `<ellipse cx="100" cy="36" rx="15.5" ry="19.5" fill="${SKIN}" ${ST}/>`;
+  out += `<path d="M84 36 Q82 14 100 13 Q119 13 116 36 Q114 22 101 22 Q90 23 84 36 Z" fill="${HAIRC}"/>`;
+  // 袜子
+  if (a.socks && hY < 430) out += mir(`<path d="M80 ${hY - 2} H96 V430 H80 Z" fill="${a.socks}" ${ST}/>`);
+  // 下装与上装（塞衣角时上衣在下装之下）
+  const bottom = drawBottom(b, hY, f.pool);
+  const top = drawTop(t, f.tuck ? 210 : over ? 252 : 240, sL, sR, id, !!o);
+  out += f.tuck ? top + bottom : bottom + top;
+  if (f.tuck && a.belt) out += `<path d="M70 199 H130 V207 H70 Z" fill="${a.belt}" ${ST}/><path d="M97 199 H103 V207 H97 Z" fill="#C9B27A"/>`;
+  if (a.scarf) out += `<path d="M64 84 Q100 100 136 84 L136 94 Q100 112 64 94 Z" fill="${a.scarf}" ${ST}/><path d="M95 104 L90 132 L99 128 L108 133 L104 104 Z" fill="${a.scarf}" ${ST}/>`;
+  if (o) out += drawOuter(o, sL, sR);
+  // 鞋
+  out += mir(drawShoe(s));
+  // 手
+  out += mir(`<ellipse cx="57.5" cy="237" rx="5.8" ry="8" fill="${SKIN}" ${ST}/>`);
+  if (a.bag) out += `<path d="M146 246 Q147 228 154 228 Q161 228 162 246" ${LN} stroke-width="2"/><path d="M137 244 H171 L169 288 H139 Z" fill="${a.bag}" ${ST}/>`;
+  if (a.cap) out += `<path d="M83 28 Q84 10 100 9 Q117 10 117 28 Z" fill="${a.cap}" ${ST}/><path d="M83 26 H124 Q122 31 83 31 Z" fill="${shade(a.cap, .85)}" ${ST}/>`;
+  if (a.glasses) out += `<g fill="none" stroke="${a.glasses === 1 ? '#1C1C1E' : a.glasses}" stroke-width="1.6"><rect x="87" y="35" width="11" height="8" rx="3"/><rect x="102" y="35" width="11" height="8" rx="3"/><path d="M98 38 H102"/></g>`;
+  return `<svg viewBox="0 0 200 448" role="img" aria-label="穿搭插画">${out}</svg>`;
+}
+function drawTop(t, hem, sL, sR, id, covered) {
+  const [k, c] = t, dk = shade(c, .86);
+  const hL = sL + 4, hR = sR - 4;
+  let s = '';
+  const shortSl = ['tee', 'polo', 'stripe'].includes(k) && !covered;
+  const sleeve = shortSl ? `<path d="M${sL} 82 L${sL - 12} 92 L${sL - 15} 134 L${sL + 2} 136 L${sL + 8} 112 Z" fill="${c}" ${ST}/>`
+    : `<path d="M${sL} 82 L${sL - 13} 92 L50 228 L65 230 L${sL + 10} 124 Z" fill="${c}" ${ST}/>`;
+  s += mir(sleeve);
+  const body = `M${sL} 82 Q100 72 ${sR} 82 L${hR} ${hem} L${hL} ${hem} Z`;
+  s += `<path d="${body}" fill="${c}" ${ST}/>`;
+  if (k === 'stripe') {
+    s += `<clipPath id="${id}"><path d="${body}"/></clipPath><g clip-path="url(#${id})">${Array.from({ length: 14 }, (_, i) => `<rect x="50" y="${96 + i * 11}" width="100" height="4" fill="#1F2A44"/>`).join('')}</g>`;
+    if (shortSl) s += mir(`<rect x="${sL - 15}" y="118" width="20" height="4" fill="#1F2A44" transform="rotate(4 ${sL - 5} 120)"/>`);
+  }
+  if (k === 'shirt' || k === 'polo') {
+    s += mir(`<path d="M92 76 L100 94 L86 92 L88 78 Z" fill="${shade(c, 1.05)}" ${ST}/>`);
+    s += `<path d="M100 94 V${k === 'polo' ? 122 : hem}" ${LN}/>`;
+    s += [104, 124, 150, 176, 202, 226].filter(y => y < (k === 'polo' ? 122 : hem - 4)).map(y => `<circle cx="102" cy="${y}" r="1.4" fill="#15171C" fill-opacity=".35"/>`).join('');
+  } else if (k === 'turtle') {
+    s += `<path d="M90 58 H110 L111 84 Q100 88 89 84 Z" fill="${dk}" ${ST}/>`;
+  } else {
+    s += `<path d="M89 79 Q100 92 111 79" fill="none" stroke="${dk}" stroke-width="4"/>`;
+  }
+  if (k === 'knit' || k === 'turtle' || k === 'hoodie') {
+    s += `<path d="M${hL + 1} ${hem - 8} H${hR - 1} V${hem} H${hL + 1} Z" fill="${dk}" fill-opacity=".9"/>`;
+    if (!covered) s += mir(`<path d="M50 220 L65 222 L64 230 L49 228 Z" fill="${dk}"/>`);
+  }
+  if (k === 'hoodie') {
+    s += `<path d="M78 ${hem - 46} H122 L127 ${hem - 12} H73 Z" fill="none" stroke="${dk}" stroke-width="1.6"/>`;
+    s += `<path d="M95 88 V112 M105 88 V112" ${LN} stroke-width="1.4"/>`;
+  }
+  return s;
+}
+function drawBottom(b, hY, pool) {
+  const [k, c] = b, dk = shade(c, .84);
+  let p;
+  if (k === 'wide') p = `M70 200 H130 L136 255 L144 ${hY} H104 L100 262 L96 ${hY} H56 L64 255 Z`;
+  else if (k === 'slim') p = `M70 200 H130 L132 255 L124 ${hY} H106 L100 262 L94 ${hY} H76 L68 255 Z`;
+  else if (k === 'shorts') p = `M70 200 H130 L134 255 L137 ${hY} H103 L100 262 L97 ${hY} H63 L66 255 Z`;
+  else if (k === 'skirt') p = `M72 200 H128 L148 362 H52 Z`;
+  else if (k === 'pleated') p = `M72 200 H128 L144 350 H56 Z`;
+  else p = `M70 200 H130 L133 255 L132 ${hY} H104 L100 262 L96 ${hY} H68 L67 255 Z`;
+  let s = `<path d="${p}" fill="${c}" ${ST}/><path d="M70 208 H130" stroke="${dk}" stroke-width="1.4"/>`;
+  if (k === 'pleated') s += [66, 78, 90, 100, 110, 122, 134].map((x, i) => `<path d="M${88 + i * 4} 210 L${x} 348" ${LN}/>`).join('');
+  if (k === 'skirt') s += `<path d="M86 212 Q84 300 78 360 M114 212 Q116 300 122 360" ${LN}/>`;
+  if (['straight', 'wide', 'slim'].includes(k) && !b[2]) s += mir(`<path d="M84 266 L${k === 'wide' ? 78 : k === 'slim' ? 86 : 83} ${hY - 4}" ${LN} stroke-opacity=".18"/>`);
+  if (b[2] === 'jeans') s += mir(`<path d="M74 212 Q80 226 92 222" fill="none" stroke="#D9A85C" stroke-opacity=".7" stroke-width="1"/><path d="M68 ${hY - 3} H96" stroke="${shade(c, 1.25)}" stroke-width="3"/>`);
+  if (b[2] === 'cargo') s += mir(`<path d="M64 300 H82 V330 H65 Z" fill="${dk}" ${ST}/>`);
+  if (pool) s += mir(`<path d="M70 408 Q82 412 95 406 M69 418 Q82 423 96 416" ${LN} stroke-opacity=".4"/>`);
+  return s;
+}
+function drawOuter(o, sL, sR) {
+  const [k, c] = o, dk = shade(c, .85);
+  const hem = { jacket: 232, chore: 250, blazer: 254, cardigan: 246, shell: 246, coat: 338, trench: 344 }[k] || 240;
+  const fl = (k === 'coat' || k === 'trench') ? 6 : 0;
+  let s = mir(`<path d="M${sL - 2} 80 L${sL - 16} 92 L45 230 L66 232 L${sL + 10} 122 Z" fill="${c}" ${ST}/>`);
+  if (k === 'shell') {
+    s += `<path d="M${sL - 2} 80 Q100 70 ${sR + 2} 80 L${sR + 4} ${hem} L${sL - 4} ${hem} Z" fill="${c}" ${ST}/>`;
+    s += `<path d="M100 76 V${hem}" stroke="${dk}" stroke-width="2"/><path d="M80 ${hem - 10} H120" ${LN}/><path d="M118 108 H130" stroke="${dk}" stroke-width="2"/>`;
+    return s;
+  }
+  s += mir(`<path d="M${sL - 2} 80 Q82 74 94 79 L${k === 'cardigan' ? 98 : 95} ${hem} L${sL - 6 - fl} ${hem} Z" fill="${c}" ${ST}/>`);
+  if (k === 'blazer' || k === 'coat' || k === 'trench') s += mir(`<path d="M94 79 L83 132 L95 ${k === 'blazer' ? 168 : 150}" fill="none" stroke="${dk}" stroke-width="1.6"/><path d="M83 104 L88 100" ${LN}/>`);
+  if (k === 'jacket' || k === 'chore') s += mir(`<path d="M93 78 L84 98 L74 88 Z" fill="${dk}" ${ST}/>`);
+  if (k === 'jacket') s += mir(`<path d="M${sL - 4} ${hem - 10} H95" stroke="${dk}" stroke-width="3"/>`);
+  if (k === 'chore') s += mir(`<path d="M68 196 H88 V222 H69 Z" fill="none" stroke="${dk}" stroke-width="1.4"/><path d="M72 130 H88 V146 H73 Z" fill="none" stroke="${dk}" stroke-width="1.4"/>`);
+  if (k === 'cardigan') s += [110, 140, 170, 200, 228].map(y => `<circle cx="96" cy="${y}" r="1.6" fill="${dk}"/>`).join('');
+  if (k === 'blazer') s += `<circle cx="96" cy="196" r="2" fill="${dk}"/><path d="M${sL + 2} 212 H86" ${LN}/><path d="M${sR - 2} 212 H114" ${LN}/>`;
+  if (k === 'trench') s += `<path d="M${sL - 6} 196 H${sR + 6} V206 H${sL - 6} Z" fill="${dk}" ${ST}/>`;
+  if (k === 'coat') s += mir(`<path d="M${sL} 240 H86" ${LN}/>`);
+  return s;
+}
+function drawShoe(s) {
+  const [k, c] = s, sole = light(c) > 80 ? '#D6D4CC' : '#F2F1EC';
+  if (k === 'boot') return `<path d="M78 400 H97 V432 Q97 440 89 440 H64 Q61 432 70 426 L78 420 Z" fill="${c}" ${ST}/><path d="M62 437 H97" stroke="#2A2420" stroke-width="3"/>`;
+  if (k === 'loafer' || k === 'derby') return `<path d="M79 426 H97 V434 Q97 440 90 440 H64 Q62 433 72 429 Z" fill="${c}" ${ST}/>${k === 'derby' ? '<path d="M84 429 L92 428" stroke="#F2F1EC" stroke-opacity=".5"/>' : '<path d="M80 431 H92" stroke="#15171C" stroke-opacity=".25"/>'}`;
+  if (k === 'runner') return `<path d="M78 422 H97 V432 Q97 440 89 440 H62 Q59 430 70 425 Z" fill="${c}" ${ST}/><path d="M60 435 Q78 441 97 435 V440 H61 Z" fill="${sole}"/><path d="M70 430 L86 426" stroke="${sole}" stroke-width="2"/>`;
+  return `<path d="M78 423 H97 V433 Q97 440 89 440 H63 Q60 431 70 426 Z" fill="${c}" ${ST}/><path d="M61 436 H97 V440 H62 Z" fill="${sole}"/>`;
+}
+
+/* ============ 灵感库：25 套 ============ */
+// fig: o 外套 [类型, 颜色]，t 上衣，b 下装 [类型, 颜色, 变体]，s 鞋
+const L = (id, name, style, seasons, scene, dir, fig, why, copy, q) => ({ id, name, style, seasons, scene, dir, fig, why, copy, q });
+const LOOKS = [
+  L('l01', '白 T 西裤', '极简', ['夏', '春'], '通勤上班', 'u',
+    { t: ['tee', '#F7F7F5'], b: ['straight', '#1F2A44'], s: ['sneaker', '#F7F7F5'], tuck: 1, acc: { belt: '#1C1C1E' } },
+    ['白＋藏青＋白，只有两个中性色，干净到不会出错', 'T 恤前塞进高腰直筒西裤，腰线上提，腿显长', '选 220g 以上的重磅 T，挺括不透，配有垂感的西裤面料', '腰带用黑色细款，袜子选白色或隐形袜'],
+    '最容易复刻的一套：一件好白 T + 一条深色西裤 + 白板鞋。', '白T 西裤 男生穿搭'),
+  L('l02', '驼色大衣', '极简', ['秋', '冬'], '通勤上班', 'u',
+    { o: ['coat', '#B48A5E'], t: ['turtle', '#EDE6D6'], b: ['straight', '#3E4147'], s: ['loafer', '#5A3E2B'] },
+    ['驼＋米白＋炭灰＋深棕，暖调中性色，冬天显气色', '及膝大衣是长 H 形，里面高领收住脖子，比例很稳', '羊毛大衣配羊毛针织，质感等级一致', '乐福鞋和大衣同属棕色系，上下呼应'],
+    '冬天衣橱里最值得投资的一件就是好大衣。暖调肤色选驼色，冷调选炭灰或藏青。', '驼色大衣 高领毛衣 穿搭'),
+  L('l03', '全黑同色系', '极简', ['冬', '秋'], '约会聚会', 'u',
+    { o: ['coat', '#1C1C1E'], t: ['turtle', '#2A2A2D'], b: ['straight', '#1C1C1E'], s: ['derby', '#1C1C1E'] },
+    ['全身一个颜色，靠深浅微差区分层次', '长大衣＋直筒裤，一条长竖线，最显高', '全黑最怕质感单一：针织、羊毛、皮鞋三种光泽叠在一起', '黑色要保持干净，起球和褪色的黑会显旧'],
+    '同色系穿法适合所有身高。注意黑色不同面料的光泽差异。', '全黑穿搭 大衣 高领'),
+  L('l04', '灰色卫衣套', '韩系清爽', ['春', '秋'], '校园', 'u',
+    { t: ['hoodie', '#8A8D91'], b: ['straight', '#C9CBCD'], s: ['sneaker', '#F7F7F5'], acc: { bag: '#1C1C1E' } },
+    ['深灰到浅灰再到白，自上而下逐渐变亮', '卫衣盖住裤腰，直筒裤不紧不松', '纯棉加厚卫衣比薄卫衣更有型', '黑色包是唯一的深色，起到压住整体的作用'],
+    '灰色系是最容易买齐的同色系，从卫衣开始。', '灰色卫衣 直筒裤 韩系'),
+  L('l05', 'City Boy 宽松衬衫', '日系 City Boy', ['春', '夏'], '居家休闲', 'u',
+    { t: ['shirt', '#A9C3DD'], b: ['wide', '#C3B091'], s: ['runner', '#8A8D91'], big: 1, acc: { bag: '#EDE6D6', cap: '#1F2A44' } },
+    ['浅蓝＋卡其，经典的冷暖中性搭配', '上下都宽松，靠衬衫的垂坠和阔腿裤的直线撑住', '牛津纺或泡泡纱衬衫，棉质斜纹裤', '帆布托特＋棒球帽，是 City Boy 的标志配件'],
+    '关键是尺码：衬衫买大一到两号，裤子选直筒或阔腿，别穿紧身裤。', 'city boy 宽松衬衫 阔腿裤'),
+  L('l06', '工装夹克叠穿', '日系 City Boy', ['春', '秋'], '居家休闲', 'u',
+    { o: ['chore', '#6B6B3A'], t: ['tee', '#F7F7F5'], b: ['straight', '#2B3A55', 'jeans'], s: ['runner', '#C9CBCD'] },
+    ['橄榄绿＋白＋靛蓝，大地色和牛仔永远好搭', '工装夹克长到胯骨，敞开穿露出白 T 做竖线', '帆布夹克＋原色牛仔，都是越穿越好看的面料', '牛仔裤脚可以卷一道边'],
+    '一件橄榄或卡其工装夹克，春秋能配你衣橱里几乎所有 T 和牛仔裤。', '工装夹克 原色牛仔 穿搭'),
+  L('l07', '牛仔夹克配卫衣', '美式复古', ['秋', '春'], '居家休闲', 'u',
+    { o: ['jacket', '#46628A'], t: ['hoodie', '#8A8D91'], b: ['straight', '#C3B091'], s: ['boot', '#6B4A30'] },
+    ['蓝＋灰＋卡其＋棕，全是中性色，叠得多也不乱', '短夹克止于胯骨，下面露出卫衣下摆，制造层次', '粗牛仔、纯棉卫衣、斜纹布、牛皮靴，全是耐磨的美式面料', '卫衣兜帽翻到夹克外面'],
+    '美式风格的入门公式：牛仔外套 + 灰卫衣 + 卡其裤 + 棕靴。', '牛仔夹克 卫衣 叠穿 美式'),
+  L('l08', '红衬衫原色牛仔', '美式复古', ['秋', '冬'], '约会聚会', 'u',
+    { t: ['shirt', '#A0482E'], b: ['straight', '#2B3A55', 'jeans'], s: ['boot', '#5A3E2B'], acc: { glasses: '#6B4A30' } },
+    ['砖红是暖色里最稳的一种，配靛蓝不冲突', '衬衫不塞，自然盖住裤腰；直筒牛仔有分量', '法兰绒或厚棉衬衫，秋冬的质感', '玳瑁色眼镜和棕靴呼应'],
+    '暖调肤色的人特别适合砖红、焦糖、橄榄这类秋季色。', '砖红衬衫 牛仔裤 工装靴'),
+  L('l09', '藏青西装外套', '学院 / 老钱', ['春', '秋'], '通勤上班', 'u',
+    { o: ['blazer', '#1F2A44'], t: ['shirt', '#F7F7F5'], b: ['straight', '#C3B091'], s: ['loafer', '#5A3E2B'], tuck: 1, acc: { belt: '#5A3E2B' } },
+    ['藏青＋白＋卡其＋棕，教科书级的学院配色', '西装外套盖住臀部一半，衬衫塞进裤腰，比例端正', '牛津纺衬衫配羊毛西装，卡其斜纹布裤', '腰带和乐福鞋同为深棕'],
+    '一件藏青休闲西装，能穿出学院、通勤、约会三种场合。', '藏青西装外套 卡其裤 乐福鞋'),
+  L('l10', '毛衣搭肩', '学院 / 老钱', ['夏', '春'], '约会聚会', 'u',
+    { t: ['shirt', '#A9C3DD'], b: ['straight', '#EDE6D6'], s: ['loafer', '#B48A5E'], tuck: 1, acc: { scarf: '#F1E3A8', belt: '#B48A5E' } },
+    ['浅蓝＋米白＋奶油黄，整体浅淡，夏天看着凉快', '衬衫塞进米白直筒裤，腰线高', '亚麻或棉衬衫，搭在肩上的薄针织', '毛衣搭肩是「老钱风」的标志性细节，不用多，一件就够'],
+    '把一件薄针织搭在肩上，就是最简单的点缀色。', '老钱风 毛衣搭肩 浅蓝衬衫'),
+  L('l11', '酒红 V 领针织', '学院 / 老钱', ['冬', '秋'], '通勤上班', 'u',
+    { t: ['knit', '#6E1F2E'], b: ['straight', '#8A8D91'], s: ['loafer', '#1C1C1E'], acc: { glasses: 1 } },
+    ['酒红配灰，深沉不张扬，冷调肤色的人穿最好看', '针织衫刚好盖住裤腰，下摆罗纹收住', '美利奴羊毛针织＋精纺西裤', '黑框眼镜让整体更斯文'],
+    '一件好的酒红或墨绿针织，是秋冬衣橱里最便宜的「高级感」。', '酒红毛衣 灰色西裤 穿搭'),
+  L('l12', '冲锋衣机能', '户外机能', ['春', '秋'], '运动户外', 'u',
+    { o: ['shell', '#2F4A3A'], t: ['tee', '#8A8D91'], b: ['slim', '#1C1C1E'], s: ['runner', '#3E4147'], acc: { cap: '#3E4147' } },
+    ['墨绿＋黑＋灰，户外色彩里最低调的组合', '短款冲锋衣＋收脚尼龙裤，上宽下窄，利落', '防风防水外层＋速干裤，功能就是风格', '跑鞋选深色，不容易脏'],
+    '冲锋衣选墨绿、黑、卡其这些低饱和色，城市里也能穿。', '冲锋衣 城市机能 穿搭'),
+  L('l13', '城市冲锋衣', '户外机能', ['秋', '冬'], '通勤上班', 'u',
+    { o: ['shell', '#1C1C1E'], t: ['tee', '#F7F7F5'], b: ['wide', '#8A8D91'], s: ['runner', '#C9CBCD'] },
+    ['黑＋白＋灰，城市里最好融入的颜色', '冲锋衣配宽裤，比全套户外装更日常', '科技面料配棉质宽裤，软硬对比', '浅色越野跑鞋把整体拉亮'],
+    '冲锋衣不一定配户外裤：换成灰色宽裤，就能穿去上班。', '冲锋衣 宽裤 通勤'),
+  L('l14', '大号卫衣工装裤', '街头', ['秋', '春'], '校园', 'u',
+    { t: ['hoodie', '#1C1C1E'], b: ['wide', '#6B6B3A', 'cargo'], s: ['sneaker', '#F7F7F5'], acc: { cap: '#C62B2B' } },
+    ['黑＋橄榄＋白，帽子的正红是唯一点缀', '大号卫衣和工装阔腿裤，整体是宽大的 H', '厚重卫衣配帆布工装裤', '红帽子只占 10%，这就是 60-30-10 里的点缀'],
+    '街头风的关键是尺寸要「故意」大，而不是穿错码。', '街头 大号卫衣 工装裤'),
+  L('l15', '印花 T 短裤', '街头', ['夏'], '居家休闲', 'u',
+    { t: ['tee', '#F7F7F5'], b: ['shorts', '#1C1C1E'], s: ['sneaker', '#1C1C1E'], big: 1, acc: { socks: '#F7F7F5', cap: '#1C1C1E' } },
+    ['黑白两色，干净利落', '宽大 T 恤＋过膝短裤，夏天的经典比例', '重磅棉 T，短裤选有垂感的', '白中筒袜是街头风的细节，把黑鞋和腿隔开'],
+    '夏天穿短裤，袜子和鞋决定成败：中筒白袜最好搭。', '夏季 短裤 中筒袜 穿搭'),
+  L('l16', '西装外套配卫衣', '韩系清爽', ['春', '秋'], '约会聚会', 'u',
+    { o: ['blazer', '#C9CBCD'], t: ['hoodie', '#F7F7F5'], b: ['straight', '#1C1C1E'], s: ['sneaker', '#F7F7F5'] },
+    ['浅灰＋白＋黑，上浅下深，稳重又年轻', '宽松西装外套＋直筒裤，上下比例约 4:6', '正装面料配运动卫衣，一正一休，这就是「混搭」', '卫衣兜帽翻在西装领外'],
+    '一件宽松版西装外套，配卫衣、配 T 恤都行，是韩系最核心的单品。', '西装外套 卫衣 韩系穿搭'),
+  L('l17', '黑大衣白衬衫', '韩系清爽', ['冬', '秋'], '约会聚会', 'u',
+    { o: ['coat', '#1C1C1E'], t: ['shirt', '#F7F7F5'], b: ['straight', '#1C1C1E'], s: ['sneaker', '#F7F7F5'] },
+    ['黑白强对比，冷调深色系的人穿最出彩', '长大衣＋直筒裤，鞋子用白色收尾', '羊毛大衣配挺括的府绸衬衫', '衬衫扣到第一颗或只开一颗，更干净'],
+    '黑大衣 + 白衬衫 + 白鞋，是冬天约会最不容易出错的组合。', '黑色大衣 白衬衫 穿搭'),
+  L('l18', '炭灰西装配 Polo', '商务休闲', ['春', '夏', '秋'], '通勤上班', 'u',
+    { o: ['blazer', '#3E4147'], t: ['polo', '#1F2A44'], b: ['straight', '#C3B091'], s: ['derby', '#6B4A30'] },
+    ['炭灰＋藏青＋卡其＋棕，全部是商务中性色', '西装外套里用 Polo 代替衬衫，正式度降一档', '针织 Polo 比珠地 Polo 更精致', '麂皮德比鞋比亮面皮鞋更休闲'],
+    'Polo 衫是衬衫和 T 恤之间的中间档，适合不需要打领带的办公室。', '西装外套 polo衫 商务休闲'),
+  L('l19', '藏青开衫', '商务休闲', ['春', '秋'], '通勤上班', 'u',
+    { o: ['cardigan', '#1F2A44'], t: ['tee', '#F7F7F5'], b: ['straight', '#8A8D91'], s: ['sneaker', '#F7F7F5'] },
+    ['藏青＋白＋灰，最安全的通勤三色', '开衫敞开，里面白 T 形成竖线，显瘦', '羊毛开衫＋棉 T＋羊毛西裤', '开衫比西装外套更柔和，适合不太正式的办公室'],
+    '开衫是被低估的通勤单品：比西装轻松，比卫衣体面。', '开衫 白T 通勤 男生'),
+  L('l20', '面试西装', '商务休闲', ['春', '秋', '冬'], '商务正式', 'u',
+    { o: ['blazer', '#1F2A44'], t: ['shirt', '#F7F7F5'], b: ['straight', '#1F2A44'], s: ['derby', '#1C1C1E'], tuck: 1 },
+    ['藏青套装＋白衬衫＋黑鞋，面试最稳的配色', '外套盖住臀部一半，裤长刚碰鞋面', '纯羊毛或含毛西装，避免发亮的化纤面料', '袜子与裤子同色，坐下时不露腿'],
+    '第一套西装买藏青色，比黑色更适合面试和日常。', '面试 西装 藏青'),
+  L('l21', '亚麻夏日', '极简', ['夏'], '约会聚会', 'u',
+    { t: ['shirt', '#EDE6D6'], b: ['shorts', '#C3B091'], s: ['loafer', '#B48A5E'], acc: { glasses: '#5A3E2B' } },
+    ['米白＋卡其＋驼色，同一个暖色系从浅到深', '宽松衬衫配及膝短裤，夏天最体面的短裤穿法', '亚麻会皱，这正是它好看的地方', '乐福鞋光脚或配隐形袜'],
+    '夏天想穿短裤又不显随意：换成亚麻衬衫 + 乐福鞋。', '亚麻衬衫 短裤 乐福鞋'),
+  L('l22', '风衣牛仔', '极简', ['春', '秋'], '通勤上班', 'u',
+    { o: ['trench', '#C3B091'], t: ['tee', '#F7F7F5'], b: ['straight', '#8EA9C8', 'jeans'], s: ['sneaker', '#F7F7F5'] },
+    ['卡其＋白＋浅牛仔，春天最经典的配色', '风衣腰带系起来能做出腰线，敞开穿更随性', '棉质华达呢风衣，配水洗牛仔', '白鞋让整体更轻快'],
+    '风衣是男女都能穿的经典单品，卡其色最百搭。', '风衣 牛仔裤 白T'),
+  L('l23', '高领配半裙', '极简', ['冬', '秋'], '约会聚会', 'f',
+    { t: ['turtle', '#1C1C1E'], b: ['skirt', '#B48A5E'], s: ['boot', '#1C1C1E'], tuck: 1 },
+    ['黑＋驼，一冷一暖都很沉稳', '高领塞进中长 A 字裙，腰线高，下摆有摆动感', '针织高领＋羊毛呢半裙', '黑靴与上衣同色，上下呼应'],
+    '中长 A 字裙配高领，是秋冬最显比例的穿法之一。', '高领毛衣 半身裙 靴子'),
+  L('l24', '开衫百褶裙', '韩系清爽', ['春'], '校园', 'f',
+    { o: ['cardigan', '#D8B4B4'], t: ['tee', '#F7F7F5'], b: ['pleated', '#EDE6D6'], s: ['loafer', '#1C1C1E'], acc: { socks: '#F7F7F5' } },
+    ['灰粉＋白＋米白，柔和的低饱和色', '短开衫＋百褶裙，上短下长', '薄针织配有垂感的百褶', '白袜＋黑乐福，学院感的细节'],
+    '百褶裙最好配短上衣或把上衣塞进去，避免上衣盖住腰。', '开衫 百褶裙 乐福鞋'),
+  L('l25', '海魂衫', '日系 City Boy', ['春', '夏'], '居家休闲', 'u',
+    { t: ['stripe', '#F7F7F5'], b: ['straight', '#EDE6D6'], s: ['sneaker', '#F7F7F5'], acc: { bag: '#1F2A44' } },
+    ['藏青条纹＋米白，图案本身就是点缀', '条纹衫不塞，配直筒裤，休闲松弛', '厚实的布列塔尼条纹棉衫', '有了条纹，其他单品都要素净'],
+    '一件条纹衫等于一次「点缀色」，别再加其他图案。', '海魂衫 条纹衫 穿搭')
+];
+const TYPE_NAME = { coat: '大衣', trench: '风衣', blazer: '西装外套', jacket: '短夹克', chore: '工装夹克', cardigan: '开衫', shell: '冲锋衣', tee: 'T 恤', shirt: '衬衫', knit: '针织衫', hoodie: '卫衣', polo: 'Polo 衫', turtle: '高领针织', stripe: '条纹衫', straight: '直筒裤', wide: '阔腿裤', slim: '锥形裤', shorts: '短裤', skirt: '半身裙', pleated: '百褶裙', sneaker: '板鞋', loafer: '乐福鞋', boot: '靴子', derby: '德比鞋', runner: '跑鞋' };
+const PART_CAT = { o: ['外套'], t: ['上衣', '衬衫', '针织/卫衣'], b: ['裤装', '裙装'], s: ['鞋'] };
+
+/* ============ 练眼力：二选一 ============ */
+const AB = [
+  { q: '哪一套腿看起来更长？', a: { t: ['tee', '#F7F7F5'], b: ['straight', '#1C1C1E'], s: ['derby', '#1C1C1E'] }, b: { t: ['tee', '#F7F7F5'], b: ['straight', '#1C1C1E'], s: ['runner', '#F2F1EC'] }, ok: 'a',
+    why: '左边鞋和裤子同色，腿部线条一直延伸到地面。右边白色厚底鞋在脚踝处切了一刀。白鞋配黑裤不是错，但想显高时，鞋裤同色更有效。' },
+  { q: '哪一套比例更好？', a: { t: ['shirt', '#A9C3DD'], b: ['straight', '#C3B091'], s: ['loafer', '#5A3E2B'] }, b: { t: ['shirt', '#A9C3DD'], b: ['straight', '#C3B091'], s: ['loafer', '#5A3E2B'], tuck: 1, acc: { belt: '#5A3E2B' } }, ok: 'b',
+    why: '右边把衬衫塞进裤子、系上腰带，视觉腰线从臀部提到了腰部，上下比例接近 3:5。左边衬衫盖过臀部，腿显短。' },
+  { q: '哪一套颜色更协调？', a: { o: ['jacket', '#C62B2B'], t: ['tee', '#2350A8'], b: ['straight', '#C9A227'], s: ['sneaker', '#2E6B47'] }, b: { o: ['jacket', '#1F2A44'], t: ['tee', '#F7F7F5'], b: ['straight', '#C3B091'], s: ['sneaker', '#F7F7F5'] }, ok: 'b',
+    why: '左边红、蓝、黄、绿四个有彩色，没有主次。右边全部是中性色，自然协调。想加颜色，从一个开始。' },
+  { q: '哪一套轮廓更利落？', a: { o: ['coat', '#8A8D91'], t: ['hoodie', '#1C1C1E'], b: ['wide', '#3E4147'], s: ['sneaker', '#1C1C1E'] }, b: { t: ['hoodie', '#1C1C1E'], b: ['slim', '#3E4147'], s: ['sneaker', '#1C1C1E'] }, ok: 'b',
+    why: '左边大衣、卫衣、阔腿裤全都宽松，人被衣服淹没。右边宽卫衣配锥形裤，一宽一窄，有了轮廓。宽松和修身最好只放一处。' },
+  { q: '对比色哪种用法更好？', a: { t: ['knit', '#C62B2B'], b: ['straight', '#2E6B47'], s: ['sneaker', '#F7F7F5'] }, b: { o: ['jacket', '#1F2A44'], t: ['tee', '#F7F7F5'], b: ['straight', '#8A8D91'], s: ['sneaker', '#F7F7F5'], acc: { cap: '#C62B2B' } }, ok: 'b',
+    why: '左边红绿两个对比色面积相当，互相抢。右边只用一顶红帽子做点缀，占 10% 左右，反而让人记住。对比色要拉开面积。' },
+  { q: '身高 170 左右，哪一套更显高？', a: { t: ['knit', '#EDE6D6'], b: ['straight', '#C3B091'], s: ['loafer', '#B48A5E'] }, b: { t: ['knit', '#F7F7F5'], b: ['straight', '#1C1C1E'], s: ['sneaker', '#F7F7F5'] }, ok: 'a',
+    why: '左边米白、卡其、驼色是同色系，从上到下没有明显分界，整个人是一条线。右边白上黑下白鞋，有两处强对比，身体被切成三段。' },
+  { q: '哪条裤子长度更好？', a: { t: ['tee', '#8A8D91'], b: ['straight', '#1F2A44'], s: ['sneaker', '#F7F7F5'], pool: 1 }, b: { t: ['tee', '#8A8D91'], b: ['straight', '#1F2A44'], s: ['sneaker', '#F7F7F5'], crop: 1, acc: { socks: '#F7F7F5' } }, ok: 'b',
+    why: '左边裤子太长，在脚踝堆出好几道褶，显得拖沓，腿也变短。右边九分裤刚好露出脚踝，干净利落。裤子买回来记得去改长度。' },
+  { q: '暖调肤色的人，哪件更显气色？', a: { t: ['turtle', '#CFE3F2'], b: ['straight', '#8A8D91'], s: ['sneaker', '#F7F7F5'] }, b: { t: ['turtle', '#B48A5E'], b: ['straight', '#8A8D91'], s: ['sneaker', '#F7F7F5'] }, ok: 'b',
+    why: '冰蓝是冷色，靠近暖调的脸会让肤色发黄发灰；驼色和暖调肤色同频，脸看起来更有血色。靠近脸的颜色最重要。' },
+  { q: '面试时，哪一双鞋更合适？', a: { o: ['blazer', '#1F2A44'], t: ['shirt', '#F7F7F5'], b: ['straight', '#1F2A44'], s: ['derby', '#1C1C1E'], tuck: 1 }, b: { o: ['blazer', '#1F2A44'], t: ['shirt', '#F7F7F5'], b: ['straight', '#1F2A44'], s: ['runner', '#C9CBCD'], tuck: 1 }, ok: 'a',
+    why: '一套衣服的正式度要统一。西装套装配跑鞋，上下等级差了两档。日常通勤可以，正式面试选德比鞋或牛津鞋。' },
+  { q: '哪一套点缀色用得好？', a: { t: ['hoodie', '#8A8D91'], b: ['straight', '#C9CBCD'], s: ['sneaker', '#F7F7F5'], acc: { cap: '#C9A227' } }, b: { o: ['jacket', '#C9A227'], t: ['hoodie', '#8A8D91'], b: ['straight', '#C9A227'], s: ['sneaker', '#C9A227'] }, ok: 'a',
+    why: '左边一身灰，只有帽子是芥末黄，60-30-10 里的 10%。右边外套、裤子、鞋都是芥末黄，主色变成了亮色，显得用力过猛。' }
+];
+
+/* ============ 课程、测验、其他数据 ============ */
+const LESSONS = [
+  { id: 'color', t: '色彩：先学会「少」', s: '色相、明度、纯度与 60-30-10', pts: [
+    '颜色有三个维度：色相（红黄蓝）、明度（深浅）、纯度（鲜艳还是灰）。高级感大多来自<b>降低纯度</b>，不是换一个更特别的颜色。',
+    '全身<b>有彩色不超过 3 个</b>。黑、白、灰、藏青、驼、卡其、牛仔蓝算中性色，不计入。',
+    '60-30-10：主色约 60%（通常是外套或裤子），辅色 30%，点缀 10%（袜子、帽子、包、一条围巾）。',
+    '三种稳妥组合：同类色（深蓝＋浅蓝）最安全；邻近色（蓝＋绿）柔和；对比色（蓝＋橙）最跳，要拉开面积，一大一小。',
+    '靠近脸的颜色决定气色。上衣、外套、围巾、镜框优先从你的个人色板里选。'],
+    pr: '去「练眼力」做配色实验，做出 3 套 85 分以上的搭配，并说出它们分别属于哪一种组合。' },
+  { id: 'ratio', t: '比例：把腰线放对位置', s: '黄金比例、上短下长、廓形', pts: [
+    '视觉腰线（上衣和裤子的分界）越高，腿看起来越长。理想位置约在<b>离地 身高 × 0.618</b> 处，WAIST。',
+    '提高腰线的办法：上衣前侧塞进裤腰、短款外套、高腰裤、腰带与上衣同色。',
+    '宽松和修身只放一处：上宽下窄（T 型）或上窄下宽（A 型）。上下都宽松是日系的做法，需要靠面料垂感和层次撑住。',
+    '每多一道横向分割，身高就被切一刀。同色上下装、裤子和鞋同色都能把线条拉长。',
+    '廓形五种：H 直筒、A 上窄下宽、T 上宽下窄、X 收腰、O 中间宽。一套衣服先想清楚是哪个字母。'],
+    pr: '穿你最常穿的一套拍张全身照，量一下现在的腰线离地多高，再试一次前塞衣角，对比两张照片。' },
+  { id: 'fit', t: '合身：贵衣服也会穿垮', s: '肩线、袖长、衣长、裤长', pts: [
+    '肩线：正肩款落在肩峰骨上；落肩款要明显落下 5cm 以上，半落不落最难看。',
+    '袖长：外套到腕骨，衬衫袖口比外套多露 1–1.5cm。',
+    '衣长：不塞的上衣约盖住臀部一半；夹克到胯骨；短款到裤腰。',
+    '裤长三档：无堆积（刚碰鞋面，露脚踝）、轻微堆积（一道折）、全堆积（多道折）。个子不高的人优先无堆积或九分。',
+    '裤腰插进两根手指刚好；西装扣上纽扣后，前胸不应出现 X 形拉扯纹。'],
+    pr: '翻出衣柜里最常穿的三件，用上面五条逐一检查，把不合身的记下来，下次去改衣店。' },
+  { id: 'fabric', t: '面料：摸得出来的质感', s: '克重、成分、质感等级', pts: [
+    'T 恤看克重：180g 以下偏薄易透，220–280g 挺括不透（常写作「重磅」）。',
+    '牛仔看盎司：12–14oz 是常规厚度，原色（未水洗）牛仔会随穿着褪色出痕，叫「养牛」。',
+    '羊毛：美利奴细软亲肤；羊绒更软更暖但易起球；毛支数越高越细，也越不耐磨。',
+    '天然纤维（棉、麻、毛、丝）透气、有质感；少量化纤（5% 以内氨纶）增加弹性，问题不大。',
+    '一套衣服里质感等级要接近：粗花呢配灯芯绒、丝光棉配精纺羊毛。故意制造一处对比（光滑 vs 粗糙）会有层次。'],
+    pr: '去商场摸三件同款不同价位的白 T，比较克重、领口罗纹厚度和缝线密度，写下差别。' },
+  { id: 'style', t: '风格：先选一个主线', s: '主风格 + 副风格', pts: [
+    '风格是一组稳定的选择：常用颜色、常见廓形、常用面料、代表单品。看下面的风格地图。',
+    '建议 70% 衣服属于主风格，30% 属于副风格，比如「极简 + 日系」「学院 + 商务休闲」。',
+    '风格要和生活场景对得上：天天通勤的人，衣橱主体应该是能进办公室的衣服。',
+    '同一套衣服里不要混三种以上风格的代表单品。'],
+    pr: '在档案里选好 1 个主风格和 1 个副风格，再去「穿搭灵感」按风格筛选，各挑两套最想穿的。' },
+  { id: 'capsule', t: '胶囊衣橱：20 件穿一季', s: '基础单品清单', pts: [
+    '上装：白 T ×2、灰或藏青 T、牛津纺衬衫（白或浅蓝）、圆领针织、开衫或卫衣。',
+    '外套：一件夹克（单宁、工装或哈灵顿）、一件好大衣（藏青、驼色或炭灰）。',
+    '下装：深色直筒牛仔、卡其斜纹布裤、深色西裤或休闲西装裤。',
+    '鞋：白色板鞋或德训鞋、一双皮鞋或乐福鞋、一双舒适运动鞋。',
+    '规则：新买的单品至少能和已有的 3 件组合，否则先放进心愿单。'],
+    pr: '在「我的衣橱」把已有的基础单品登记进去，看看还缺哪几件。' },
+  { id: 'acc', t: '配饰：一个焦点就够', s: '眼镜、腰带、袜子、金属色', pts: [
+    '眼镜是脸上最大的配饰，形状和颜色要跟脸型、肤调匹配（看「选眼镜」页）。',
+    '腰带和鞋同色系；袜子要么和裤子同色（延长腿），要么故意做点缀色。',
+    '金属色统一：手表、镜框、腰带扣、包扣，金色或银色选一种。',
+    '包的质感要与衣服同级：西装配帆布包没问题，配破旧双肩包就掉价。',
+    '一身只留一个焦点：有了亮色袜子，就别再加花围巾和大 logo。'],
+    pr: '出门前照镜子，数一数身上有几个「焦点」，超过一个就拿掉一个。' },
+  { id: 'occasion', t: '场合：穿对等级', s: '从正式到休闲的五档', table: [
+    ['正式', '婚礼、颁奖、正式晚宴', '深色西装套装、白衬衫、领带、系带皮鞋'],
+    ['商务正装', '面试、重要会议', '西装套装或西装外套＋西裤、衬衫，领带可选'],
+    ['商务休闲', '日常办公、客户拜访', '休闲西装或针织＋卡其裤、乐福鞋或德训鞋'],
+    ['精致休闲', '约会、聚餐、看展', '好面料的 T 或衬衫＋直筒裤，外套提升一级'],
+    ['休闲', '周末、出游、运动', '卫衣、牛仔、运动鞋，干净合身就行']
+  ], pts: ['拿不准时，比你猜的场合<b>高半档</b>穿，进门再脱外套比尴尬好处理。'],
+    pr: '把你未来一个月要去的场合列出来，给每个场合配一套现有衣服。' },
+  { id: 'eye', t: '眼光：怎么看别人穿得好', s: '四步拆解法', pts: [
+    '看到一套好看的搭配，按顺序拆：<b>颜色</b>（几个颜色、什么关系）→ <b>廓形</b>（哪个字母、腰线在哪）→ <b>材质</b>（光滑还是粗糙、厚还是薄）→ <b>细节</b>（卷袖、塞衣角、袜子）。「穿搭灵感」里每一套都按这四步拆好了，可以对照着练。',
+    '每周收藏 10 张喜欢的搭配图，每张写一句「它好看是因为……」。三个月后你的口味会稳定下来。',
+    '参考来源：Pinterest、小红书（搜具体单品＋风格关键词）、POPEYE、GQ、品牌 lookbook。',
+    '先模仿，再改一处，最后形成自己的公式。'],
+    pr: '找 3 张你喜欢的搭配图，按四步各写一句话，然后去「问顾问」问它们能不能用你的衣橱复刻。' }
+];
+const QUIZ = [
+  ['全身除中性色外，有彩色建议不超过几个？', ['1 个', '3 个', '5 个', '不限'], 1, '超过 3 个有彩色容易显乱。黑白灰、藏青、驼色等中性色不计入。'],
+  ['想显腿长，哪个最有效？', ['裤子和鞋同色', '亮色袜子', '上衣盖过整个臀部', '横条纹裤'], 0, '鞋裤同色让腿部线条不被截断。'],
+  ['圆脸优先选什么镜框？', ['小圆框', '有棱角的方框或梯形框', '超大圆框', '都一样'], 1, '棱角能平衡圆润的轮廓，圆框会让脸更圆。'],
+  ['衬衫袖口合适的位置在？', ['虎口', '腕骨', '小臂中段', '盖住半个手掌'], 1, '袖长到腕骨，穿外套时衬衫再多露 1–1.5cm。'],
+  ['T 恤标着 250g，意味着？', ['更薄更透', '更挺括、不透', '一定是化纤', '更容易起球'], 1, '克重越高面料越厚实，220–280g 是常说的重磅。'],
+  ['手腕血管偏绿、戴金饰更显气色，多半是？', ['冷调', '暖调', '中性', '无法判断'], 1, '偏绿的血管和适合金饰都是暖调的特征。'],
+  ['60-30-10 法则里的 10 指的是？', ['点缀色', '主色', '辅色', '鞋子'], 0, '10% 是点缀色，常放在袜子、帽子、包或围巾上。'],
+  ['方脸剪头发，更合适的是？', ['极短寸头', '有纹理、有长度，柔化下颌', '齐下巴的直发', '都一样'], 1, '纹理和长度能柔化方正的下颌线，极短会把棱角全露出来。'],
+  ['宽松单品怎样搭更利落？', ['上下都宽松', '宽松和修身只放一处', '全身都修身', '随意'], 1, '一宽一窄有对比。上下都宽松是日系做法，需要靠面料和层次撑住。'],
+  ['镜腿内侧写着 52□18-145，18 表示？', ['镜片宽度', '鼻梁宽度', '镜腿长度', '镜框高度'], 1, '依次是镜片宽、鼻梁宽、镜腿长，单位都是毫米。'],
+  ['腰带最稳妥的配色是跟什么同色系？', ['鞋', '帽子', '上衣', '眼镜'], 0, '腰带与鞋呼应，整身会更有整体感。'],
+  ['全身用深浅不同的同一种颜色，这种穿法叫？', ['撞色', '同色系（Tonal）', '印花混搭', '对比色'], 1, '同色系穿法显高、显质感，是最容易出效果的高级配色。']
+];
+const FRAME_NAMES = { rect: '方框', round: '圆框', oval: '椭圆框', cateye: '猫眼框', aviator: '飞行员', browline: '眉框', wayfarer: '梯形框', octagon: '多边形', rimless: '无框/半框' };
+const GLASSES = {
+  oval: { good: ['wayfarer', 'rect', 'round', 'browline'], bad: ['比脸宽太多的超大框'], why: '比例本来就均衡，选宽度和脸最宽处一致的就行，重点放在颜色和风格。' },
+  round: { good: ['rect', 'wayfarer', 'browline', 'octagon'], bad: ['小圆框', '窄小的框'], why: '用棱角和横向线条拉出轮廓，镜框宽度略宽于脸，能让脸显得更窄。' },
+  square: { good: ['round', 'oval', 'aviator', 'cateye'], bad: ['粗黑方框', '棱角很硬的窄框'], why: '圆润的曲线柔化下颌角，细框或金属框比厚板材更柔和。' },
+  long: { good: ['aviator', 'wayfarer', 'browline', 'round'], bad: ['又窄又扁的框'], why: '选镜框较高、上框较粗的款式，在横向上占面积，分割过长的脸。' },
+  heart: { good: ['oval', 'aviator', 'rimless', 'round'], bad: ['眉框等上重下轻的款', '装饰集中在上方的框'], why: '额头已经最宽，选下半部分更有存在感或无框的款，平衡上下。' },
+  diamond: { good: ['browline', 'cateye', 'oval', 'rimless'], bad: ['窄小的框', '比颧骨窄的框'], why: '上框有分量的款式能补足额头宽度，让颧骨不那么突出。' }
+};
+const HAIR = {
+  oval: { m: [['纹理短发', '两侧短、头顶有碎纹理，最不挑人的基础款。', '两侧和后脑用 3mm 推子往上渐变到 6mm，头顶留 5–7cm，剪碎打出纹理，前额自然向前或抓起来。'], ['侧分背头', '利落体面，适合通勤和正式场合。', '两侧与后脑剪刀修到 2–3cm，不要推青；头顶留 8–10cm，按我的发旋方向侧分，往后梳。']],
+    f: [['锁骨发', '长度到锁骨，内扣外翻都好看。', '长度剪到锁骨，下摆打薄层次，发尾可以做一点内扣或外翻。'], ['空气刘海中长发', '温柔，减龄。', '刘海剪到眉毛下沿，稀疏的空气刘海，两侧修出八字弧度，整体留到肩下 5cm。']] },
+  round: { m: [['渐变飞机头 Quiff', '两侧收紧、头顶拉高，脸会显长。', '两侧 0 到 6mm 渐变推到太阳穴以上，头顶留 7–9cm，前额最长，吹向上方和后方。'], ['深侧分纹理', '不对称分界打破圆润感。', '两侧推短，头顶留 6–8cm，做深侧分（分线在眉峰外侧），不要厚重的齐刘海。']],
+    f: [['锁骨下长层次', '纵向线条拉长脸型。', '长度到锁骨下约 5cm，从下巴高度往下打层次，侧分。'], ['高颅顶侧分长发', '头顶蓬松让比例更长。', '头顶发根做蓬松（可做发根烫），侧分，两侧贴近脸颊的头发留长，不要齐下巴的短发。']] },
+  square: { m: [['逗号刘海 / 纹理中分', '柔和的弧线抵消下颌棱角。', '两侧剪刀修到 3–4cm，不要推青；头顶留 8–10cm，前额刘海留到眉毛上方，修出弧度，可以做纹理烫。'], ['中长卷发', '有体积的卷度让轮廓更柔。', '两侧保留长度到耳中，整体留 10cm 左右，做松散的纹理卷，发尾打薄。']],
+    f: [['层次卷发', '卷度在下颌附近制造柔和感。', '长度过肩，从下巴高度开始打层次，烫大卷，避免在下颌位置一刀齐。'], ['侧分长刘海', '斜向线条削弱方正感。', '侧分，刘海斜着修到颧骨，整体长度过肩。']] },
+  long: { m: [['法式短刘海 French Crop', '刘海遮住额头，脸立刻变短。', '两侧 6–9mm 推子渐变，头顶留 4–5cm，刘海向前剪到额头 1/3 处，横向剪碎。'], ['两侧有厚度的自然短发', '增加横向宽度。', '两侧不推，剪刀修到 3cm 保留厚度；头顶不超过 5cm，不要往上吹高。']],
+    f: [['齐刘海＋齐肩波波', '刘海缩短脸长，横向的波波增加宽度。', '刘海剪到眉毛，整体剪到肩膀上方的波波头，发尾向外微翻。'], ['及肩外翻', '两侧蓬松平衡长度。', '长度齐肩，发尾烫外翻，两侧保留厚度，避免超长直发。']] },
+  heart: { m: [['中长侧分', '下半部分有头发，平衡尖下巴。', '两侧保留 2–3cm，不要推短；头顶 6–8cm 侧分，发尾自然垂下来盖到耳朵上方。'], ['纹理卷', '卷度增加下半部分体积。', '整体留到 6–8cm，做纹理烫，两侧保留卷度，额头用碎刘海遮一部分。']],
+    f: [['下巴长度波波', '下半部分有量，平衡宽额头。', '长度在下巴到下巴下 2cm，发尾内扣，侧分或空气刘海。'], ['及肩外翻卷', '下颌两侧有体积。', '长度齐肩，从耳朵以下开始烫卷，头顶保持服帖。']] },
+  diamond: { m: [['有刘海的纹理短发', '刘海补额头宽度，两侧保留厚度包住颧骨。', '两侧剪刀修到 3cm，不要推青；头顶 5–7cm，前额留碎刘海，自然向前。'], ['蓬松中分', '中分两侧的弧度让额头显宽。', '整体留到 8–10cm，中分，两侧发尾修出弧度贴在颧骨外侧，可做蓬松烫。']],
+    f: [['侧分刘海中长发', '刘海增加额头宽度，长发包住颧骨。', '侧分，刘海修到眉骨，整体长度过肩，颧骨两侧留碎发。'], ['下巴长度蓬松短发', '下巴附近有体积，平衡颧骨。', '长度到下巴，发尾打层次做蓬松，额头留刘海。']] }
+};
+const HAIR_TEXTURE = {
+  thin: '发质细软：选短一些、有纹理的发型，过长会塌；纹理烫或蓬松烫比直发更有体积，吹头时发根逆着吹。',
+  normal: '发质正常：大部分发型都能做，按脸型选就行。',
+  thick: '发质粗硬：让理发师打薄两侧和后脑，避免横向炸开；头顶留一点长度，用定型产品压住。'
+};
+const FIT = {
+  'T 恤': ['肩线落在肩峰骨（正肩）或明显落肩，不要半落', '袖口到上臂中段，袖口不要外翻成喇叭', '衣长盖住裤腰 5–8cm，不要过臀', '领口罗纹厚实，洗后不容易变形'],
+  '衬衫': ['扣上领口能插进一根手指', '袖长到腕骨', '胸前纽扣之间不张开', '塞进裤子穿的衣长要过臀，不塞的到臀部一半'],
+  '针织 / 卫衣': ['罗纹袖口在腕骨附近收住', '下摆罗纹不要停在肚子最宽处', '看成分：羊毛、棉含量越高质感越好', '把袖口拉开再松手，回弹快的不易松垮'],
+  '夹克 / 西装': ['扣上纽扣，前胸无 X 形拉扯纹', '肩线和肩峰骨对齐，肩垫不超出', '袖长到腕骨，露出衬衫袖口 1–1.5cm', '衣长盖住臀部一半左右（西装）或到胯骨（夹克）'],
+  '大衣': ['里面穿一件厚毛衣再试', '长度：身高 170 以下选膝上，170 以上可以到膝下', '双臂前伸时背部不紧', '领子立起来能贴住脖子'],
+  '裤子': ['腰头能插两根手指', '坐下大腿不出现横向勒痕', '直筒裤：膝盖到裤脚宽度接近；锥形裤：裤脚收窄但不贴脚踝', '长度：无堆积刚碰鞋面，九分露脚踝'],
+  '牛仔裤': ['刚买的原色牛仔会缩水，预留 2–3cm 长度', '后口袋位置居中、不要太低（显臀下垂）', '弹力不超过 2%，否则容易松垮', '颜色越深越正式'],
+  '鞋': ['下午或傍晚试鞋（脚会略肿）', '最长脚趾前留一指宽', '鞋跟不打滑，走 20 步再决定', '鞋型：圆头休闲、杏仁头百搭、尖头正式']
+};
+const CLOSET_CATS = ['上衣', '衬衫', '针织/卫衣', '外套', '裤装', '裙装', '鞋', '配饰'];
+
+/* ============ 状态与保存 ============ */
+const ARTIFACT_URL = 'https://claude.ai/artifact/7u666ssieTczX8Gv5diRAk';
+const EXAMPLE_PROFILE = {
+  _example: true, name: '', direction: 'm', age: '25-30', height: 175, weight: 68, body: 'H', face: 'oval',
+  undertone: 'warm', depth: 'deep', hairType: 'normal', hairAmount: 'mid', curl: false,
+  styles: ['极简', '日系 City Boy'], scenes: ['通勤上班', '居家休闲'], budget: 'mid',
+  faceWidth: 138, chest: 92, waist: 78, hip: 94, shoulder: 45, inseam: 78, shoe: 42, notes: ''
+};
+const S = { profile: { ...EXAMPLE_PROFILE }, progress: { lessons: {}, quizBest: 0, abBest: 0, saved: [] }, closet: { items: [], wish: [] } };
+const KEYS = ['profile', 'progress', 'closet'];
+const P = { db: null, uid: null, timers: {}, chains: {} };
+const lsGet = k => { try { return JSON.parse(localStorage.getItem('xing_' + k)) } catch (e) { return null } };
+const lsSet = (k, v) => { try { localStorage.setItem('xing_' + k, JSON.stringify(v)) } catch (e) {} };
+function merge(k, v) {
+  if (!v || typeof v !== 'object') return;
+  if (k === 'profile') S.profile = { ...EXAMPLE_PROFILE, ...v };
+  if (k === 'progress') S.progress = { lessons: {}, quizBest: 0, abBest: 0, saved: [], ...v };
+  if (k === 'closet') S.closet = { items: Array.isArray(v.items) ? v.items : [], wish: Array.isArray(v.wish) ? v.wish : [] };
+}
+KEYS.forEach(k => merge(k, lsGet(k)));
+function setSync(s) {
+  P.sync = s;
+  const el = document.getElementById('syncChip'); if (!el) return;
+  el.dataset.s = s;
+  el.lastChild.textContent = s === 'cloud' ? '已保存到你的 Claude 账号' : s === 'err' ? '保存失败，稍后会重试' : '保存在本浏览器';
+}
+function save(k) {
+  lsSet(k, S[k]);
+  clearTimeout(P.timers[k]);
+  P.timers[k] = setTimeout(() => {
+    if (!P.db) return;
+    const body = JSON.parse(JSON.stringify(S[k]));
+    P.chains[k] = (P.chains[k] || Promise.resolve())
+      .then(() => P.db.doc(`data/users/${P.uid}/${k}`).set(body))
+      .then(() => setSync('cloud')).catch(() => setSync('err'));
+  }, 700);
+}
+async function initCloud() {
+  if (!window.claude || !window.claude.use) return;
+  try {
+    const [db, user] = await Promise.all([claude.use('db'), claude.use('user')]);
+    if (!db || !user) return;
+    const id = await user.id(); if (!id) return;
+    P.db = db; P.uid = id;
+    for (const k of KEYS) {
+      const snap = await db.doc(`data/users/${id}/${k}`).get();
+      if (snap.exists) { merge(k, JSON.parse(JSON.stringify(snap.data()))); lsSet(k, S[k]) }
+      else if (lsGet(k)) await db.doc(`data/users/${id}/${k}`).set(JSON.parse(JSON.stringify(S[k])));
+    }
+    setSync('cloud'); renderAll(true);
+  } catch (e) { setSync(P.db ? 'err' : 'local') }
+}
+
+/* ============ 工具 ============ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Math.random().toString(36).slice(2, 10);
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 1800) }
+function rgb(h) { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255] }
+function light(h) { const [r, g, b] = rgb(h); return (0.299 * r + 0.587 * g + 0.114 * b) / 255 * 100 }
+function hue(h) {
+  let [r, g, b] = rgb(h).map(v => v / 255); const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+  if (!d) return 0; let x = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; x *= 60; return x < 0 ? x + 360 : x;
+}
+function cdist(a, b) { const x = rgb(a), y = rgb(b); return Math.hypot(x[0] - y[0], x[1] - y[1], x[2] - y[2]) }
+function colorInfo(h) { let best = null, bd = 1e9; for (const c of LAB_COLORS) { const d = cdist(c.h, h); if (d < bd) { bd = d; best = c } } return best }
+function paletteKey(p) {
+  if (p.undertone === 'neutral') return 'neutral';
+  return p.undertone === 'warm' ? (p.depth === 'light' ? 'spring' : 'autumn') : (p.depth === 'light' ? 'summer' : 'winter');
+}
+const waistLine = p => Math.round((+p.height || 0) * 0.618);
+function copyText(text) {
+  const done = () => toast('已复制');
+  try { navigator.clipboard.writeText(text).then(done, fallback) } catch (e) { fallback() }
+  function fallback() { const ta = document.createElement('textarea'); ta.value = text; document.body.append(ta); ta.select(); try { document.execCommand('copy'); done() } catch (e) { toast('请手动选中复制') } ta.remove() }
+}
+function frameSVG(shape) {
+  const F = {
+    rect: '<rect x="9" y="11" width="40" height="26" rx="4"/>', round: '<circle cx="30" cy="24" r="16"/>', oval: '<ellipse cx="30" cy="24" rx="20" ry="14"/>',
+    cateye: '<path d="M6 13 Q22 9 48 14 Q51 18 48 27 Q44 38 30 38 Q15 38 11 28 Q7 20 6 13Z"/>',
+    aviator: '<path d="M10 12 H49 Q51 15 49 23 Q45 40 30 40 Q13 40 10 25 Q9 17 10 12Z"/>',
+    browline: '<path d="M8 13 H50" stroke-width="6" stroke-linecap="round"/><path d="M10 17 Q10 38 30 38 Q50 38 49 17" stroke-width="1.6"/>',
+    wayfarer: '<path d="M7 11 H51 L47 33 Q45 37 40 37 H17 Q12 37 11 33Z"/>', octagon: '<polygon points="21,9 39,9 48,17 48,31 39,39 21,39 12,31 12,17"/>',
+    rimless: '<rect x="10" y="12" width="38" height="24" rx="9" stroke-dasharray="3 3" stroke-width="1.6"/>'
+  }[shape];
+  return `<svg viewBox="0 0 120 48" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><g>${F}</g><g transform="translate(120,0) scale(-1,1)">${F}</g><path d="M48 20 Q60 13 72 20" stroke-width="2.4"/><path d="M8 15 L1 13"/><path d="M112 15 L119 13"/></svg>`;
+}
+const opt = (pairs, val) => pairs.map(([v, t]) => `<option value="${esc(v)}"${String(v) === String(val) ? ' selected' : ''}>${esc(t)}</option>`).join('');
+const tintOf = h => `color-mix(in srgb, ${h} 22%, var(--card))`;
+
+/* ============ 推荐打分 ============ */
+function lookParts(l) { return ['o', 't', 'b', 's'].filter(k => l.fig[k]).map(k => ({ k, type: l.fig[k][0], c: l.fig[k][1] })) }
+function fitLook(l) {
+  const p = S.profile, why = []; let sc = 0;
+  const si = p.styles.indexOf(l.style);
+  if (si === 0) { sc += 4; why.push('是你的主风格') } else if (si > 0) { sc += 3; why.push('是你喜欢的风格') }
+  if (p.scenes.includes(l.scene)) { sc += 2; why.push(`适合「${l.scene}」`) }
+  const face = colorInfo((l.fig.o || l.fig.t)[1]), pal = PALETTES[paletteKey(p)].sw.map(x => x[1]);
+  if (pal.some(h => cdist(h, face.h) < 40)) { sc += 2; why.push('靠近脸的颜色在你的色板里') }
+  else if (!face.neutral && p.undertone !== 'neutral' && ((p.undertone === 'warm') !== (face.temp === 'w'))) sc -= 2;
+  const bt = l.fig.b;
+  if (p.body === 'A' && bt[0] === 'slim' && light(bt[1]) > 60) sc -= 2;
+  if (p.body === 'O' && l.fig.tuck) sc -= 1;
+  if (p.body === 'H' && (l.fig.tuck || (l.fig.o && l.fig.o[0] === 'jacket'))) { sc += 1; why.push('能做出腰线，适合 H 型') }
+  if (+p.height < 172) { const d = Math.abs(light((l.fig.o || l.fig.t)[1]) - light(bt[1])); if (d < 20) { sc += 1; why.push('同色系显高') } }
+  const season = (() => { const m = new Date().getMonth() + 1; return m <= 2 || m === 12 ? '冬' : m <= 5 ? '春' : m <= 8 ? '夏' : '秋' })();
+  if (l.seasons.includes(season)) sc += 1;
+  return { sc, why };
+}
+function visibleLooks() { const d = S.profile.direction; return LOOKS.filter(l => d === 'u' || l.dir === 'u' || l.dir === d) }
+function topPicks(n) { return visibleLooks().map(l => ({ l, f: fitLook(l) })).sort((a, b) => b.f.sc - a.f.sc).slice(0, n) }
+
+/* ============ 页头 ============ */
+function renderTape() { const n = Math.ceil(window.innerWidth / 40) + 1; $('#tapeNums').innerHTML = Array.from({ length: n }, (_, i) => `<span>${i ? i * 10 : ''}</span>`).join('') }
+function renderHead() {
+  const p = S.profile, learned = Object.values(S.progress.lessons).filter(Boolean).length;
+  $('#headStats').innerHTML = `<span class="stat">身高 <b>${esc(p.height)}</b> cm</span><span class="stat">视觉腰线 <b>${waistLine(p)}</b> cm</span><span class="stat">课程 <b>${learned}/${LESSONS.length}</b></span><span class="sync" id="syncChip" data-s="${P.sync || 'local'}"><i></i><span></span></span>`;
+  setSync(P.sync || 'local');
+  $('#mirrors').innerHTML = topPicks(4).map(({ l }) => `<button class="mirror" data-look="${l.id}" style="--tint:${tintOf((l.fig.o || l.fig.t)[1])}" aria-label="查看 ${l.name}">${drawFig(l.fig)}<span class="cap"><b>${l.name}</b>${l.style}</span></button>`).join('');
+}
+
+/* ============ 灵感库 ============ */
+const LF = { style: '', season: '', scene: '', sort: 'fit' };
+function renderLookFilters() {
+  const c = (key, vals) => `<button class="chip" data-lf="${key}" data-val="" aria-pressed="${!LF[key]}">全部</button>` + vals.map(v => `<button class="chip" data-lf="${key}" data-val="${esc(v)}" aria-pressed="${LF[key] === v}">${esc(v)}</button>`).join('');
+  $('#lookFilters').innerHTML = `
+    <div class="row"><span class="lab">风格</span><div class="chips">${c('style', STYLES.map(s => s.k))}</div></div>
+    <div class="row"><span class="lab">季节</span><div class="chips">${c('season', SEASONS)}</div></div>
+    <div class="row"><span class="lab">场合</span><div class="chips">${c('scene', SCENES)}</div></div>
+    <div class="row"><span class="lab">排序</span><div class="chips"><button class="chip" data-lf="sort" data-val="fit" aria-pressed="${LF.sort === 'fit'}">最适合我</button><button class="chip" data-lf="sort" data-val="saved" aria-pressed="${LF.sort === 'saved'}">我收藏的</button><button class="chip" data-lf="sort" data-val="all" aria-pressed="${LF.sort === 'all'}">默认顺序</button></div></div>`;
+}
+function renderLooks() {
+  const saved = S.progress.saved || [];
+  let list = visibleLooks().filter(l => (!LF.style || l.style === LF.style) && (!LF.season || l.seasons.includes(LF.season)) && (!LF.scene || l.scene === LF.scene));
+  const top = new Set(topPicks(3).map(x => x.l.id));
+  if (LF.sort === 'saved') list = list.filter(l => saved.includes(l.id));
+  if (LF.sort === 'fit') list = list.map(l => ({ l, s: fitLook(l).sc })).sort((a, b) => b.s - a.s).map(x => x.l);
+  $('#looks').innerHTML = list.length ? list.map(l => `
+    <button class="look" data-look="${l.id}">
+      <div class="arch" style="--tint:${tintOf((l.fig.o || l.fig.t)[1])}">${top.has(l.id) ? '<span class="badge pill hot">为你推荐</span>' : saved.includes(l.id) ? '<span class="badge pill">已收藏</span>' : ''}${drawFig(l.fig)}</div>
+      <div class="meta"><b>${l.name}</b><span>${l.style} · ${l.seasons.join('/')} · ${l.scene}</span>
+        <div class="dots">${lookParts(l).map(p => `<i style="background:${p.c}"></i>`).join('')}</div></div>
+    </button>`).join('') : `<div class="empty">${LF.sort === 'saved' ? '还没有收藏。打开任意一套，点「收藏」就会出现在这里。' : '这个组合下没有搭配，换个筛选试试。'}</div>`;
+}
+function openLook(id) {
+  const l = LOOKS.find(x => x.id === id); if (!l) return;
+  const f = fitLook(l), saved = (S.progress.saved || []).includes(id);
+  const items = lookParts(l).map(p => { const ci = colorInfo(p.c); return { ...p, name: ci.n + (p.type === 'straight' && l.fig.b[2] === 'jeans' ? '直筒牛仔裤' : TYPE_NAME[p.type]) } });
+  const acc = l.fig.acc || {};
+  const accList = [acc.belt && ['腰带', acc.belt], acc.bag && ['包', acc.bag], acc.cap && ['帽子', acc.cap], acc.socks && ['袜子', acc.socks], acc.scarf && ['搭肩针织', acc.scarf], acc.glasses && ['眼镜', acc.glasses === 1 ? '#1C1C1E' : acc.glasses]].filter(Boolean);
+  const subs = items.map(it => {
+    const m = S.closet.items.filter(c => PART_CAT[it.k].includes(c.cat) && cdist(c.color, it.c) < 70);
+    return m.length ? `<li><i style="background:${it.c}"></i><span>${it.name} → 你的「${esc(m[0].name)}」</span></li>` : '';
+  }).filter(Boolean);
+  const q = encodeURIComponent(l.q);
+  $('#sheet').innerHTML = `<div class="sheet-bg" data-close="1"><div class="sheet" role="dialog" aria-modal="true" aria-label="${l.name}">
+    <div class="arch" style="--tint:${tintOf((l.fig.o || l.fig.t)[1])}">${drawFig(l.fig)}</div>
+    <div class="sheet-body">
+      <button class="close" data-close="1" aria-label="关闭">×</button>
+      <div style="display:grid;gap:6px"><span class="eyebrow">${l.style} · ${l.seasons.join(' / ')} · ${l.scene}</span><h2>${l.name}</h2>
+        ${f.why.length ? `<p class="small"><span class="pill hot">适合你</span> ${f.why.join('；')}</p>` : ''}</div>
+      <div class="blk"><div class="blk-h"><h4>单品</h4></div><ul class="items-l">${items.map(it => `<li><i style="background:${it.c}"></i><span>${it.name}</span></li>`).join('')}${accList.map(([n, c]) => `<li><i style="background:${c}"></i><span>${colorInfo(c).n}${n}</span></li>`).join('')}</ul></div>
+      <div class="blk"><div class="blk-h"><h4>为什么好看</h4></div>
+        <div class="breakdown">${['颜色', '廓形', '材质', '细节'].map((k, i) => `<div><b>${k}</b>${l.why[i]}</div>`).join('')}</div></div>
+      <div class="blk"><div class="blk-h"><h4>怎么复刻</h4></div><p class="small">${l.copy}</p>
+        ${subs.length ? `<ul class="items-l small">${subs.join('')}</ul>` : `<p class="small muted">在「我的衣橱」登记衣服后，这里会列出你能直接用来代替的单品。</p>`}</div>
+      <div class="row">
+        <button class="btn sm ${saved ? 'ghost' : 'tape'}" data-save="${l.id}">${saved ? '取消收藏' : '收藏'}</button>
+        <a class="btn ghost sm" href="https://www.pinterest.com/search/pins/?q=${q}" target="_blank" rel="noopener">Pinterest 找实拍</a>
+        <a class="btn ghost sm" href="https://www.xiaohongshu.com/search_result?keyword=${q}" target="_blank" rel="noopener">小红书找实拍</a>
+      </div>
+    </div></div></div>`;
+  document.body.style.overflow = 'hidden';
+  $('#sheet .close').focus();
+}
+function closeSheet() { $('#sheet').innerHTML = ''; document.body.style.overflow = '' }
+
+/* ============ 练眼力 ============ */
+const ABS = { i: 0, score: 0, pick: null, order: AB.map(() => Math.random() < .5) };
+function renderAB() {
+  const el = $('#abPanel');
+  if (ABS.i >= AB.length) {
+    el.innerHTML = `<span class="eyebrow">完成</span><h3>答对 ${ABS.score} / ${AB.length}</h3>
+      <p class="small muted">${ABS.score >= 9 ? '眼光已经很准了。去灵感库挑几套，用自己的衣服实际穿一次。' : ABS.score >= 6 ? '大部分都看出来了。答错的那几题，对应课堂的第 1、2 课。' : '没关系，这些规律看几遍就会了。先读课堂的「色彩」和「比例」两课再来。'}</p>
+      <div><button class="btn" id="abRestart">再来一轮</button></div>`;
+    return;
+  }
+  const it = AB[ABS.i], flip = ABS.order[ABS.i], sides = flip ? ['b', 'a'] : ['a', 'b'];
+  el.innerHTML = `<div class="row" style="justify-content:space-between"><span class="eyebrow">第 ${ABS.i + 1} / ${AB.length} 题</span><span class="small muted mono">答对 ${ABS.score}${S.progress.abBest ? ` · 最好 ${S.progress.abBest}` : ''}</span></div>
+    <h3>${it.q}</h3>
+    <div class="ab">${sides.map((k, i) => `<button class="ab-pick${ABS.pick !== null ? (k === it.ok ? ' right' : ABS.pick === k ? ' wrong' : '') : ''}" data-ab="${k}"${ABS.pick !== null ? ' disabled' : ''}>${drawFig(it[k])}<span>${'AB'[i]}</span></button>`).join('')}</div>
+    ${ABS.pick !== null ? `<p class="small">${ABS.pick === it.ok ? '<span class="pill good">答对了</span>' : '<span class="pill bad">再想想</span>'} ${it.why}</p><div><button class="btn" id="abNext">${ABS.i + 1 < AB.length ? '下一题' : '看结果'}</button></div>` : ''}`;
+}
+
+/* ============ 档案 ============ */
+function renderProfileForm() {
+  const p = S.profile;
+  $('#profileForm').innerHTML = `
+    <div class="fs"><h3>基本 <small>称呼、方向、预算</small></h3><div class="form">
+      <div class="field"><label for="p-name">称呼</label><input type="text" id="p-name" data-k="name" value="${esc(p.name)}" placeholder="比如：豪然"></div>
+      <div class="field"><label for="p-direction">穿搭方向</label><select id="p-direction" data-k="direction">${opt([['m', '男装'], ['f', '女装'], ['u', '中性 / 都看']], p.direction)}</select></div>
+      <div class="field"><label for="p-age">年龄段</label><select id="p-age" data-k="age">${opt([['18-24', '18–24'], ['25-30', '25–30'], ['31-40', '31–40'], ['40+', '40 以上']], p.age)}</select></div>
+      <div class="field"><label for="p-budget">单件预算</label><select id="p-budget" data-k="budget">${opt(Object.entries(BUDGETS), p.budget)}</select></div>
+    </div></div>
+    <div class="fs"><h3>身材 <small>决定版型和比例</small></h3><div class="form">
+      <div class="field"><label for="p-height">身高（cm）</label><input type="number" id="p-height" data-k="height" value="${esc(p.height)}" min="120" max="220"></div>
+      <div class="field"><label for="p-weight">体重（kg）</label><input type="number" id="p-weight" data-k="weight" value="${esc(p.weight)}" min="30" max="200"></div>
+      <div class="field full"><label for="p-body">体型</label><select id="p-body" data-k="body">${opt(Object.entries(BODIES).map(([k, v]) => [k, v.n + ' — ' + v.d]), p.body)}</select></div>
+    </div></div>
+    <div class="fs"><h3>脸与头发 <small>决定眼镜和发型</small></h3><div class="form">
+      <div class="field full"><label for="p-face">脸型</label><select id="p-face" data-k="face">${opt(Object.entries(FACES).map(([k, v]) => [k, v.n + ' — ' + v.d]), p.face)}</select>
+        <details class="how"><summary>不确定脸型？量一下</summary>
+          <p class="hint" style="margin-bottom:8px">正面拍一张头发全部往后梳的照片，在照片上量下面四个宽度（单位随意，比例对就行）。</p>
+          <div class="form">
+            <div class="field"><label for="fm-fore">额头宽</label><input type="number" id="fm-fore" step="0.1"></div>
+            <div class="field"><label for="fm-cheek">颧骨宽</label><input type="number" id="fm-cheek" step="0.1"></div>
+            <div class="field"><label for="fm-jaw">下颌宽</label><input type="number" id="fm-jaw" step="0.1"></div>
+            <div class="field"><label for="fm-len">脸长（发际线到下巴）</label><input type="number" id="fm-len" step="0.1"></div>
+          </div>
+          <div class="row" style="margin-top:8px"><button class="btn ghost sm" id="faceCalc">判断脸型</button><span class="small" id="faceResult"></span></div>
+        </details></div>
+      <div class="field"><label for="p-hairType">发质</label><select id="p-hairType" data-k="hairType">${opt([['thin', '细软'], ['normal', '正常'], ['thick', '粗硬']], p.hairType)}</select></div>
+      <div class="field"><label for="p-hairAmount">发量</label><select id="p-hairAmount" data-k="hairAmount">${opt([['low', '偏少'], ['mid', '中等'], ['high', '偏多']], p.hairAmount)}</select></div>
+    </div></div>
+    <div class="fs"><h3>色彩 <small>决定适合的颜色</small></h3><div class="form">
+      <div class="field"><label for="p-undertone">肤色冷暖</label><select id="p-undertone" data-k="undertone">${opt([['warm', '暖调'], ['cool', '冷调'], ['neutral', '中性']], p.undertone)}</select></div>
+      <div class="field"><label for="p-depth">整体深浅</label><select id="p-depth" data-k="depth">${opt([['light', '浅（发色、瞳色偏浅或对比弱）'], ['deep', '深（发色、瞳色深，对比强）']], p.depth)}</select></div>
+      <div class="full"><details class="how"><summary>怎么判断冷暖？</summary>
+        <ul class="small" style="margin:0;padding-left:1.2em;display:grid;gap:4px">
+          <li>自然光下看手腕内侧血管：偏绿是暖调，偏蓝紫是冷调，分不清是中性。</li>
+          <li>金饰和银饰各戴一次：戴金的显气色是暖调，戴银的显气色是冷调。</li>
+          <li>纯白 T 和米白 T 各穿一次：穿纯白脸更亮是冷调，穿米白更柔和是暖调。</li>
+          <li>大多数中国人的发色、瞳色较深，「整体深浅」多数选「深」。</li>
+        </ul></details></div>
+    </div></div>
+    <div class="fs"><h3>喜好 <small>决定推荐什么</small></h3>
+      <div class="field"><span class="lab">风格偏好（选 1–3 个，第一个视为主风格）</span><div class="chips" data-multi="styles">${STYLES.map(s => `<button type="button" class="chip" aria-pressed="${p.styles.includes(s.k)}" data-val="${esc(s.k)}">${esc(s.k)}</button>`).join('')}</div></div>
+      <div class="field"><span class="lab">常去的场合</span><div class="chips" data-multi="scenes">${SCENES.map(s => `<button type="button" class="chip" aria-pressed="${p.scenes.includes(s)}" data-val="${esc(s)}">${esc(s)}</button>`).join('')}</div></div>
+      <div class="field"><label for="p-notes">想改善的地方 / 其他情况</label><textarea id="p-notes" data-k="notes" placeholder="比如：肩窄想显宽一点；上班要穿得正式但不想太老气；戴近视镜 500 度">${esc(p.notes)}</textarea></div>
+    </div>
+    <div class="fs"><h3>备份 <small>换设备或清缓存前用</small></h3>
+      <div class="row"><button class="btn ghost sm" id="bkCopy">复制备份</button><button class="btn ghost sm" id="bkShow">从备份恢复</button></div>
+      <div id="bkBox" hidden style="display:grid;gap:8px"><textarea id="bkText" rows="4" placeholder="把之前复制的备份粘贴到这里"></textarea><div><button class="btn sm" id="bkLoad">恢复</button></div></div>
+    </div>`;
+}
+function renderBanner() {
+  $('#exampleBanner').innerHTML = S.profile._example
+    ? `<div class="banner"><span>现在显示的是<b>示例档案</b>。把身高、脸型、肤色改成你自己的，所有推荐都会跟着变。</span><button class="btn sm" id="clearExample">我已经改好了</button></div>` : '';
+}
+function bodyHeightNote(h) {
+  h = +h;
+  if (h && h < 170) return '身高 170 以下：同色系、短外套、九分裤露脚踝最显高；长大衣选膝上款。';
+  if (h >= 182) return '身高 182 以上：能驾驭长大衣、阔腿裤和多层叠穿；避免过短的上衣，比例会显得上身短。';
+  return '身高在 170–182 之间：比例自由度高，按体型选廓形即可。';
+}
+function renderIdCard() {
+  const p = S.profile, pal = PALETTES[paletteKey(p)], body = BODIES[p.body] || BODIES.H, g = GLASSES[p.face] || GLASSES.oval;
+  const hairList = p.direction === 'f' ? HAIR[p.face].f : HAIR[p.face].m;
+  const mine = STYLES.filter(s => p.styles.includes(s.k)).sort((a, b) => p.styles.indexOf(a.k) - p.styles.indexOf(b.k));
+  $('#idCard').innerHTML = `<div class="card-id">
+    <div class="who"><h3>${esc(p.name || '我')}的形象卡</h3><span class="small muted mono">${esc(p.height)}cm · ${esc(p.weight)}kg · ${esc(FACES[p.face].n)} · ${esc(body.n)}</span></div>
+    <div class="blk"><div class="blk-h"><h4>个人色板</h4><span class="pill">${esc(pal.n)}</span></div>
+      <div class="swatches">${pal.sw.map(([n, h]) => `<div class="sw" style="background:${h}" title="${esc(n)} ${h}"></div>`).join('')}</div>
+      <div class="sw-names">${pal.sw.map(([n]) => `<span>${esc(n)}</span>`).join('')}</div>
+      <p class="small muted">靠近脸的衣服（上衣、外套、围巾）和镜框优先用这些颜色。少碰：${esc(pal.avoid)}。</p></div>
+    <div class="blk"><div class="blk-h"><h4>身材要点</h4><span class="small muted">视觉腰线离地 <b class="mono">${waistLine(p)}</b> cm</span></div>
+      <ul class="tick">${body.yes.map(x => `<li>${esc(x)}</li>`).join('')}</ul><ul class="tick no">${body.no.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+      <p class="small muted">${esc(bodyHeightNote(p.height))}</p></div>
+    <div class="blk"><div class="blk-h"><h4>镜框</h4><span class="small muted">${p.undertone === 'warm' ? '玳瑁、琥珀、金色' : p.undertone === 'cool' ? '黑、银、透明灰' : '透明茶、灰、玳瑁都行'}</span></div>
+      <div class="frames">${g.good.slice(0, 3).map(k => `<div class="frame">${frameSVG(k)}<span>${FRAME_NAMES[k]}</span></div>`).join('')}</div></div>
+    <div class="blk"><div class="blk-h"><h4>发型</h4></div><p class="small"><b>${esc(hairList[0][0])}</b>：${esc(hairList[0][1])} 或 <b>${esc(hairList[1][0])}</b>。</p></div>
+    <div class="blk"><div class="blk-h"><h4>风格</h4></div>
+      ${mine.length ? mine.map((s, i) => `<p class="small"><span class="pill">${i ? '副' : '主'}</span> <b>${esc(s.k)}</b> · ${esc(s.kw)}。代表单品：${esc(s.items)}。</p>`).join('') : '<p class="small muted">还没选风格。在左边选 1–3 个。</p>'}</div>
+  </div>`;
+}
+function guessFace() {
+  const f = +$('#fm-fore').value, c = +$('#fm-cheek').value, j = +$('#fm-jaw').value, l = +$('#fm-len').value;
+  if (!(f && c && j && l)) { $('#faceResult').textContent = '四个数都填上才能判断。'; return }
+  const r = l / c; let k;
+  if (f < c * 0.86 && j < c * 0.86) k = 'diamond';
+  else if (f > j * 1.12 && f >= c * 0.95) k = 'heart';
+  else if (r >= 1.6) k = 'long';
+  else if (r < 1.3) k = j >= c * 0.9 ? 'square' : 'round';
+  else k = 'oval';
+  $('#faceResult').innerHTML = `粗略判断：<b>${FACES[k].n}</b>（脸长/颧骨宽 = ${r.toFixed(2)}） <button class="btn sm tape" data-setface="${k}">用这个</button>`;
+}
+
+/* ============ 课堂 ============ */
+function renderLearn() {
+  const done = S.progress.lessons, n = LESSONS.filter(l => done[l.id]).length;
+  $('#learnCount').textContent = `已学 ${n} / ${LESSONS.length} 节`;
+  $('#quizBest').textContent = [S.progress.abBest ? `二选一最好 ${S.progress.abBest}/${AB.length}` : '', S.progress.quizBest ? `测验最好 ${S.progress.quizBest}/${QUIZ.length}` : ''].filter(Boolean).join(' · ') || '还没做过练习';
+  $('#learnBar').style.width = (n / LESSONS.length * 100) + '%';
+  const openIds = [...document.querySelectorAll('details.lesson[open]')].map(d => d.dataset.id);
+  $('#lessons').innerHTML = LESSONS.map(l => `
+    <details class="lesson" data-id="${l.id}"${openIds.includes(l.id) ? ' open' : ''}>
+      <summary><span class="lt"><b>${l.t}</b><small>${l.s}</small></span>${done[l.id] ? '<span class="pill good">已学</span>' : '<span class="pill">未学</span>'}</summary>
+      <div class="lesson-body">
+        <ul>${l.pts.map(x => `<li>${x.replace('WAIST', `你是 <b class="mono">${waistLine(S.profile)} cm</b>`)}</li>`).join('')}</ul>
+        ${l.table ? `<div class="table-scroll"><table><thead><tr><th>等级</th><th>场合</th><th>怎么穿</th></tr></thead><tbody>${l.table.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody></table></div>` : ''}
+        <div class="practice small"><b>练习</b>　${l.pr}</div>
+        <div><button class="btn sm ${done[l.id] ? 'ghost' : ''}" data-lesson="${l.id}">${done[l.id] ? '取消已学' : '标记已学'}</button></div>
+      </div>
+    </details>`).join('');
+  $('#styleMap').innerHTML = STYLES.map(s => `
+    <div class="style-card${S.profile.styles.includes(s.k) ? ' mine' : ''}">
+      <div class="bar">${s.col.map(c => `<i style="background:${c}"></i>`).join('')}</div>
+      <div class="row" style="justify-content:space-between"><h3>${s.k}</h3><span class="latin muted small">${s.en}</span></div>
+      <dl><dt>关键词</dt><dd>${s.kw}</dd><dt>单品</dt><dd>${s.items}</dd><dt>参考</dt><dd>${s.ref}</dd></dl>
+      <div><button class="btn ghost sm" data-stylego="${esc(s.k)}">看这个风格的搭配</button></div>
+    </div>`).join('');
+}
+const Q = { i: 0, score: 0, answered: null, finished: false };
+function renderQuiz() {
+  const el = $('#quiz');
+  if (Q.finished) {
+    el.innerHTML = `<span class="eyebrow">完成</span><h3>答对 ${Q.score} / ${QUIZ.length}</h3>
+      <p class="muted small">${Q.score >= 10 ? '基础很扎实，可以去灵感库和衣橱里实战了。' : Q.score >= 7 ? '大部分都懂，回头看一下答错题对应的课。' : '建议先把前四节课读一遍再来。'}</p>
+      <div><button class="btn" id="quizRestart">再做一次</button></div>`;
+    return;
+  }
+  const [q, opts, ans, why] = QUIZ[Q.i];
+  el.innerHTML = `<div class="row" style="justify-content:space-between"><span class="eyebrow">第 ${Q.i + 1} / ${QUIZ.length} 题</span><span class="small muted mono">答对 ${Q.score}</span></div>
+    <h3>${q}</h3>
+    <div class="quiz-opts">${opts.map((o, i) => `<button class="opt${Q.answered !== null ? (i === ans ? ' right' : i === Q.answered ? ' wrong' : '') : ''}" data-opt="${i}"${Q.answered !== null ? ' disabled' : ''}>${String.fromCharCode(65 + i)}. ${o}</button>`).join('')}</div>
+    ${Q.answered !== null ? `<p class="small">${Q.answered === ans ? '<span class="pill good">答对了</span>' : '<span class="pill bad">不对</span>'} ${why}</p><div><button class="btn" id="quizNext">${Q.i + 1 < QUIZ.length ? '下一题' : '看结果'}</button></div>` : ''}`;
+}
+
+/* ============ 配色实验 ============ */
+const LAB = { top: '#F7F7F5', outer: '#1F2A44', bottom: '#C3B091', shoes: '#F7F7F5' };
+const labColor = h => LAB_COLORS.find(c => c.h === h) || colorInfo(h);
+function renderLabPick() {
+  const parts = [['outer', '外套（可不穿）'], ['top', '上衣'], ['bottom', '裤子'], ['shoes', '鞋']];
+  $('#labPick').innerHTML = parts.map(([k, lab]) => `<div class="pick"><span class="small muted">${lab}</span><div class="pick-row">
+    ${k === 'outer' ? `<button class="dot none" data-part="outer" data-col="" aria-pressed="${!LAB.outer}" title="不穿外套" aria-label="不穿外套"></button>` : ''}
+    ${LAB_COLORS.map(c => `<button class="dot" style="background:${c.h}" data-part="${k}" data-col="${c.h}" aria-pressed="${LAB[k] === c.h}" title="${c.n}" aria-label="${lab}：${c.n}"></button>`).join('')}
+  </div></div>`).join('');
+}
+function evalLab() {
+  const p = S.profile, notes = []; let score = 100;
+  const parts = ['outer', 'top', 'bottom', 'shoes'].filter(k => LAB[k]).map(k => ({ k, c: labColor(LAB[k]) }));
+  const chroma = [...new Map(parts.filter(x => !x.c.neutral).map(x => [x.c.n, x.c])).values()];
+  if (chroma.length === 0) { notes.push(['good', '全身中性色：最稳，也最容易显高级。想更有记忆点，可以加一处点缀色（袜子、帽子、包）。']); score -= 4 }
+  else if (chroma.length === 1) notes.push(['good', `一个有彩色（${chroma[0].n}）配中性色，主次清楚，最不容易出错。`]);
+  else if (chroma.length === 2) {
+    let d = Math.abs(hue(chroma[0].h) - hue(chroma[1].h)); d = Math.min(d, 360 - d);
+    if (d <= 60) notes.push(['good', `${chroma[0].n}和${chroma[1].n}是邻近色，过渡自然。`]);
+    else if (d >= 140) { notes.push(['warn', `${chroma[0].n}和${chroma[1].n}是对比色，记得拉开面积：一个做主色，另一个只占 10%。`]); score -= 10 }
+    else { notes.push(['warn', `${chroma[0].n}和${chroma[1].n}关系不太明确，试着把其中一个换成中性色。`]); score -= 12 }
+  } else { notes.push(['bad', `有彩色有 ${chroma.length} 个，看起来会乱。保留一个，其余换成中性色。`]); score -= 25 }
+  const temps = new Set(chroma.map(c => c.temp));
+  if (temps.has('w') && temps.has('c')) { notes.push(['warn', '冷色和暖色混在一起，中间需要黑白灰来过渡。']); score -= 6 }
+  const uc = labColor(LAB.outer || LAB.top), dTB = Math.abs(light(LAB.top) - light(LAB.bottom)), dBS = Math.abs(light(LAB.bottom) - light(LAB.shoes));
+  if (dTB > 50) { notes.push([+p.height < 172 ? 'warn' : 'good', `上衣和裤子深浅反差大，腰部会形成明显分界${+p.height < 172 ? '，对身高 170 左右的人会显矮，可以把上衣前侧塞进裤腰提高分界' : '，适合强调腰线'}。`]); if (+p.height < 172) score -= 8 }
+  else if (dTB < 15) notes.push(['good', '上下深浅接近，像一整块颜色，显高。']);
+  if (dBS < 20) notes.push(['good', '鞋和裤子深浅一致，腿部线条被拉长。']);
+  else if (dBS > 55) { notes.push(['warn', '鞋和裤子反差很大，脚踝处会被截断。换一双与裤子同色系的鞋，或者露一截脚踝做过渡。']); score -= 6 }
+  const ut = p.undertone;
+  if (!uc.neutral && ut !== 'neutral') {
+    if ((ut === 'warm') === (uc.temp === 'w')) notes.push(['good', `靠近脸的${uc.n}顺应你的${ut === 'warm' ? '暖' : '冷'}调肤色，显气色。`]);
+    else { notes.push(['bad', `靠近脸的${uc.n}是${uc.temp === 'w' ? '暖' : '冷'}色，和你的${ut === 'warm' ? '暖' : '冷'}调肤色相反，脸色可能发灰。把它挪到裤子上，或换成色板里的颜色。`]); score -= 12 }
+  } else if (uc.temp !== 'n' && ut !== 'neutral' && (ut === 'warm') !== (uc.temp === 'w')) { notes.push(['warn', `靠近脸的${uc.n}略偏${uc.temp === 'w' ? '暖' : '冷'}，内搭用白色或色板色可以中和。`]); score -= 3 }
+  score = Math.max(40, Math.min(100, score));
+  const grade = score >= 85 ? ['good', '很好'] : score >= 70 ? ['warn', '不错'] : ['bad', '可以改进'];
+  $('#labEval').innerHTML = `<div class="score"><b class="mono">${score}</b><span class="pill ${grade[0]}">${grade[1]}</span></div>
+    <ul style="margin:0;padding:0;list-style:none;display:grid;gap:6px">${notes.map(([t, n]) => `<li class="small"><span class="pill ${t}" style="margin-right:6px">${t === 'good' ? '好' : t === 'warn' ? '注意' : '问题'}</span>${n}</li>`).join('')}</ul>`;
+}
+function renderLab() {
+  $('#labFig').innerHTML = drawFig({ o: LAB.outer ? ['jacket', LAB.outer] : null, t: ['tee', LAB.top], b: ['straight', LAB.bottom], s: ['sneaker', LAB.shoes] });
+  renderLabPick(); evalLab();
+}
+function labRandom(useMine) {
+  const neutral = LAB_COLORS.filter(c => c.neutral), pick = a => a[Math.floor(Math.random() * a.length)];
+  if (useMine) {
+    const pal = PALETTES[paletteKey(S.profile)].sw.map(x => x[1]);
+    const inLib = LAB_COLORS.filter(c => pal.some(h => cdist(h, c.h) < 30));
+    const near = inLib.length ? pick(inLib).h : pick(neutral).h;
+    LAB.outer = Math.random() > .4 ? near : ''; LAB.top = LAB.outer ? pick(neutral).h : near;
+    LAB.bottom = pick(neutral.filter(c => c.h !== LAB.top)).h; LAB.shoes = Math.random() > .5 ? LAB.bottom : '#F7F7F5';
+  } else { LAB.outer = Math.random() > .5 ? pick(LAB_COLORS).h : ''; LAB.top = pick(LAB_COLORS).h; LAB.bottom = pick(LAB_COLORS).h; LAB.shoes = pick(neutral).h }
+  renderLab();
+}
+
+/* ============ 买衣服 ============ */
+function renderMeasureForm() {
+  const p = S.profile, f = (k, l, u) => `<div class="field"><label for="m-${k}">${l}（${u}）</label><input type="number" id="m-${k}" data-k="${k}" value="${esc(p[k])}" step="0.5"></div>`;
+  $('#measureForm').innerHTML = f('chest', '胸围', 'cm') + f('waist', '腰围', 'cm') + f('hip', '臀围', 'cm') + f('shoulder', '肩宽', 'cm') + f('inseam', '裤内长', 'cm') + f('shoe', '鞋码', 'EU');
+}
+function sizeCode(p) {
+  const h = Math.round(+p.height / 5) * 5, chest = Math.round(+p.chest / 4) * 4, waist = Math.round(+p.waist / 2) * 2, d = +p.chest - +p.waist;
+  const T = p.direction === 'f' ? [[19, 'Y'], [14, 'A'], [9, 'B'], [-99, 'C']] : [[17, 'Y'], [12, 'A'], [7, 'B'], [-99, 'C']];
+  const code = T.find(([m]) => d >= m)[1];
+  const intl = p.direction === 'f' ? (+p.chest < 80 ? 'XS' : +p.chest < 86 ? 'S' : +p.chest < 92 ? 'M' : +p.chest < 98 ? 'L' : 'XL') : (+p.chest < 88 ? 'XS' : +p.chest < 96 ? 'S' : +p.chest < 104 ? 'M' : +p.chest < 112 ? 'L' : 'XL');
+  return { top: `${h}/${chest}${code}`, bottom: `${h}/${waist}${code}`, code, d, intl };
+}
+function renderSizeCard() {
+  const p = S.profile, s = sizeCode(p), wl = waistLine(p);
+  const codeDesc = { Y: '胸腰差大，偏健壮或偏瘦腰', A: '标准体', B: '腰腹略丰满', C: '腰腹较丰满' }[s.code];
+  $('#sizeCard').innerHTML = `<h3>换算结果</h3>
+    <div class="form">
+      <div class="field"><span class="lab">上装号型（国标）</span><b class="mono" style="font-size:1.5rem">${s.top}</b></div>
+      <div class="field"><span class="lab">下装号型</span><b class="mono" style="font-size:1.5rem">${s.bottom}</b></div>
+      <div class="field"><span class="lab">体型代码</span><span><b class="mono">${s.code}</b> · ${codeDesc}（胸腰差 ${s.d} cm）</span></div>
+      <div class="field"><span class="lab">国际码大致</span><span><b class="mono">${s.intl}</b>　<span class="small muted">日韩牌常小一码，欧美牌常大一码</span></span></div>
+    </div>
+    <p class="small muted">号型读法：「175/92A」= 适合身高 175、胸围 92 的标准体。吊牌上找这一行，比 S/M/L 准。</p>
+    <div class="blk"><div class="blk-h"><h4>比例数字</h4></div>
+      <ul class="small" style="margin:0;padding-left:1.2em;display:grid;gap:4px">
+        <li>视觉腰线理想离地 <b class="mono">${wl} cm</b>：裤腰（或塞衣角后的位置）尽量靠近它。</li>
+        <li>按裤内长 <b class="mono">${esc(p.inseam)} cm</b> 买裤：九分裤约 <b class="mono">${Math.round(+p.inseam * 0.92)} cm</b>。</li>
+        <li>夹克衣长参考约 <b class="mono">${Math.round(+p.height * 0.38)} cm</b>（后领到下摆），大衣到膝上约 <b class="mono">${Math.round(+p.height * 0.55)} cm</b>。</li>
+      </ul></div>`;
+}
+let fitCat = 'T 恤';
+function renderFit() {
+  $('#fitCats').innerHTML = Object.keys(FIT).map(c => `<button class="chip" aria-pressed="${c === fitCat}" data-fit="${c}">${c}</button>`).join('');
+  $('#fitList').innerHTML = `<ul class="tick">${FIT[fitCat].map(x => `<li>${x}</li>`).join('')}</ul>`;
+}
+
+/* ============ 眼镜 ============ */
+function renderGlasses() {
+  const p = S.profile, g = GLASSES[p.face], fw = +p.faceWidth || 0, bridge = p.direction === 'f' ? 17 : 18;
+  const lens = Math.round((fw - bridge - 8) / 2), temple = +p.height >= 182 ? '145–150' : +p.height < 165 ? '135–140' : '140–145';
+  const colors = p.undertone === 'warm' ? ['玳瑁', '琥珀', '茶色透明', '金色金属'] : p.undertone === 'cool' ? ['黑', '透明灰', '深蓝', '银色金属'] : ['透明茶', '灰', '浅玳瑁', '枪色金属'];
+  $('#glassesView').innerHTML = `
+    <div class="grid-2">
+      <div class="panel">
+        <div class="row" style="justify-content:space-between"><h3>适合的镜框形状</h3>
+          <label class="small muted" for="g-face">脸型 <select id="g-face" data-k="face" style="width:auto;display:inline-block;padding:3px 6px">${opt(Object.entries(FACES).map(([k, v]) => [k, v.n]), p.face)}</select></label></div>
+        <p class="small">${g.why}</p>
+        <div class="frames">${g.good.map(k => `<div class="frame big">${frameSVG(k)}<span>${FRAME_NAMES[k]}</span></div>`).join('')}</div>
+        <p class="small"><span class="pill bad">避开</span> ${g.bad.join('、')}</p>
+        <details class="how"><summary>全部九种镜框长什么样</summary><div class="frames">${Object.keys(FRAME_NAMES).map(k => `<div class="frame">${frameSVG(k)}<span>${FRAME_NAMES[k]}</span></div>`).join('')}</div></details>
+      </div>
+      <div class="panel">
+        <h3>尺寸计算</h3>
+        <div class="form">
+          <div class="field"><label for="g-fw">脸宽（mm）</label><input type="number" id="g-fw" data-k="faceWidth" value="${esc(p.faceWidth)}"></div>
+          <div class="field"><span class="lab">推荐镜框总宽</span><b class="mono" style="font-size:1.3rem">${fw - 2}–${fw + 3} mm</b></div>
+        </div>
+        <p class="hint">脸宽：对着镜子用直尺量两侧太阳穴之间的距离；或者量一副你戴着刚好的眼镜的总宽度。</p>
+        <div class="blk"><div class="blk-h"><h4>该找的标注</h4></div>
+          <p><b class="mono" style="font-size:1.6rem">${lens}□${bridge}-${temple.split('–')[0]}</b></p>
+          <p class="small muted">镜腿内侧印着三个数：镜片宽 □ 鼻梁宽 - 镜腿长（mm）。镜片宽在 <b class="mono">${lens - 2}–${lens + 2}</b>，鼻梁 <b class="mono">${bridge - 2}–${bridge + 2}</b>，镜腿 <b class="mono">${temple}</b> 都算合适。</p>
+          <p class="small muted">鼻梁较低的话，优先选带可调鼻托的金属框，或板材的「亚洲版型」（Asian fit），镜框才不会压脸颊、往下滑。</p></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="panel">
+        <h3>颜色与材质</h3>
+        <p class="small">你的肤调适合：${colors.map(c => `<span class="pill" style="margin:2px">${c}</span>`).join('')}</p>
+        <ul class="small" style="margin:0;padding-left:1.2em;display:grid;gap:4px">
+          <li><b>板材（醋酸纤维）</b>：颜色丰富、有分量，适合五官轮廓明显、眉毛浓的人；冬天不冰脸。</li>
+          <li><b>钛金属</b>：轻、不过敏，细框显斯文，适合五官柔和或想低调的人。</li>
+          <li><b>TR90</b>：便宜、轻、有弹性，运动和备用镜合适，质感一般。</li>
+          <li>度数高（500 度以上）选小一点的镜框、镜片选高折射率（1.67 及以上），边缘会薄很多。</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>配镜清单</h3>
+        <ul class="tick small">
+          <li>先去医院或正规验光，拿到度数、散光轴位和瞳距（PD）</li>
+          <li>试戴时眉毛在镜框上沿附近，不要露出太多或完全遮住</li>
+          <li>瞳孔落在镜片中心略偏内的位置</li>
+          <li>低头、摇头镜框不滑；镜腿不夹太阳穴</li>
+          <li>正面、侧面各拍一张照片，回家再看一遍再决定</li>
+        </ul>
+      </div>
+    </div>`;
+}
+
+/* ============ 理发 ============ */
+function renderHair() {
+  const p = S.profile, h = HAIR[p.face], dirs = p.direction === 'u' ? [['m', '偏男生'], ['f', '偏女生']] : [[p.direction, '']];
+  const extra = [];
+  if (p.hairAmount === 'low') extra.push('发量偏少：头顶留长、两侧剪短，视觉上更多；避免中分和贴头皮的直发。');
+  if (p.hairAmount === 'high') extra.push('发量偏多：请理发师「打薄内层」，不要只削表面，长出来才不炸。');
+  if (p.curl) extra.push('自来卷：可以顺着卷度剪，而不是拉直，留 5cm 以上卷度才好看。');
+  $('#hairView').innerHTML = `
+    <div class="panel">
+      <div class="row" style="justify-content:space-between"><h3>${FACES[p.face].n} · 推荐发型</h3>
+        <div class="row">
+          <label class="small muted" for="h-face">脸型 <select id="h-face" data-k="face" style="width:auto;display:inline-block;padding:3px 6px">${opt(Object.entries(FACES).map(([k, v]) => [k, v.n]), p.face)}</select></label>
+          <label class="small muted"><input type="checkbox" id="h-curl" data-k="curl"${p.curl ? ' checked' : ''}> 自来卷</label>
+        </div></div>
+      <div class="grid-3" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
+        ${dirs.flatMap(([d, tag]) => h[d].map(([n, desc, script]) => `
+          <div class="style-card">
+            <div class="row" style="justify-content:space-between"><h3>${n}</h3>${tag ? `<span class="pill">${tag}</span>` : ''}</div>
+            <p class="small">${desc}</p>
+            <span class="eyebrow">跟理发师这样说</span>
+            <div class="script">${script}</div>
+            <div><button class="btn sm ghost" data-copy="${esc(script)}">复制这段话</button></div>
+          </div>`)).join('')}
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="panel"><h3>发质与发量</h3><p class="small">${HAIR_TEXTURE[p.hairType]}</p>${extra.map(x => `<p class="small">${x}</p>`).join('')}<p class="small muted">发质和发量在「我的档案」里改。</p></div>
+      <div class="panel">
+        <h3>去理发店的习惯</h3>
+        <ul class="tick small">
+          <li>带 2–3 张同一发型的不同角度照片（正面、侧面、后脑）</li>
+          <li>说清楚「不要什么」：比如不要推青、不要剪太短、不要削薄刘海</li>
+          <li>先剪长一点，再一点点修短，剪掉的长不回来</li>
+          <li>短发 3–4 周修一次，中长发 6–8 周修一次</li>
+          <li>问理发师用什么定型产品：发泥（哑光有纹理）、发蜡（有光泽）、发胶（定型最强）</li>
+        </ul>
+      </div>
+    </div>`;
+}
+
+/* ============ 衣橱 ============ */
+const CF = { name: '', cat: '上衣', color: '#F7F7F5', note: '' };
+function renderClosetForm() {
+  $('#closetForm').innerHTML = `
+    <div class="field full"><label for="c-name">单品名称</label><input type="text" id="c-name" value="${esc(CF.name)}" placeholder="比如：优衣库 U 白色圆领 T"></div>
+    <div class="field"><label for="c-cat">类别</label><select id="c-cat">${opt(CLOSET_CATS.map(c => [c, c]), CF.cat)}</select></div>
+    <div class="field"><label for="c-note">备注（可选）</label><input type="text" id="c-note" value="${esc(CF.note)}" placeholder="尺码、购入时间"></div>
+    <div class="field full"><span class="lab">颜色</span><div class="pick-row" id="c-colors">${LAB_COLORS.map(c => `<button type="button" class="dot" style="background:${c.h}" data-ccol="${c.h}" aria-pressed="${CF.color === c.h}" title="${c.n}" aria-label="${c.n}"></button>`).join('')}</div></div>
+    <div class="full"><button class="btn" id="c-add">加入衣橱</button></div>`;
+}
+function renderCloset() {
+  const items = S.closet.items;
+  $('#closetList').innerHTML = items.length ? CLOSET_CATS.filter(c => items.some(i => i.cat === c)).map(c => `
+    <div class="blk"><div class="blk-h"><h4>${c}</h4><span class="small muted mono">${items.filter(i => i.cat === c).length}</span></div>
+      <div class="items">${items.filter(i => i.cat === c).map(i => `<div class="item"><span class="c" style="background:${esc(i.color)}"></span><span class="n">${esc(i.name)}${i.note ? ` <span class="small muted">· ${esc(i.note)}</span>` : ''}</span><button class="x" data-del="${esc(i.id)}" aria-label="删除 ${esc(i.name)}">×</button></div>`).join('')}</div></div>`).join('')
+    : `<div class="empty"><b>衣橱还是空的</b><span>从最常穿的 10 件开始登记：每天穿的外套、两三件上衣、两条裤子、常穿的鞋。</span><span>对照课堂第 6 课的胶囊清单，就能看出还缺什么。</span></div>`;
+  const pal = PALETTES[paletteKey(S.profile)].sw.map(x => x[1]);
+  const counts = CLOSET_CATS.map(c => [c, items.filter(i => i.cat === c).length]), max = Math.max(1, ...counts.map(x => x[1]));
+  const neutralN = items.filter(i => colorInfo(i.color).neutral).length, palN = items.filter(i => pal.some(h => cdist(h, i.color) < 40)).length;
+  const lacks = [], has = (cat, cols) => items.some(i => i.cat === cat && (!cols || cols.includes(i.color)));
+  if (!has('上衣', ['#F7F7F5'])) lacks.push('白色 T 恤');
+  if (!has('衬衫')) lacks.push('一件牛津纺衬衫');
+  if (!has('外套')) lacks.push('一件百搭夹克或大衣');
+  if (!has('裤装', ['#46628A', '#2B3A55', '#1F2A44', '#1C1C1E', '#3E4147'])) lacks.push('一条深色直筒裤或牛仔裤');
+  if (!has('鞋', ['#F7F7F5'])) lacks.push('一双白色板鞋');
+  $('#closetStats').innerHTML = `<div class="row" style="justify-content:space-between"><h3>衣橱概况</h3><span class="mono">${items.length} 件</span></div>
+    ${items.length ? `<div class="colorstrip">${items.map(i => `<i style="flex:1;background:${esc(i.color)}"></i>`).join('')}</div>
+    <p class="small">中性色 <b class="mono">${Math.round(neutralN / items.length * 100)}%</b>，在个人色板内 <b class="mono">${palN}</b> 件。中性色 60–70% 是比较好搭的比例。</p>
+    <div class="cat-bars">${counts.map(([c, n]) => `<div class="cat-bar"><span class="small">${c}</span><span><i style="width:${n / max * 100}%"></i></span><span class="mono small">${n}</span></div>`).join('')}</div>` : '<p class="small muted">登记后这里会显示颜色分布和各类数量。</p>'}
+    <div class="blk"><div class="blk-h"><h4>基础单品检查</h4></div>${lacks.length ? `<ul class="tick no small">${lacks.map(x => `<li>还缺${x}</li>`).join('')}</ul>` : '<p class="small"><span class="pill good">齐了</span> 胶囊衣橱的基础款都有了。</p>'}</div>`;
+  renderWish();
+}
+function wishVerdict(w) {
+  const cpw = w.price && w.wears ? w.price / w.wears : null, yes = [w.matches, w.inPalette, w.fits].filter(Boolean).length;
+  if (yes === 3 && cpw !== null && cpw <= 50) return ['good', '可以买'];
+  if (yes >= 2) return ['warn', '再想想'];
+  return ['bad', '先别买'];
+}
+function renderWish() {
+  const W = S.closet.wish;
+  $('#wishPanel').innerHTML = `<h3>心愿单 · 购前三问</h3>
+    <div class="form">
+      <div class="field full"><label for="w-name">想买什么</label><input type="text" id="w-name" placeholder="比如：驼色羊毛大衣"></div>
+      <div class="field"><label for="w-price">价格（元）</label><input type="number" id="w-price" min="0"></div>
+      <div class="field"><label for="w-wears">预计穿几次</label><input type="number" id="w-wears" min="1" placeholder="一年 × 几年"></div>
+      <div class="full"><button class="btn ghost" id="w-add">加入心愿单</button></div>
+    </div>
+    ${W.length ? `<div class="items">${W.map(w => { const v = wishVerdict(w), cpw = w.price && w.wears ? (w.price / w.wears).toFixed(1) : '—'; return `
+      <div class="item" style="grid-template-columns:minmax(0,1fr) auto;align-items:start">
+        <div style="display:grid;gap:6px;min-width:0">
+          <div class="row" style="justify-content:space-between"><b class="n">${esc(w.name)}</b><span class="pill ${v[0]}">${v[1]}</span></div>
+          <span class="small muted">单次成本 <b class="mono">${cpw}</b> 元${w.price ? ` · ${esc(w.price)} 元 / ${esc(w.wears || '?')} 次` : ''}</span>
+          <div class="chips">
+            <button class="chip" data-wq="matches" data-wid="${esc(w.id)}" aria-pressed="${!!w.matches}">能搭 3 件以上</button>
+            <button class="chip" data-wq="inPalette" data-wid="${esc(w.id)}" aria-pressed="${!!w.inPalette}">在色板 / 中性色</button>
+            <button class="chip" data-wq="fits" data-wid="${esc(w.id)}" aria-pressed="${!!w.fits}">试过且合身</button>
+          </div>
+        </div>
+        <button class="x" data-wdel="${esc(w.id)}" aria-label="删除 ${esc(w.name)}">×</button>
+      </div>`; }).join('')}</div>` : '<div class="empty">心愿单是空的。看中什么先放进来，三项都打勾、单次成本在 50 元以内再下单。</div>'}`;
+}
+
+/* ============ 顾问 ============ */
+const ASK = { sample: null, img: null, ctl: null, canImg: false, off: false };
+const PRESETS = [
+  ['这件适合我吗', '我想买图里这件衣服，结合我的身材、肤色和衣橱，它适合我吗？如果买，怎么搭？'],
+  ['帮我看眼镜', '图里是我试戴的眼镜，适合我的脸型和肤色吗？如果不合适，应该换什么样的？'],
+  ['用衣橱搭三套', '用我衣橱里已有的衣服，给我搭三套适合我常去场合的穿搭，说明每套为什么成立。'],
+  ['下一件该买什么', '根据我的衣橱和风格，我下一件最值得买的单品是什么？给出颜色、版型和价位建议。'],
+  ['分析这套搭配', '图里是一套我喜欢的搭配，按颜色、廓形、材质、细节四步帮我拆解，再告诉我怎么用自己的衣服复刻。']
+];
+function profileText() {
+  const p = S.profile, s = sizeCode(p);
+  return [
+    `穿搭方向：${{ m: '男装', f: '女装', u: '中性' }[p.direction]}；年龄段：${p.age}`,
+    `身高 ${p.height}cm，体重 ${p.weight}kg，体型：${BODIES[p.body].n}（${BODIES[p.body].d}）`,
+    `三围：胸 ${p.chest} / 腰 ${p.waist} / 臀 ${p.hip} cm，肩宽 ${p.shoulder}cm，裤内长 ${p.inseam}cm，鞋码 ${p.shoe}；号型约 ${s.top}`,
+    `脸型：${FACES[p.face].n}；脸宽 ${p.faceWidth}mm`,
+    `肤色：${{ warm: '暖调', cool: '冷调', neutral: '中性' }[p.undertone]}，个人色板：${PALETTES[paletteKey(p)].n}（${PALETTES[paletteKey(p)].sw.map(x => x[0]).join('、')}）`,
+    `发质：${{ thin: '细软', normal: '正常', thick: '粗硬' }[p.hairType]}，发量：${{ low: '偏少', mid: '中等', high: '偏多' }[p.hairAmount]}${p.curl ? '，自来卷' : ''}`,
+    `风格偏好：${p.styles.join('、') || '未选'}；常去场合：${p.scenes.join('、') || '未选'}；单件预算：${BUDGETS[p.budget]}`,
+    p.notes ? `其他情况：${p.notes}` : ''
+  ].filter(Boolean).join('\n');
+}
+function closetText() {
+  const it = S.closet.items;
+  return it.length ? it.map(i => `- [${i.cat}] ${i.name}（${colorInfo(i.color).n}）${i.note ? '，' + i.note : ''}`).join('\n') : '（衣橱还没登记）';
+}
+function renderAsk() {
+  $('#askPanel').innerHTML = `
+    <h3>常见问题</h3>
+    <div class="chips">${PRESETS.map(([l], i) => `<button class="chip" data-preset="${i}">${l}</button>`).join('')}</div>
+    <div class="field"><label for="ask-q">你的问题</label><textarea id="ask-q" rows="5" placeholder="比如：下周面试互联网公司产品岗，我该怎么穿？"></textarea></div>
+    <div class="field" id="ask-img-wrap" hidden><label for="ask-img">附一张图（可选）</label><input type="file" id="ask-img" accept="image/*"><img id="ask-thumb" class="thumb" alt="已选择的图片" hidden></div>
+    <label class="small"><input type="checkbox" id="ask-closet" checked> 让顾问参考我的衣橱</label>
+    <div class="row"><button class="btn tape" id="ask-go">提问</button><button class="btn ghost" id="ask-stop" hidden>停止</button></div>
+    <p class="small muted" id="ask-note">顾问会读取你的档案。第一次提问时 Claude 会请你确认授权，回答会使用你自己的 Claude 用量。</p>`;
+}
+async function initAsk() {
+  if (!window.claude || !window.claude.use) { askUnavailable(); return }
+  try {
+    ASK.sample = await claude.use('sample');
+    if (!ASK.sample) { askUnavailable(); return }
+    const lim = await ASK.sample.limits().catch(() => null);
+    if (lim && lim.images) { ASK.canImg = true; $('#ask-img-wrap').hidden = false; $('#ask-img').accept = lim.images.mediaTypes.join(',') }
+  } catch (e) { askUnavailable() }
+}
+function askUnavailable() {
+  ASK.off = true;
+  const b = $('#ask-go'); if (b) b.disabled = true;
+  const n = $('#ask-note'); if (n) n.innerHTML = window.claude ? '当前无法使用 Claude，顾问功能暂时关闭。其他页面不受影响。' : `顾问需要用到 Claude，只在 Claude 里打开时可用：<a href="${ARTIFACT_URL}" target="_blank" rel="noopener">在 Claude 中打开</a>。`;
+}
+function fmtAnswer(t) { return esc(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/^#{1,4}\s*(.+)$/gm, '<strong>$1</strong>') }
+async function ask() {
+  const q = $('#ask-q').value.trim();
+  if (!q) { toast('先写下你的问题'); return }
+  if (!ASK.sample) return;
+  const prompt = `你是一位务实、审美好的个人形象顾问。请用中文回答，结合下面这位用户的档案给出具体、可执行的建议：颜色、版型、尺寸、价位都可以举例，避免空泛的话。分点作答，一般控制在 400 字以内。不要使用表格。
+${ASK.img ? '用户附了一张图片（可能是衣服、眼镜试戴、发型或搭配参考），先用一两句说出你在图里看到的关键点，再给建议。\n' : ''}
+【用户档案】
+${profileText()}
+${$('#ask-closet').checked ? `\n【衣橱】\n${closetText()}\n` : ''}
+【问题】
+${q}`;
+  const out = $('#askOut'), go = $('#ask-go'), stop = $('#ask-stop'), st = $('#askState');
+  ASK.ctl = new AbortController();
+  go.disabled = true; stop.hidden = false; st.textContent = '思考中…'; out.textContent = '思考中…';
+  try {
+    const opts = { signal: ASK.ctl.signal, cache: false, onText: ({ text }) => { out.innerHTML = fmtAnswer(text); st.textContent = '正在写…' } };
+    if (ASK.img && ASK.canImg) opts.images = [ASK.img];
+    const r = await ASK.sample(prompt, opts);
+    out.innerHTML = fmtAnswer(r.text);
+    st.textContent = r.truncated ? '回答被截断了，可以让它说得简短些' : '';
+  } catch (e) {
+    if (e && e.text) out.innerHTML = fmtAnswer(e.text); else if (e?.code !== 'cancelled') out.textContent = '';
+    const m = { cancelled: '已停止', not_granted: '没有授权使用 Claude，顾问功能暂时关闭', sampling_disabled: '当前账号无法使用 Claude', rate_limited: '提问太频繁了，过一会儿再试',
+      image_rejected: '这张图片无法读取，换一张 JPG 或 PNG 试试', refused: '这个问题没法回答，换个问法试试', session_expired: '登录已过期，请重新登录 Claude', images_unavailable: '当前无法发送图片，去掉图片再问' };
+    st.textContent = m[e?.code] || '出了点问题，稍后再试';
+    if (e?.code === 'not_granted' || e?.code === 'sampling_disabled') askUnavailable();
+    if (e?.code === 'images_unavailable') { ASK.canImg = false; $('#ask-img-wrap').hidden = true }
+  } finally { go.disabled = ASK.off; stop.hidden = true }
+}
+
+/* ============ 导航与事件 ============ */
+const VIEWS = ['look', 'train', 'learn', 'profile', 'shop', 'glasses', 'hair', 'closet', 'ask'];
+function show(v, scroll) {
+  if (!VIEWS.includes(v)) v = 'look';
+  VIEWS.forEach(x => { $('#v-' + x).hidden = x !== v });
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.v === v));
+  try { history.replaceState(null, '', '#' + v) } catch (e) {}
+  try { localStorage.setItem('xing_tab', v) } catch (e) {}
+  if (scroll) document.querySelector('nav.tabs').scrollIntoView({ behavior: 'smooth' });
+}
+function renderDerived() {
+  renderHead(); renderBanner(); renderIdCard(); renderLearn(); evalLab(); renderSizeCard(); renderGlasses(); renderHair(); renderCloset(); renderLooks();
+}
+function renderAll(full) {
+  renderProfileForm(); renderMeasureForm(); renderLookFilters(); renderDerived(); renderQuiz(); renderAB(); renderFit();
+  if (full) renderLab();
+}
+function setProfile(k, v) {
+  S.profile[k] = ['height', 'weight', 'chest', 'waist', 'hip', 'shoulder', 'inseam', 'shoe', 'faceWidth'].includes(k) ? (v === '' ? '' : +v) : v;
+  S.profile._example = false; save('profile');
+}
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.dataset.k && t.closest('#v-profile, #v-shop, #v-glasses, #v-hair')) {
+    setProfile(t.dataset.k, t.type === 'checkbox' ? t.checked : t.value);
+    renderHead(); renderBanner(); renderIdCard(); renderSizeCard(); evalLab(); renderLooks();
+    if (t.tagName === 'SELECT' || t.type === 'checkbox') { renderGlasses(); renderHair(); renderLearn(); renderProfileForm(); renderCloset() }
+    else if (!t.closest('#v-glasses')) renderGlasses();
+  }
+  if (t.id === 'g-fw') { clearTimeout(window._gfw); window._gfw = setTimeout(() => { renderGlasses(); const el = $('#g-fw'); el.focus(); try { el.setSelectionRange(99, 99) } catch (e) {} }, 600) }
+  if (t.id === 'c-name') CF.name = t.value;
+  if (t.id === 'c-note') CF.note = t.value;
+  if (t.id === 'c-cat') CF.cat = t.value;
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'ask-img') { const f = e.target.files[0]; ASK.img = f || null; const th = $('#ask-thumb'); if (f) { th.src = URL.createObjectURL(f); th.hidden = false } else th.hidden = true }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#sheet').innerHTML) closeSheet() });
+document.addEventListener('click', e => {
+  if (e.target.dataset && e.target.dataset.close) { closeSheet(); return }
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.classList.contains('tab')) return show(t.dataset.v);
+  if (t.dataset.go) return show(t.dataset.go, true);
+  if (t.dataset.look) return openLook(t.dataset.look);
+  if (t.dataset.save) {
+    const sv = S.progress.saved = S.progress.saved || [], i = sv.indexOf(t.dataset.save);
+    if (i >= 0) sv.splice(i, 1); else sv.push(t.dataset.save);
+    save('progress'); openLook(t.dataset.save); renderLooks(); toast(i >= 0 ? '已取消收藏' : '已收藏'); return;
+  }
+  if (t.dataset.lf) { LF[t.dataset.lf] = t.dataset.val; renderLookFilters(); renderLooks(); return }
+  if (t.dataset.stylego) { LF.style = t.dataset.stylego; LF.sort = 'fit'; renderLookFilters(); renderLooks(); show('look', true); return }
+  const multi = t.closest('[data-multi]');
+  if (multi && t.dataset.val) {
+    const k = multi.dataset.multi, arr = [...S.profile[k]], v = t.dataset.val, i = arr.indexOf(v);
+    if (i >= 0) arr.splice(i, 1); else { if (k === 'styles' && arr.length >= 3) { toast('最多选 3 个风格'); return } arr.push(v) }
+    setProfile(k, arr); t.setAttribute('aria-pressed', i < 0); renderDerived(); return;
+  }
+  if (t.id === 'clearExample') { S.profile._example = false; save('profile'); renderBanner(); toast('好的，之后都按你的档案来'); return }
+  if (t.id === 'faceCalc') return guessFace();
+  if (t.dataset.setface) { setProfile('face', t.dataset.setface); renderProfileForm(); renderDerived(); toast('已设为' + FACES[t.dataset.setface].n); return }
+  if (t.dataset.lesson) { const id = t.dataset.lesson; S.progress.lessons[id] = !S.progress.lessons[id]; save('progress'); renderLearn(); renderHead(); return }
+  if (t.dataset.ab && ABS.pick === null) { ABS.pick = t.dataset.ab; if (ABS.pick === AB[ABS.i].ok) ABS.score++; renderAB(); return }
+  if (t.id === 'abNext') {
+    ABS.i++; ABS.pick = null;
+    if (ABS.i >= AB.length && ABS.score > (S.progress.abBest || 0)) { S.progress.abBest = ABS.score; save('progress'); renderLearn() }
+    renderAB(); return;
+  }
+  if (t.id === 'abRestart') { Object.assign(ABS, { i: 0, score: 0, pick: null, order: AB.map(() => Math.random() < .5) }); renderAB(); return }
+  if (t.dataset.opt !== undefined && Q.answered === null) { Q.answered = +t.dataset.opt; if (Q.answered === QUIZ[Q.i][2]) Q.score++; renderQuiz(); return }
+  if (t.id === 'quizNext') {
+    Q.i++; Q.answered = null;
+    if (Q.i >= QUIZ.length) { Q.finished = true; if (Q.score > (S.progress.quizBest || 0)) { S.progress.quizBest = Q.score; save('progress') } renderLearn() }
+    renderQuiz(); return;
+  }
+  if (t.id === 'quizRestart') { Object.assign(Q, { i: 0, score: 0, answered: null, finished: false }); renderQuiz(); return }
+  if (t.dataset.part) { LAB[t.dataset.part] = t.dataset.col; renderLab(); return }
+  if (t.id === 'labRandom') return labRandom(false);
+  if (t.id === 'labMine') return labRandom(true);
+  if (t.dataset.fit) { fitCat = t.dataset.fit; renderFit(); return }
+  if (t.dataset.copy !== undefined) return copyText(t.dataset.copy);
+  if (t.id === 'bkCopy') return copyText(JSON.stringify({ v: 1, profile: S.profile, progress: S.progress, closet: S.closet }));
+  if (t.id === 'bkShow') { const b = $('#bkBox'); b.hidden = !b.hidden; return }
+  if (t.id === 'bkLoad') {
+    try { const d = JSON.parse($('#bkText').value); KEYS.forEach(k => { if (d[k]) { merge(k, d[k]); save(k) } }); renderAll(true); toast('已恢复') }
+    catch (err) { toast('备份内容不完整，请重新复制') }
+    return;
+  }
+  if (t.dataset.ccol) { CF.color = t.dataset.ccol; document.querySelectorAll('[data-ccol]').forEach(d => d.setAttribute('aria-pressed', d.dataset.ccol === CF.color)); return }
+  if (t.id === 'c-add') {
+    if (!CF.name.trim()) { toast('先写单品名称'); $('#c-name').focus(); return }
+    S.closet.items.push({ id: uid(), name: CF.name.trim().slice(0, 80), cat: CF.cat, color: CF.color, note: CF.note.trim().slice(0, 80) });
+    CF.name = ''; CF.note = ''; save('closet'); renderClosetForm(); renderCloset(); toast('已加入衣橱'); $('#c-name').focus(); return;
+  }
+  if (t.dataset.del) { S.closet.items = S.closet.items.filter(i => i.id !== t.dataset.del); save('closet'); renderCloset(); return }
+  if (t.id === 'w-add') {
+    const n = $('#w-name').value.trim(); if (!n) { toast('先写想买的东西'); return }
+    S.closet.wish.push({ id: uid(), name: n.slice(0, 80), price: +$('#w-price').value || 0, wears: +$('#w-wears').value || 0, matches: false, inPalette: false, fits: false });
+    save('closet'); renderWish(); return;
+  }
+  if (t.dataset.wq) { const w = S.closet.wish.find(x => x.id === t.dataset.wid); if (w) { w[t.dataset.wq] = !w[t.dataset.wq]; save('closet'); renderWish() } return }
+  if (t.dataset.wdel) { S.closet.wish = S.closet.wish.filter(w => w.id !== t.dataset.wdel); save('closet'); renderWish(); return }
+  if (t.dataset.preset !== undefined) { $('#ask-q').value = PRESETS[+t.dataset.preset][1]; $('#ask-q').focus(); return }
+  if (t.id === 'ask-go') return ask();
+  if (t.id === 'ask-stop') { ASK.ctl?.abort(); return }
+});
+window.addEventListener('resize', () => { clearTimeout(window._rt); window._rt = setTimeout(renderTape, 150) });
+
+/* ============ 启动 ============ */
+$('#todayLabel').textContent = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long' });
+$('#footNote').textContent = window.claude ? '在 Claude 中打开' : '网页版 · 数据只存在本浏览器，记得用档案页的「复制备份」';
+renderTape(); renderClosetForm(); renderAsk(); renderAll(true);
+let startTab = (location.hash || '').slice(1);
+if (!VIEWS.includes(startTab)) { try { startTab = localStorage.getItem('xing_tab') || 'look' } catch (e) { startTab = 'look' } }
+show(startTab);
+initCloud(); initAsk();
+</script>
+
+</body>
+</html>

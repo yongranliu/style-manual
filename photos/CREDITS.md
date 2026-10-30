@@ -1,33 +1,44 @@
-# 照片来源
+# 照片来源与选图标准
 
-以下照片均来自 [Unsplash](https://unsplash.com)，按 [Unsplash License](https://unsplash.com/license) 免费使用。
+## 选图标准（每张都要全部满足）
 
+1. **穿搭是主体**：至少拍到大腿中部，能看清上下装怎么搭；优先带鞋的全身照。不用头肩肖像、背影、人在画面里很小的环境照。
+2. **搭配成立、能复刻**：版型合身，颜色关系清楚（有彩色不超过一个主色），单品日常买得到。不用秀场造型、戏服感或过度造型。
+3. **看得清**：光线充足，颜色不失真；不用黑白、重滤镜、暗调。背景不抢衣服的戏。
+4. **标签准确**：明确属于站内 8 种风格之一，描述写清楚单品；每种风格 3–4 张。
+5. **多样**：不同地区、肤色、年龄，不只一种审美。
+6. **授权干净**：只用 [Unsplash License](https://unsplash.com/license) 的免费图（不用 Unsplash+），记下摄影师和原图链接。
+
+## 来源
+
+以下照片均来自 [Unsplash](https://unsplash.com)，按 Unsplash License 免费使用。
+
+- `wrWc4y-mk3s.jpg`（日系 City Boy，米兰街头，米色风衣配阔腿裤）：摄影 [Filip Rankovic Grobgaard](https://unsplash.com/@filipgrobgaard)，[原图](https://unsplash.com/photos/wrWc4y-mk3s)
+- `7ns69FH2QLM.jpg`（学院 / 老钱，藏青外套配白色牛仔裤、乐福鞋）：摄影 [Mark Patterson](https://unsplash.com/@mrpatt)，[原图](https://unsplash.com/photos/7ns69FH2QLM)
+- `FyVM48yP-S4.jpg`（商务休闲，黑色西装外套配牛仔衬衫、米白裤）：摄影 [Mike Cox](https://unsplash.com/@iprefermike)，[原图](https://unsplash.com/photos/FyVM48yP-S4)
+- `wcnboSP500M.jpg`（户外机能，卡其连帽冲锋衣配同色宽松长裤）：摄影 [Yegor Makarenko](https://unsplash.com/@photochel228)，[原图](https://unsplash.com/photos/wcnboSP500M)
+- `_AOGyLg_o5s.jpg`（极简，黑色大衣、高领毛衣配黑色西裤）：摄影 [Mohamad Khosravi](https://unsplash.com/@mohamadkhosravi)，[原图](https://unsplash.com/photos/_AOGyLg_o5s)
+- `DlQhYZbti08.jpg`（商务休闲，白衬衫塞进炭灰西裤，外套搭在肩上）：摄影 [Fortune Vieyra](https://unsplash.com/@fortunevieyra)，[原图](https://unsplash.com/photos/DlQhYZbti08)
+- `Nz93TtvjM5o.jpg`（韩系清爽，白色短羽绒、白高领配橄榄绿裤、白球鞋）：摄影 [Parsa foroughi](https://unsplash.com/@parsaforoughi)，[原图](https://unsplash.com/photos/Nz93TtvjM5o)
+- `IuMSyLBGRGE.jpg`（美式复古，深色夹克、酒红内搭配黑色牛仔裤、短靴）：摄影 [Raviraj Singh Tomar](https://unsplash.com/@ravirajsingh)，[原图](https://unsplash.com/photos/IuMSyLBGRGE)
+- `7xNdaWtfmhQ.jpg`（学院 / 老钱，藏青格纹西装外套配深色牛仔、黑色乐福鞋）：摄影 [Benjamin R.](https://unsplash.com/@dapperprofessional)，[原图](https://unsplash.com/photos/7xNdaWtfmhQ)
+- `hsZbpq_HCNk.jpg`（极简，橄榄绿长大衣配一身黑）：摄影 [Gabriel Martin](https://unsplash.com/@diseniatica)，[原图](https://unsplash.com/photos/hsZbpq_HCNk)
+- `qC7jvmbEmRQ.jpg`（学院 / 老钱，白色 Polo 衫塞进黑色西裤，配皮带）：摄影 [Fortune Vieyra](https://unsplash.com/@fortunevieyra)，[原图](https://unsplash.com/photos/qC7jvmbEmRQ)
+- `kn5i9yLBO4Y.jpg`（户外机能，薄荷绿防风外套配牛仔裤、针织帽）：摄影 [Ali Kazal](https://unsplash.com/@lureofadventure)，[原图](https://unsplash.com/photos/kn5i9yLBO4Y)
+- `zJBQr0bajIA.jpg`（韩系清爽，灰色西装外套、黑 T 黑裤配斜挎包、白球鞋）：摄影 [Mitchell Luo](https://unsplash.com/@mitchel3uo)，[原图](https://unsplash.com/photos/zJBQr0bajIA)
+- `GvpVV5G51c8.jpg`（美式复古，棕色皮夹克配黑色修身牛仔、白球鞋）：摄影 [Maksym Tymchyk](https://unsplash.com/@maksym_tymchyk)，[原图](https://unsplash.com/photos/GvpVV5G51c8)
+- `Pf_ItvUfGVY.jpg`（商务休闲，橄榄绿西装配同色高领、黑色皮鞋）：摄影 [ALIREZA Pandkhahi](https://unsplash.com/@kroba313)，[原图](https://unsplash.com/photos/Pf_ItvUfGVY)
+- `o5g0Xkes7OI.jpg`（韩系清爽，牛仔夹克、白 T 配浅色牛仔裤）：摄影 [Farshad Sheikhzadeh](https://unsplash.com/@farshadsheikhzadeh)，[原图](https://unsplash.com/photos/o5g0Xkes7OI)
+- `f5P1emDHupU.jpg`（街头，黑色卫衣套装配白色球鞋）：摄影 [felirbe](https://unsplash.com/@felirbe)，[原图](https://unsplash.com/photos/f5P1emDHupU)
+- `m3RxZs9TsO4.jpg`（户外机能，橄榄棕轻羽绒配牛仔裤）：摄影 [Carlos Andres Gomez](https://unsplash.com/@carlosandres11)，[原图](https://unsplash.com/photos/m3RxZs9TsO4)
 - `XITosdOCS8Q.jpg`（极简，驼色大衣配深色牛仔，雪地街拍）：摄影 [Fray Bekele](https://unsplash.com/@frayb_)，[原图](https://unsplash.com/photos/XITosdOCS8Q)
-- `c5cJsF2naEQ.jpg`（极简，灰绿长大衣配黑围巾）：摄影 [Mohammad Hossein Mirzagol](https://unsplash.com/@mirza_graphy)，[原图](https://unsplash.com/photos/c5cJsF2naEQ)
+- `3FVaBKPndPI.jpg`（极简，黑 T 配灰色西裤、黑色乐福鞋）：摄影 [otabek xatipov](https://unsplash.com/@arrogant_7007)，[原图](https://unsplash.com/photos/3FVaBKPndPI)
 - `v-ITYFOj1Fg.jpg`（日系 City Boy，长衬衫外搭配黑色阔腿裤、白袜）：摄影 [Ihor Rapita](https://unsplash.com/@rapitaihor)，[原图](https://unsplash.com/photos/v-ITYFOj1Fg)
 - `jhMkxP4rLO0.jpg`（日系 City Boy，卷袖亚麻长衬衫叠穿黑 T）：摄影 [Ihor Rapita](https://unsplash.com/@rapitaihor)，[原图](https://unsplash.com/photos/jhMkxP4rLO0)
 - `0wC6FXsLAM0.jpg`（美式复古，格纹里衬夹克配米白 T、原色牛仔）：摄影 [Irham Setyaki](https://unsplash.com/@setyaki)，[原图](https://unsplash.com/photos/0wC6FXsLAM0)
-- `QmMuxzPmsfY.jpg`（美式复古，棕色麂皮夹克配单车）：摄影 [Ravi Sharma](https://unsplash.com/@ravinepz)，[原图](https://unsplash.com/photos/QmMuxzPmsfY)
+- `QmMuxzPmsfY.jpg`（美式复古，棕色麂皮夹克配灰色宽松西裤）：摄影 [Ravi Sharma](https://unsplash.com/@ravinepz)，[原图](https://unsplash.com/photos/QmMuxzPmsfY)
 - `j8pksmCohBM.jpg`（学院 / 老钱，黑色针织配卡其西裤、乐福鞋）：摄影 [otabek xatipov](https://unsplash.com/@arrogant_7007)，[原图](https://unsplash.com/photos/j8pksmCohBM)
-- `zhdhhzDh2Dw.jpg`（学院 / 老钱，费尔岛提花毛衣）：摄影 [Xin](https://unsplash.com/@s1n)，[原图](https://unsplash.com/photos/zhdhhzDh2Dw)
-- `NMLdqdyyvzc.jpg`（户外机能，银灰色防风夹克）：摄影 [Jeffrey Grospe](https://unsplash.com/@jgrospe)，[原图](https://unsplash.com/photos/NMLdqdyyvzc)
-- `bQpLRVoz1NA.jpg`（户外机能，黑色套头冲锋衣）：摄影 [Wildan Ramdani Akbar](https://unsplash.com/@wildannr_a)，[原图](https://unsplash.com/photos/bQpLRVoz1NA)
 - `IL1oeY0pN2k.jpg`（街头，黑色羽绒服配宽裤）：摄影 [Good Faces](https://unsplash.com/@goodfacesagency)，[原图](https://unsplash.com/photos/IL1oeY0pN2k)
 - `4ecCpwg62Kk.jpg`（街头，黑夹克白 T、白球鞋）：摄影 [K X I T H V I S U A L S](https://unsplash.com/@keithlwm)，[原图](https://unsplash.com/photos/4ecCpwg62Kk)
 - `AZVU2iGedz8.jpg`（韩系清爽，深色长大衣配白衬衫、灰西裤）：摄影 [Amir Esrafili](https://unsplash.com/@amirvisuals)，[原图](https://unsplash.com/photos/AZVU2iGedz8)
-- `s39naY41Qn0.jpg`（韩系清爽，白衬衫斜挎包，背影）：摄影 [Bùi Hoàng Long](https://unsplash.com/@dxaxoxfz)，[原图](https://unsplash.com/photos/s39naY41Qn0)
-- `MYMEeE1_1V4.jpg`（商务休闲，黑色西装外套配白 T）：摄影 [Let hho](https://unsplash.com/@let_hho)，[原图](https://unsplash.com/photos/MYMEeE1_1V4)
 - `J_9xThkkGEM.jpg`（商务休闲，三件套西装）：摄影 [Bibek Thakuri](https://unsplash.com/@bibekthakuri)，[原图](https://unsplash.com/photos/J_9xThkkGEM)
-- `wrWc4y-mk3s.jpg`（日系 City Boy，米兰街头，米色风衣配阔腿裤）：摄影 [Filip Rankovic Grobgaard](https://unsplash.com/@filipgrobgaard)，[原图](https://unsplash.com/photos/wrWc4y-mk3s)
-- `tKGUj6NFTPo.jpg`（学院 / 老钱，纽约地铁站，驼色风衣配礼帽）：摄影 [Stian Skevig](https://unsplash.com/@stian_skevig)，[原图](https://unsplash.com/photos/tKGUj6NFTPo)
-- `FyVM48yP-S4.jpg`（商务休闲，黑色西装外套配牛仔衬衫、米白裤）：摄影 [Mike Cox](https://unsplash.com/@iprefermike)，[原图](https://unsplash.com/photos/FyVM48yP-S4)
-- `-mxNvBfEGRs.jpg`（学院 / 老钱，粉色衬衫、领带配背带）：摄影 [Bien'arts](https://unsplash.com/@bienarts14)，[原图](https://unsplash.com/photos/-mxNvBfEGRs)
-- `hsZbpq_HCNk.jpg`（极简，橄榄绿长大衣配一身黑）：摄影 [Gabriel Martin](https://unsplash.com/@diseniatica)，[原图](https://unsplash.com/photos/hsZbpq_HCNk)
-- `D6MmPV6SHqg.jpg`（极简，黑色高领毛衣配橙色针织帽）：摄影 [Philip Martin](https://unsplash.com/@phlmrtn)，[原图](https://unsplash.com/photos/D6MmPV6SHqg)
-- `3FVaBKPndPI.jpg`（极简，黑 T 配灰色西裤、黑色乐福鞋）：摄影 [otabek xatipov](https://unsplash.com/@arrogant_7007)，[原图](https://unsplash.com/photos/3FVaBKPndPI)
-- `opximxekYIc.jpg`（韩系清爽，上海时装周，风衣配条纹衬衫）：摄影 [George Dagerotip](https://unsplash.com/@dagerotip)，[原图](https://unsplash.com/photos/opximxekYIc)
-- `o5g0Xkes7OI.jpg`（韩系清爽，牛仔夹克、白 T 配浅色牛仔裤）：摄影 [Farshad Sheikhzadeh](https://unsplash.com/@farshadsheikhzadeh)，[原图](https://unsplash.com/photos/o5g0Xkes7OI)
-- `Tm96YeQ9XJE.jpg`（美式复古，伦敦旧货市集，水洗牛仔夹克）：摄影 [Ellie Cooper](https://unsplash.com/@elliecooperphotography)，[原图](https://unsplash.com/photos/Tm96YeQ9XJE)
-- `fUIYAGmWxv8.jpg`（美式复古，浅色牛仔夹克、条纹 T 配棒球帽）：摄影 [Óscar García Castillo](https://unsplash.com/@zorgar)，[原图](https://unsplash.com/photos/fUIYAGmWxv8)
-- `f5P1emDHupU.jpg`（街头，黑色卫衣套装配白色球鞋）：摄影 [felirbe](https://unsplash.com/@felirbe)，[原图](https://unsplash.com/photos/f5P1emDHupU)
-- `Js3YcflCOlk.jpg`（商务休闲，藏青衬衫塞进同色西裤）：摄影 [Muhammad Numan](https://unsplash.com/@numaninsari)，[原图](https://unsplash.com/photos/Js3YcflCOlk)

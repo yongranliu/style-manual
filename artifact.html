@@ -84,15 +84,56 @@ button, input, select, textarea { font: inherit; color: inherit }
 .sync i { width: 7px; height: 7px; border-radius: 50%; background: var(--warn); display: inline-block }
 .sync[data-s="cloud"] i { background: var(--good) }
 .sync[data-s="err"] i { background: var(--bad) }
-.cover-photo { margin: 0; position: relative; min-height: 420px; border-radius: 2px; overflow: hidden; background: var(--soft); display: grid }
-.cover-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover }
-.cover-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.28), transparent 28%, transparent 55%, rgba(0,0,0,.62)) }
-.cover-photo figcaption { position: relative; z-index: 1; align-self: end; padding: 20px; color: #F5F2EC; display: grid; gap: 4px }
+.collage { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); grid-template-rows: 1fr 1fr; gap: 10px; min-height: 520px }
+.cover-photo { margin: 0; position: relative; overflow: hidden; background: var(--soft); display: grid; border-radius: 2px }
+.cover-photo.main { grid-row: span 2 }
+.cover-photo .ph-btn { position: absolute; inset: 0; border: 0; padding: 0; cursor: zoom-in; background: none }
+.cover-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.2,.7,.2,1) }
+.cover-photo:hover img { transform: scale(1.03) }
+.cover-photo::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0,0,0,.26), transparent 26%, transparent 55%, rgba(0,0,0,.62)) }
+.cover-photo figcaption { position: relative; z-index: 1; align-self: end; padding: 18px; color: #F5F2EC; display: grid; gap: 3px; pointer-events: none }
 .cover-photo figcaption .latin { font-size: 1.9rem; line-height: 1.05 }
-.cover-photo figcaption small { font-size: .75rem; opacity: .8 }
-.cover-photo figcaption a { color: inherit }
-.cover-photo .issue { position: absolute; z-index: 1; top: 16px; left: 18px; right: 18px; display: flex; justify-content: space-between; color: #F5F2EC; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .16em; text-transform: uppercase }
-@media (max-width: 900px) { .cover-photo { min-height: 0; aspect-ratio: 4 / 5; max-height: 72vh } }
+.cover-photo:not(.main) figcaption { padding: 12px 14px }
+.cover-photo:not(.main) figcaption .latin { font-size: 1.25rem }
+.cover-photo figcaption small { font-size: .74rem; opacity: .82 }
+.cover-photo figcaption a { color: inherit; pointer-events: auto }
+.cover-photo .issue { position: absolute; z-index: 1; top: 16px; left: 18px; right: 18px; display: flex; justify-content: space-between; color: #F5F2EC; font-family: var(--f-mono); font-size: .64rem; letter-spacing: .16em; text-transform: uppercase; pointer-events: none }
+@media (max-width: 900px) { .collage { min-height: 0; aspect-ratio: 5 / 4.6 } }
+@media (max-width: 520px) { .collage { aspect-ratio: auto; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto auto } .cover-photo.main { grid-row: auto; grid-column: span 2; aspect-ratio: 4 / 5 } .cover-photo:not(.main) { aspect-ratio: 1 / 1 } }
+
+/* 今天穿什么 */
+.today { margin-bottom: 44px }
+.today:empty { display: none }
+.today > * { background: var(--ink); color: var(--paper); border-radius: var(--r) }
+.today .eyebrow { color: color-mix(in srgb, var(--paper) 60%, transparent) }
+.today h2 { font-size: clamp(1.4rem, 2.6vw, 1.9rem) }
+.today-empty { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 28px; align-items: center; padding: 26px 30px }
+.today-empty .muted { color: color-mix(in srgb, var(--paper) 72%, transparent); max-width: 36em }
+.today-empty .btn, .today .btn:not(.ghost) { background: var(--paper); color: var(--ink); border-color: var(--paper) }
+.today .btn.ghost { color: var(--paper); border-color: color-mix(in srgb, var(--paper) 35%, transparent) }
+.today .btn.ghost:hover { background: transparent; border-color: var(--paper) }
+@media (max-width: 720px) { .today-empty { grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 22px } }
+.today-head { display: none }
+.today > .today-head { display: flex; justify-content: space-between; align-items: end; padding: 24px 28px 0; border-radius: var(--r) var(--r) 0 0 }
+.today > .today-set { border-radius: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 160px)); gap: 14px; padding: 20px 28px }
+.today > .today-foot { border-radius: 0 0 var(--r) var(--r); display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between; align-items: center; padding: 0 28px 24px }
+.today-score { font-family: var(--f-mono); font-size: .8rem; color: color-mix(in srgb, var(--paper) 70%, transparent) }
+.today-score b { font-family: var(--f-latin); font-weight: 400; font-size: 3rem; color: var(--paper); line-height: 1; margin-right: 4px }
+.today-item { display: grid; gap: 8px; font-size: .84rem; min-width: 0 }
+.today-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+@media (max-width: 520px) { .today > .today-head, .today > .today-set, .today > .today-foot { padding-left: 18px; padding-right: 18px } .today > .today-set { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px } .today-item { font-size: .72rem } }
+
+/* 街拍条 */
+.street { padding-bottom: 56px }
+.street-row { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-inline: max(16px, calc((100vw - 1240px) / 2 + 32px)); scroll-padding-inline: max(16px, calc((100vw - 1240px) / 2 + 32px)) }
+@media (max-width: 720px) { .street-row { padding-inline: 16px; scroll-padding-inline: 16px } }
+.street-row::-webkit-scrollbar { display: none }
+.street-card { flex: none; width: clamp(170px, 19vw, 240px); border: 0; padding: 0; background: none; text-align: left; cursor: zoom-in; display: grid; gap: 8px; scroll-snap-align: start }
+.street-img { display: block; aspect-ratio: 3 / 4; overflow: hidden; background: var(--soft); border-radius: 2px }
+.street-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s cubic-bezier(.2,.7,.2,1) }
+.street-card:hover img { transform: scale(1.04) }
+.street-cap { font-size: .8rem; color: var(--muted); line-height: 1.45; display: grid }
+.street-cap i { font-style: italic; font-family: var(--f-latin); font-size: 1.1rem; color: var(--ink) }
 
 .picks { padding-block: 8px 44px }
 .picks-head { display: flex; justify-content: space-between; align-items: end; gap: 12px; border-top: 1px solid var(--ink); padding-top: 12px; margin-bottom: 18px }
@@ -321,6 +362,18 @@ th { font-family: var(--f-mono); font-weight: 500; color: var(--muted); font-siz
 .score b { font-family: var(--f-latin); font-weight: 400; font-size: 3.4rem; line-height: 1 }
 
 /* 衣橱 */
+.garment-add { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 18px; align-items: start }
+@media (max-width: 520px) { .garment-add { grid-template-columns: minmax(0, 1fr) } .garment-shot { max-width: 160px } }
+.garments { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 14px 12px }
+.garment { position: relative; display: grid; gap: 6px; align-content: start; min-width: 0 }
+.g-img { aspect-ratio: 3 / 4; border-radius: 3px; overflow: hidden; background: var(--c); border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent); position: relative }
+.g-tag { position: absolute; left: 8px; bottom: 6px; font-family: var(--f-mono); font-size: .62rem; letter-spacing: .12em; opacity: .7 }
+.g-img img { width: 100%; height: 100%; object-fit: cover; display: block; background: var(--soft) }
+.g-meta { display: grid; gap: 1px; font-size: .78rem; color: var(--muted); line-height: 1.4; min-width: 0 }
+.g-meta b { font-size: .86rem; color: var(--ink); font-weight: 500; overflow-wrap: anywhere }
+.garment .x { position: absolute; top: 4px; right: 4px; background: var(--card); border-radius: 50%; width: 24px; height: 24px; display: grid; place-items: center; opacity: 0; transition: opacity .2s }
+.garment:hover .x, .garment .x:focus-visible { opacity: 1 }
+@media (hover: none) { .garment .x { opacity: .9 } }
 .items { display: grid; gap: 0; border-top: 1px solid var(--line) }
 .item { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 2px; border-bottom: 1px solid var(--line) }
 .item .c { width: 16px; height: 16px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent) }
@@ -329,7 +382,7 @@ th { font-family: var(--f-mono); font-weight: 500; color: var(--muted); font-siz
 .x:hover { color: var(--bad) }
 .empty { border: 1px dashed var(--line); border-radius: var(--r); padding: 20px; color: var(--muted); font-size: .9rem; display: grid; gap: 6px }
 .cat-bars { display: grid; gap: 6px }
-.cat-bar { display: grid; grid-template-columns: 4.5em minmax(0, 1fr) 2em; gap: 8px; align-items: center; font-size: .82rem }
+.cat-bar { display: grid; grid-template-columns: 5.5em minmax(0, 1fr) 2em; gap: 8px; align-items: center; font-size: .82rem }
 .cat-bar span:nth-child(2) { height: 6px; background: var(--soft); overflow: hidden }
 .cat-bar span:nth-child(2) i { display: block; height: 100%; background: var(--ink) }
 .colorstrip { display: flex; height: 12px; overflow: hidden; border: 1px solid var(--line) }
@@ -413,11 +466,16 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
       <div class="row" style="justify-content:space-between"><span class="sync" id="syncChip"><i></i><span></span></span><div class="row"><button class="btn sm" data-go="profile">完善我的档案</button><button class="btn ghost sm" data-go="look">看全部 25 套</button></div></div>
     </div>
   </div>
-  <figure class="cover-photo" id="coverPhoto"></figure>
+  <div class="collage" id="coverPhoto"></div>
 </header>
+<section class="wrap today" id="today" aria-label="今天穿什么"></section>
 <section class="wrap picks" aria-labelledby="picksTitle">
   <div class="picks-head"><div><p class="eyebrow">This week</p><h2 id="picksTitle">本周试衣：按你的档案挑的四套</h2></div><button class="linkbtn" data-go="look">全部穿搭 →</button></div>
   <div class="mirrors" id="mirrors"></div>
+</section>
+<section class="street" aria-labelledby="streetTitle">
+  <div class="wrap"><div class="picks-head"><div><p class="eyebrow">Street notes</p><h2 id="streetTitle">世界各地的街拍：看看别人怎么穿</h2></div><div class="row"><button class="btn ghost sm" data-scroll="-1" aria-label="向左">←</button><button class="btn ghost sm" data-scroll="1" aria-label="向右">→</button></div></div></div>
+  <div class="street-row" id="streetRow"></div>
 </section>
 
 <nav class="tabs" aria-label="页面">
@@ -584,12 +642,12 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
     <div class="view-head">
       <p class="eyebrow">Wardrobe</p>
       <h2>我有什么，我还缺什么</h2>
-      <p class="muted">把常穿的衣服登记进来，灵感库会告诉你哪件能用来复刻，顾问回答时也会参考。</p>
+      <p class="muted">把常穿的衣服拍照登记进来：照片会自动取色，设置 AI 后还能认出名称和类别。首页每天用这些衣服给你配一套，灵感库和顾问也会参考。</p>
     </div>
     <div class="grid-2">
       <div class="panel">
         <h3>添加单品</h3>
-        <div class="form" id="closetForm"></div>
+        <div class="garment-add" id="closetForm"></div>
         <div id="closetList" style="display:grid;gap:14px"></div>
       </div>
       <div style="display:grid;gap:22px">
@@ -972,8 +1030,21 @@ const LOOKS = [
     ['藏青条纹＋米白，图案本身就是点缀', '条纹衫不塞，配直筒裤，休闲松弛', '厚实的布列塔尼条纹棉衫', '有了条纹，其他单品都要素净'],
     '一件条纹衫等于一次「点缀色」，别再加其他图案。', '海魂衫 条纹衫 穿搭')
 ];
-/* 真人街拍：Unsplash 授权，文件在 photos/，来源见 photos/CREDITS.md */
+/* 真人街拍：Unsplash 授权，文件在 photos/，来源见 photos/CREDITS.md；前 13 张是不同地区的街拍 */
 const PHOTOS = [
+  {"id": "wrWc4y-mk3s", "style": "日系 City Boy", "user": "Filip Rankovic Grobgaard", "un": "filipgrobgaard", "desc": "米兰街头，米色风衣配阔腿裤", "city": "Milano"},
+  {"id": "tKGUj6NFTPo", "style": "学院 / 老钱", "user": "Stian Skevig", "un": "stian_skevig", "desc": "纽约地铁站，驼色风衣配礼帽", "city": "New York"},
+  {"id": "FyVM48yP-S4", "style": "商务休闲", "user": "Mike Cox", "un": "iprefermike", "desc": "黑色西装外套配牛仔衬衫、米白裤", "city": "New York"},
+  {"id": "-mxNvBfEGRs", "style": "学院 / 老钱", "user": "Bien'arts", "un": "bienarts14", "desc": "粉色衬衫、领带配背带"},
+  {"id": "hsZbpq_HCNk", "style": "极简", "user": "Gabriel Martin", "un": "diseniatica", "desc": "橄榄绿长大衣配一身黑"},
+  {"id": "D6MmPV6SHqg", "style": "极简", "user": "Philip Martin", "un": "phlmrtn", "desc": "黑色高领毛衣配橙色针织帽"},
+  {"id": "3FVaBKPndPI", "style": "极简", "user": "otabek xatipov", "un": "arrogant_7007", "desc": "黑 T 配灰色西裤、黑色乐福鞋", "city": "Uzbekistan"},
+  {"id": "opximxekYIc", "style": "韩系清爽", "user": "George Dagerotip", "un": "dagerotip", "desc": "上海时装周，风衣配条纹衬衫", "city": "Shanghai"},
+  {"id": "o5g0Xkes7OI", "style": "韩系清爽", "user": "Farshad Sheikhzadeh", "un": "farshadsheikhzadeh", "desc": "牛仔夹克、白 T 配浅色牛仔裤"},
+  {"id": "Tm96YeQ9XJE", "style": "美式复古", "user": "Ellie Cooper", "un": "elliecooperphotography", "desc": "伦敦旧货市集，水洗牛仔夹克", "city": "London"},
+  {"id": "fUIYAGmWxv8", "style": "美式复古", "user": "Óscar García Castillo", "un": "zorgar", "desc": "浅色牛仔夹克、条纹 T 配棒球帽"},
+  {"id": "f5P1emDHupU", "style": "街头", "user": "felirbe", "un": "felirbe", "desc": "黑色卫衣套装配白色球鞋"},
+  {"id": "Js3YcflCOlk", "style": "商务休闲", "user": "Muhammad Numan", "un": "numaninsari", "desc": "藏青衬衫塞进同色西裤", "city": "Sahiwal"},
   {"id": "XITosdOCS8Q", "style": "极简", "user": "Fray Bekele", "un": "frayb_", "desc": "驼色大衣配深色牛仔，雪地街拍"},
   {"id": "c5cJsF2naEQ", "style": "极简", "user": "Mohammad Hossein Mirzagol", "un": "mirza_graphy", "desc": "灰绿长大衣配黑围巾"},
   {"id": "v-ITYFOj1Fg", "style": "日系 City Boy", "user": "Ihor Rapita", "un": "rapitaihor", "desc": "长衬衫外搭配黑色阔腿裤、白袜"},
@@ -1259,10 +1330,74 @@ function renderHead() {
   $('#headStats').innerHTML = [['Height', esc(p.height), 'cm'], ['Waistline', waistLine(p), 'cm'], ['Palette', esc(PALETTES[paletteKey(p)].n.split('（')[0]), ''], ['Lessons', `${learned}/${LESSONS.length}`, '']]
     .map(([k, v, u]) => `<div class="spec"><span>${k}</span><b>${v}${u ? `<small>${u}</small>` : ''}</b></div>`).join('');
   setSync(P.sync || 'local');
-  const ph = photosOf((p.styles || [])[0])[0] || PHOTOS[0];
-  $('#coverPhoto').innerHTML = `<img src="${photoSrc(ph)}" alt="${esc(ph.style)}街拍：${esc(ph.desc)}" fetchpriority="high"><div class="issue"><span>Cover look</span><span>${esc(ph.style)}</span></div>
-    <figcaption><span class="latin">${esc((STYLES.find(s => s.k === ph.style) || {}).en || 'Street')}</span><span>${esc(ph.desc)}</span><small>摄影 <a href="https://unsplash.com/@${esc(ph.un)}" target="_blank" rel="noopener">${esc(ph.user)}</a> · Unsplash</small></figcaption>`;
+  const [main, ...side] = coverPhotos(), en = ph => (STYLES.find(x => x.k === ph.style) || {}).en || 'Street';
+  $('#coverPhoto').innerHTML = `<figure class="cover-photo main"><button class="ph-btn" data-photo="${main.id}" aria-label="放大封面照片"><img src="${photoSrc(main)}" alt="${esc(main.style)}街拍：${esc(main.desc)}" fetchpriority="high"></button><div class="issue"><span>Cover look${main.city ? ' · ' + esc(main.city) : ''}</span><span>${esc(main.style)}</span></div>
+    <figcaption><span class="latin">${esc(en(main))}</span><span>${esc(main.desc)}</span><small>摄影 <a href="https://unsplash.com/@${esc(main.un)}" target="_blank" rel="noopener">${esc(main.user)}</a> · Unsplash</small></figcaption></figure>
+    ${side.map(ph => `<figure class="cover-photo"><button class="ph-btn" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}"><img src="${photoSrc(ph)}" alt="${esc(ph.style)}街拍：${esc(ph.desc)}"></button><figcaption><span class="latin">${esc(en(ph))}</span><small>${esc(ph.city || ph.style)}</small></figcaption></figure>`).join('')}`;
   $('#mirrors').innerHTML = topPicks(4).map(({ l }, i) => `<button class="mirror" data-look="${l.id}" aria-label="查看 ${l.name}"><div class="arch" style="--tint:${tintOf((l.fig.o || l.fig.t)[1])}">${drawFig(l.fig)}</div><span class="cap"><i>${i + 1}</i><b>${l.name}</b><span>${l.style} · ${l.scene}</span></span></button>`).join('');
+}
+
+/* ============ 今天穿什么：用衣橱里的衣服配一套 ============ */
+const TODAY = { n: 0 };
+const dayNo = () => Math.floor((Date.now() - new Date().getTimezoneOffset() * 6e4) / 864e5);
+const coldMonth = () => [0, 1, 2, 3, 9, 10, 11].includes(new Date().getMonth());
+function scoreOutfit(o) {
+  const p = S.profile, pal = PALETTES[paletteKey(p)].sw.map(x => x[1]), infos = o.map(i => colorInfo(i.color));
+  const chroma = [...new Set(infos.filter(c => !c.neutral).map(c => c.n))], why = [];
+  let sc = 100;
+  if (!chroma.length) why.push('全身中性色，怎么穿都稳');
+  else if (chroma.length === 1) why.push(`只用${chroma[0]}一个颜色点题，其余是中性色`);
+  else sc -= 16 * (chroma.length - 1);
+  const temps = new Set(infos.filter(c => !c.neutral).map(c => c.temp)); if (temps.has('w') && temps.has('c')) sc -= 6;
+  const face = o.find(i => i.cat === '外套') || o[0], fc = colorInfo(face.color);
+  if (pal.some(h => cdist(h, face.color) < 45)) { sc += 6; why.push(`靠近脸的${fc.n}在你的色板里，显气色`) } else if (!fc.neutral) sc -= 8;
+  const bottom = o.find(i => PART_CAT.b.includes(i.cat)), shoe = o.find(i => i.cat === '鞋');
+  if (bottom && shoe) { const d = Math.abs(light(bottom.color) - light(shoe.color)); if (d < 20) why.push('鞋和裤子深浅接近，腿显长'); else if (d > 55) sc -= 6 }
+  o.forEach(i => { if (i.last && Date.now() - i.last < 2 * 864e5) sc -= 12 });
+  return { sc, why };
+}
+function todayOutfits() {
+  const it = S.closet.items, by = cats => it.filter(i => cats.includes(i.cat));
+  const tops = by(PART_CAT.t), bottoms = by(PART_CAT.b), shoes = by(['鞋']), outers = coldMonth() ? by(['外套']) : [];
+  if (!tops.length || !bottoms.length) return [];
+  const res = [];
+  for (const t of tops) for (const b of bottoms) for (const s of shoes.length ? shoes : [null]) for (const o of outers.length ? outers : [null]) {
+    const set = [o, t, b, s].filter(Boolean); res.push({ set, ...scoreOutfit(set) });
+    if (res.length > 600) break;
+  }
+  return res.sort((a, b) => b.sc - a.sc).slice(0, 8);
+}
+function renderToday() {
+  const el = $('#today'); if (!el) return;
+  const list = todayOutfits();
+  if (!list.length) {
+    el.innerHTML = `<div class="today-empty"><div><p class="eyebrow">Today</p><h2>今天穿什么</h2></div><p class="muted">在衣橱里登记至少一件上衣和一条裤子（拍照上传就行），这里每天会用<b>你自己的衣服</b>配好一套，并说明为什么这么配。</p><button class="btn" data-go="closet">去登记衣服</button></div>`;
+    return;
+  }
+  const pick = list[(dayNo() + TODAY.n) % list.length], d = new Date();
+  el.innerHTML = `<div class="today-head"><div><p class="eyebrow">Today · ${d.getMonth() + 1}月${d.getDate()}日</p><h2>今天穿这套</h2></div><span class="today-score"><b>${Math.min(100, pick.sc)}</b>分</span></div>
+    <div class="today-set">${pick.set.map(i => `<div class="today-item">${garmentTile(i)}<span>${esc(i.name)}</span></div>`).join('')}</div>
+    <div class="today-foot"><p class="small">${esc(pick.why.slice(0, 2).join('；') || '颜色关系清楚，可以放心穿。')}${coldMonth() && !pick.set.some(i => i.cat === '外套') ? '<span class="muted">（天冷了，衣橱里还没有外套）</span>' : ''}</p>
+      <div class="row"><button class="btn ghost sm" id="todayNext">换一套</button><button class="btn sm" id="todayWear">就穿这套</button></div></div>`;
+  TODAY.pick = pick;
+  fillImgs(el);
+}
+function wearToday() {
+  const now = Date.now();
+  TODAY.pick.set.forEach(i => { i.wears = (i.wears || 0) + 1; i.last = now });
+  save('closet'); renderCloset(); TODAY.n++; renderToday(); toast('记下了，穿得开心');
+}
+
+/* ============ 首页图片 ============ */
+function coverPhotos() {
+  const day = dayNo(), mine = photosOf((S.profile.styles || [])[0]);
+  const main = (mine.length ? mine : PHOTOS)[day % (mine.length || PHOTOS.length)];
+  const rest = PHOTOS.filter(ph => ph.style !== main.style), pick = [];
+  for (let k = 0; pick.length < 2 && k < rest.length; k++) { const ph = rest[(day * 5 + k * 7) % rest.length]; if (!pick.some(x => x.style === ph.style || x.id === ph.id)) pick.push(ph) }
+  return [main, ...pick];
+}
+function renderStreet() {
+  $('#streetRow').innerHTML = PHOTOS.map(ph => `<button class="street-card" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}"><span class="street-img"><img src="${photoSrc(ph)}" alt="${esc(ph.style)}街拍：${esc(ph.desc)}" loading="lazy"></span><span class="street-cap"><i>${esc(ph.city || (STYLES.find(x => x.k === ph.style) || {}).en || ph.style)}</i>${esc(ph.desc)}</span></button>`).join('');
 }
 
 /* ============ 灵感库 ============ */
@@ -1310,7 +1445,7 @@ function openLook(id) {
         <div class="breakdown">${['颜色', '廓形', '材质', '细节'].map((k, i) => `<div><b>${k}</b>${l.why[i]}</div>`).join('')}</div></div>
       <div class="blk"><div class="blk-h"><h4>怎么复刻</h4></div><p class="small">${l.copy}</p>
         ${subs.length ? `<ul class="items-l small">${subs.join('')}</ul>` : `<p class="small muted">在「我的衣橱」登记衣服后，这里会列出你能直接用来代替的单品。</p>`}</div>
-      ${photosOf(l.style).length ? `<div class="blk"><div class="blk-h"><h4>同风格实拍</h4><span class="small muted">${l.style}</span></div><div class="photos" style="max-width:300px">${photosOf(l.style).map(ph => photoBtn(ph)).join('')}</div></div>` : ''}
+      ${photosOf(l.style).length ? `<div class="blk"><div class="blk-h"><h4>同风格实拍</h4><span class="small muted">${l.style}</span></div><div class="photos" style="max-width:300px">${photosOf(l.style).slice(0, 4).map(ph => photoBtn(ph)).join('')}</div></div>` : ''}
       ${S.board.items.some(i => i.look === l.id) ? `<div class="blk"><div class="blk-h"><h4>我存的实拍</h4></div><div class="thumbs">${S.board.items.filter(i => i.look === l.id).slice(0, 6).map(i => `<img data-src="${esc(i.src)}" alt="灵感图片">`).join('')}</div></div>` : ''}
       <div class="row">
         <button class="btn sm ${saved ? 'ghost' : 'tape'}" data-save="${l.id}">${saved ? '取消收藏' : '收藏'}</button>
@@ -1393,7 +1528,7 @@ function renderBoard() {
 async function delPin(id) {
   const it = S.board.items.find(x => x.id === id); if (!it) return;
   S.board.items = S.board.items.filter(x => x.id !== id); pendingDel = ''; save('board'); renderBoard();
-  try { if (it.src.startsWith('a:') && IMG.assets) await IMG.assets.delete(it.src.slice(2)); else if (it.src.startsWith('l:')) await idbDo('readwrite', st => st.delete(it.src.slice(2))) } catch (e) {}
+  await dropImage(it.src);
   toast('已删除');
 }
 
@@ -1521,7 +1656,7 @@ function renderLearn() {
     </details>`).join('');
   $('#styleMap').innerHTML = STYLES.map(s => `
     <div class="style-card${S.profile.styles.includes(s.k) ? ' mine' : ''}">
-      <div class="photos">${photosOf(s.k).map(ph => photoBtn(ph)).join('')}</div>
+      <div class="photos">${photosOf(s.k).slice(0, 4).map(ph => photoBtn(ph)).join('')}</div>
       <div class="bar">${s.col.map(c => `<i style="background:${c}"></i>`).join('')}</div>
       <div class="row" style="justify-content:space-between"><h3>${s.k}</h3><span class="latin muted small">${s.en}</span></div>
       <dl><dt>关键词</dt><dd>${s.kw}</dd><dt>单品</dt><dd>${s.items}</dd><dt>参考</dt><dd>${s.ref}</dd></dl>
@@ -1728,21 +1863,89 @@ function renderHair() {
 }
 
 /* ============ 衣橱 ============ */
-const CF = { name: '', cat: '上衣', color: '#F7F7F5', note: '' };
+const CF = { name: '', cat: '上衣', color: '#F7F7F5', note: '', blob: null, preview: '', status: '', busy: false };
 function renderClosetForm() {
+  const ai = aiReady() && aiVision();
   $('#closetForm').innerHTML = `
-    <div class="field full"><label for="c-name">单品名称</label><input type="text" id="c-name" value="${esc(CF.name)}" placeholder="比如：优衣库 U 白色圆领 T"></div>
-    <div class="field"><label for="c-cat">类别</label><select id="c-cat">${opt(CLOSET_CATS.map(c => [c, c]), CF.cat)}</select></div>
-    <div class="field"><label for="c-note">备注（可选）</label><input type="text" id="c-note" value="${esc(CF.note)}" placeholder="尺码、购入时间"></div>
-    <div class="field full"><span class="lab">颜色</span><div class="pick-row" id="c-colors">${LAB_COLORS.map(c => `<button type="button" class="dot" style="background:${c.h}" data-ccol="${c.h}" aria-pressed="${CF.color === c.h}" title="${c.n}" aria-label="${c.n}"></button>`).join('')}</div></div>
-    <div class="full"><button class="btn" id="c-add">加入衣橱</button></div>`;
+    <label class="shot garment-shot" for="c-file">${CF.preview ? `<img src="${CF.preview}" alt="单品照片"><button type="button" class="x" id="c-unphoto" aria-label="移除照片">×</button>` : `<span><b>拍一张或上传</b>平铺或挂起来拍，背景越干净颜色越准</span>`}<input type="file" id="c-file" accept="image/*" hidden></label>
+    <div class="form">
+      <div class="field full"><label for="c-name">单品名称</label><input type="text" id="c-name" value="${esc(CF.name)}" placeholder="比如：优衣库 U 白色圆领 T"></div>
+      <div class="field"><label for="c-cat">类别</label><select id="c-cat">${opt(CLOSET_CATS.map(c => [c, c]), CF.cat)}</select></div>
+      <div class="field"><label for="c-note">备注（可选）</label><input type="text" id="c-note" value="${esc(CF.note)}" placeholder="材质、尺码、购入时间"></div>
+      <div class="field full"><span class="lab">颜色：${esc(colorInfo(CF.color).n)}</span><div class="pick-row" id="c-colors">${LAB_COLORS.map(c => `<button type="button" class="dot" style="background:${c.h}" data-ccol="${c.h}" aria-pressed="${CF.color === c.h}" title="${c.n}" aria-label="${c.n}"></button>`).join('')}</div></div>
+      <div class="full row"><button class="btn" id="c-add"${CF.busy ? ' disabled' : ''}>加入衣橱</button>${CF.blob && ai ? `<button class="btn ghost sm" id="c-ai"${CF.busy ? ' disabled' : ''}>重新识别</button>` : ''}<span class="small muted" id="c-status">${CF.status || (ai ? '上传照片后会自动识别名称、类别和颜色。' : '上传照片会自动取颜色；设置 AI 模型后还能识别名称和类别。')}</span></div>
+    </div>`;
 }
+// 照片主色：去掉和四周背景接近的像素，取中间区域出现最多的颜色
+function dominantColor(bmp) {
+  const N = 64, c = document.createElement('canvas'); c.width = c.height = N;
+  const x = c.getContext('2d', { willReadFrequently: true }); x.drawImage(bmp, 0, 0, N, N);
+  const d = x.getImageData(0, 0, N, N).data, px = (i, j) => { const k = (j * N + i) * 4; return [d[k], d[k + 1], d[k + 2]] };
+  const edge = []; for (let i = 0; i < N; i++) edge.push(px(i, 0), px(i, N - 1), px(0, i), px(N - 1, i));
+  const bg = [0, 1, 2].map(k => edge.reduce((a, e) => a + e[k], 0) / edge.length);
+  const buckets = new Map();
+  for (let j = N * .18 | 0; j < N * .82; j++) for (let i = N * .18 | 0; i < N * .82; i++) {
+    const p = px(i, j); if (Math.hypot(p[0] - bg[0], p[1] - bg[1], p[2] - bg[2]) < 38) continue;
+    const key = (p[0] >> 5) << 6 | (p[1] >> 5) << 3 | p[2] >> 5, b = buckets.get(key) || { n: 0, s: [0, 0, 0] };
+    b.n++; p.forEach((v, k) => b.s[k] += v); buckets.set(key, b);
+  }
+  const best = [...buckets.values()].sort((a, b) => b.n - a.n)[0];
+  return best ? hexOf(best.s.map(v => Math.round(v / best.n))) : hexOf(bg.map(Math.round));
+}
+async function garmentPhoto(file) {
+  try {
+    const blob = await shrinkTo(file, 1200), bmp = await createImageBitmap(blob);
+    if (CF.preview) URL.revokeObjectURL(CF.preview);
+    Object.assign(CF, { blob, preview: URL.createObjectURL(blob), color: colorInfo(dominantColor(bmp)).h, status: '已按照片取色，不准可以手动改。' });
+    renderClosetForm();
+    if (aiReady() && aiVision()) recognizeGarment();
+  } catch (e) { toast('这张图片读不了，换一张 JPG 或 PNG') }
+}
+async function recognizeGarment() {
+  if (!CF.blob) return;
+  CF.busy = true; CF.status = `${aiLabel()} 识别中…`; renderClosetForm();
+  const prompt = `照片里是一件衣物（或一双鞋、一件配饰）。只输出一个 JSON 对象，不要其他文字：
+{"name": "简短的中文名称，带颜色和款式，比如「白色重磅圆领 T 恤」「深棕麂皮乐福鞋」，能看出品牌就加上", "cat": 类别，只能是 ${CLOSET_CATS.map(c => `「${c}」`).join('')} 之一, "color": 主色，只能是 ${LAB_COLORS.map(c => c.n).join('、')} 之一, "note": "材质和版型，15 字以内，比如「纯棉 落肩 宽松」"}`;
+  try {
+    const text = await aiCall({ prompt, images: [await prepImage(CF.blob)] });
+    const j = JSON.parse((String(text).match(/\{[\s\S]*\}/) || ['{}'])[0]);
+    if (j.name) CF.name = String(j.name).slice(0, 80);
+    if (CLOSET_CATS.includes(j.cat)) CF.cat = j.cat;
+    const col = LAB_COLORS.find(c => c.n === j.color); if (col) CF.color = col.h;
+    if (j.note) CF.note = String(j.note).slice(0, 80);
+    CF.status = j.name ? '已识别，确认无误就加入衣橱。' : '没认出来，手动填一下吧。';
+  } catch (e) { CF.status = '识别失败：' + (e instanceof SyntaxError ? '模型没按格式回答' : e.message) }
+  CF.busy = false; renderClosetForm();
+}
+async function storeImage(blob) {
+  if (IMG.assets) { try { return 'a:' + (await IMG.assets.upload(blob, { type: 'image/jpeg' })).id } catch (e) {} }
+  try { const k = uid(); await idbDo('readwrite', st => st.put(blob, k)); return 'l:' + k } catch (e) { return '' }
+}
+async function dropImage(src) {
+  try { if (src.startsWith('a:') && IMG.assets) await IMG.assets.delete(src.slice(2)); else if (src.startsWith('l:')) await idbDo('readwrite', st => st.delete(src.slice(2))) } catch (e) {}
+}
+async function addGarment() {
+  if (!CF.name.trim()) { toast('先写单品名称'); $('#c-name').focus(); return }
+  CF.busy = true; renderClosetForm();
+  const img = CF.blob ? await storeImage(CF.blob) : '';
+  if (CF.blob && !img) toast('照片没存上，先只记文字');
+  S.closet.items.push({ id: uid(), name: CF.name.trim().slice(0, 80), cat: CF.cat, color: CF.color, note: CF.note.trim().slice(0, 80), img, wears: 0, last: 0 });
+  if (CF.preview) URL.revokeObjectURL(CF.preview);
+  Object.assign(CF, { name: '', note: '', blob: null, preview: '', status: '', busy: false });
+  save('closet'); renderClosetForm(); renderCloset(); renderToday(); toast('已加入衣橱');
+}
+async function delGarment(id) {
+  const it = S.closet.items.find(i => i.id === id); if (!it) return;
+  S.closet.items = S.closet.items.filter(i => i.id !== id); save('closet'); renderCloset(); renderToday();
+  if (it.img) dropImage(it.img);
+}
+const garmentTile = i => `<div class="g-img" style="--c:${esc(i.color)}">${i.img ? `<img data-src="${esc(i.img)}" alt="${esc(i.name)}">` : `<span class="g-tag" style="color:${light(i.color) > 60 ? '#161412' : '#F5F2EC'}">${esc(i.cat)}</span>`}</div>`;
 function renderCloset() {
   const items = S.closet.items;
   $('#closetList').innerHTML = items.length ? CLOSET_CATS.filter(c => items.some(i => i.cat === c)).map(c => `
     <div class="blk"><div class="blk-h"><h4>${c}</h4><span class="small muted mono">${items.filter(i => i.cat === c).length}</span></div>
-      <div class="items">${items.filter(i => i.cat === c).map(i => `<div class="item"><span class="c" style="background:${esc(i.color)}"></span><span class="n">${esc(i.name)}${i.note ? ` <span class="small muted">· ${esc(i.note)}</span>` : ''}</span><button class="x" data-del="${esc(i.id)}" aria-label="删除 ${esc(i.name)}">×</button></div>`).join('')}</div></div>`).join('')
-    : `<div class="empty"><b>衣橱还是空的</b><span>从最常穿的 10 件开始登记：每天穿的外套、两三件上衣、两条裤子、常穿的鞋。</span><span>对照课堂第 6 课的胶囊清单，就能看出还缺什么。</span></div>`;
+      <div class="garments">${items.filter(i => i.cat === c).map(i => `<div class="garment">${garmentTile(i)}<div class="g-meta"><b>${esc(i.name)}</b><span>${esc(colorInfo(i.color).n)}${i.note ? ' · ' + esc(i.note) : ''}</span>${i.wears ? `<span class="mono">穿过 ${i.wears} 次</span>` : ''}</div><button class="x" data-del="${esc(i.id)}" aria-label="删除 ${esc(i.name)}">×</button></div>`).join('')}</div></div>`).join('')
+    : `<div class="empty"><b>衣橱还是空的</b><span>从最常穿的 10 件开始登记：每天穿的外套、两三件上衣、两条裤子、常穿的鞋。拍照上传最快。</span><span>对照课堂第 6 课的胶囊清单，就能看出还缺什么。</span></div>`;
   const pal = PALETTES[paletteKey(S.profile)].sw.map(x => x[1]);
   const counts = CLOSET_CATS.map(c => [c, items.filter(i => i.cat === c).length]), max = Math.max(1, ...counts.map(x => x[1]));
   const neutralN = items.filter(i => colorInfo(i.color).neutral).length, palN = items.filter(i => pal.some(h => cdist(h, i.color) < 40)).length;
@@ -1757,7 +1960,7 @@ function renderCloset() {
     <p class="small">中性色 <b class="mono">${Math.round(neutralN / items.length * 100)}%</b>，在个人色板内 <b class="mono">${palN}</b> 件。中性色 60–70% 是比较好搭的比例。</p>
     <div class="cat-bars">${counts.map(([c, n]) => `<div class="cat-bar"><span class="small">${c}</span><span><i style="width:${n / max * 100}%"></i></span><span class="mono small">${n}</span></div>`).join('')}</div>` : '<p class="small muted">登记后这里会显示颜色分布和各类数量。</p>'}
     <div class="blk"><div class="blk-h"><h4>基础单品检查</h4></div>${lacks.length ? `<ul class="tick no small">${lacks.map(x => `<li>还缺${x}</li>`).join('')}</ul>` : '<p class="small"><span class="pill good">齐了</span> 胶囊衣橱的基础款都有了。</p>'}</div>`;
-  renderWish();
+  renderWish(); fillImgs($('#closetList'));
 }
 function wishVerdict(w) {
   const cpw = w.price && w.wears ? w.price / w.wears : null, yes = [w.matches, w.inPalette, w.fits].filter(Boolean).length;
@@ -2006,7 +2209,7 @@ ${q}`;
 function refreshAI() {
   const s = $('.ai-status');
   if (s) { s.dataset.on = aiReady() ? 1 : 0; s.lastChild.textContent = aiReady() ? '已就绪 · ' + aiLabel() : '未就绪' }
-  renderAsk(); renderScan();
+  renderAsk(); renderScan(); renderClosetForm();
 }
 
 /* ============ 照片识别：AI 看照片，或在照片上手动取色、量脸 ============ */
@@ -2160,7 +2363,7 @@ function show(v, scroll) {
   if (scroll) document.querySelector('nav.tabs').scrollIntoView({ behavior: 'smooth' });
 }
 function renderDerived() {
-  renderHead(); renderBanner(); renderIdCard(); renderLearn(); evalLab(); renderSizeCard(); renderGlasses(); renderHair(); renderCloset(); renderLooks();
+  renderHead(); renderToday(); renderBanner(); renderIdCard(); renderLearn(); evalLab(); renderSizeCard(); renderGlasses(); renderHair(); renderCloset(); renderLooks();
 }
 function renderAll(full) {
   renderProfileForm(); renderMeasureForm(); renderLookFilters(); renderDerived(); renderBoard(); renderQuiz(); renderAB(); renderFit();
@@ -2196,6 +2399,7 @@ document.addEventListener('change', e => {
   if (e.target.dataset.pf) { const it = S.board.items.find(x => x.id === e.target.closest('[data-pin]').dataset.pin); if (it) { it[e.target.dataset.pf] = e.target.value; save('board'); if (e.target.dataset.pf === 'style') renderBoard() } return }
   if (e.target.id === 'boardFile') { addImages(e.target.files); e.target.value = ''; return }
   if (e.target.id === 'ask-img') { const f = e.target.files[0]; ASK.img = f || null; if (ASK.imgURL) URL.revokeObjectURL(ASK.imgURL); ASK.imgURL = f ? URL.createObjectURL(f) : ''; const th = $('#ask-thumb'); th.src = ASK.imgURL; th.hidden = !f }
+  if (e.target.id === 'c-file') { garmentPhoto(e.target.files[0]); e.target.value = '' }
   if (e.target.id === 'scan-file-face' || e.target.id === 'scan-file-body') { loadShot(e.target.id.slice(10), e.target.files[0]); e.target.value = '' }
 });
 document.addEventListener('paste', e => {
@@ -2268,13 +2472,11 @@ document.addEventListener('click', e => {
     catch (err) { toast('备份内容不完整，请重新复制') }
     return;
   }
-  if (t.dataset.ccol) { CF.color = t.dataset.ccol; document.querySelectorAll('[data-ccol]').forEach(d => d.setAttribute('aria-pressed', d.dataset.ccol === CF.color)); return }
-  if (t.id === 'c-add') {
-    if (!CF.name.trim()) { toast('先写单品名称'); $('#c-name').focus(); return }
-    S.closet.items.push({ id: uid(), name: CF.name.trim().slice(0, 80), cat: CF.cat, color: CF.color, note: CF.note.trim().slice(0, 80) });
-    CF.name = ''; CF.note = ''; save('closet'); renderClosetForm(); renderCloset(); toast('已加入衣橱'); $('#c-name').focus(); return;
-  }
-  if (t.dataset.del) { S.closet.items = S.closet.items.filter(i => i.id !== t.dataset.del); save('closet'); renderCloset(); return }
+  if (t.dataset.ccol) { CF.color = t.dataset.ccol; renderClosetForm(); return }
+  if (t.id === 'c-add') return addGarment();
+  if (t.id === 'c-ai') return recognizeGarment();
+  if (t.id === 'c-unphoto') { e.preventDefault(); URL.revokeObjectURL(CF.preview); Object.assign(CF, { blob: null, preview: '', status: '' }); renderClosetForm(); return }
+  if (t.dataset.del) return delGarment(t.dataset.del);
   if (t.id === 'w-add') {
     const n = $('#w-name').value.trim(); if (!n) { toast('先写想买的东西'); return }
     S.closet.wish.push({ id: uid(), name: n.slice(0, 80), price: +$('#w-price').value || 0, wears: +$('#w-wears').value || 0, matches: false, inPalette: false, fits: false });
@@ -2284,6 +2486,9 @@ document.addEventListener('click', e => {
   if (t.dataset.wdel) { S.closet.wish = S.closet.wish.filter(w => w.id !== t.dataset.wdel); save('closet'); renderWish(); return }
   if (t.dataset.preset !== undefined) { $('#ask-q').value = PRESETS[+t.dataset.preset][1]; $('#ask-q').focus(); return }
   if (t.id === 'ask-go') return ask();
+  if (t.id === 'todayNext') { TODAY.n++; renderToday(); return }
+  if (t.id === 'todayWear') return wearToday();
+  if (t.dataset.scroll) { const r = $('#streetRow'); r.scrollBy({ left: +t.dataset.scroll * r.clientWidth * .8, behavior: 'smooth' }); return }
   if (t.dataset.prov) { AI.prov = t.dataset.prov; saveAI(); renderAISettings(); refreshAI(); return }
   if (t.id === 'ai-test') return testAI();
   if (t.id === 'ai-forget') { delete AI.keys[provOf()]; saveAI(); renderAISettings(); refreshAI(); toast('已清除这个密钥'); return }
@@ -2301,7 +2506,7 @@ document.addEventListener('click', e => {
 /* ============ 启动 ============ */
 $('#todayLabel').textContent = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long' });
 $('#footNote').textContent = window.claude ? '在 Claude 中打开 · 数据同步到你的 Claude 账号' : '网页版 · 数据只存在本浏览器，记得用档案页的「复制备份」';
-renderClosetForm(); renderAISettings(); renderAsk(); renderScan(); renderAll(true);
+renderClosetForm(); renderAISettings(); renderAsk(); renderScan(); renderStreet(); renderAll(true);
 let startTab = (location.hash || '').slice(1);
 if (!VIEWS.includes(startTab)) { try { startTab = localStorage.getItem('xing_tab') || 'look' } catch (e) { startTab = 'look' } }
 show(startTab);

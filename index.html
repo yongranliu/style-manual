@@ -136,12 +136,13 @@ button, input, select, textarea { font: inherit; color: inherit }
 .street-row { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-inline: max(16px, calc((100vw - 1240px) / 2 + 32px)); scroll-padding-inline: max(16px, calc((100vw - 1240px) / 2 + 32px)) }
 @media (max-width: 720px) { .street-row { padding-inline: 16px; scroll-padding-inline: 16px } }
 .street-row::-webkit-scrollbar { display: none }
-.street-card { flex: none; width: clamp(170px, 19vw, 240px); border: 0; padding: 0; background: none; text-align: left; cursor: zoom-in; display: grid; gap: 8px; scroll-snap-align: start }
+.street-card { flex: none; width: clamp(170px, 19vw, 240px); border: 0; padding: 0; background: none; text-align: left; cursor: zoom-in; display: grid; gap: 8px; align-content: start; scroll-snap-align: start }
 .street-img { display: block; aspect-ratio: 3 / 4; overflow: hidden; background: var(--soft); border-radius: 2px }
 .street-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s cubic-bezier(.2,.7,.2,1) }
 .street-card:hover img { transform: scale(1.04) }
-.street-cap { font-size: .8rem; color: var(--muted); line-height: 1.45; display: grid }
-.street-cap i { font-style: italic; font-family: var(--f-latin); font-size: 1.1rem; color: var(--ink) }
+.street-cap { font-size: .8rem; color: var(--muted); line-height: 1.45; display: block }
+.street-cap .sex { font-weight: 500; font-size: .7rem; color: var(--accent); margin-right: 2px }
+.street-cap i { display: block; font-style: italic; font-family: var(--f-latin); font-size: 1.1rem; color: var(--ink) }
 
 .picks { padding-block: 8px 44px }
 .picks-head { display: flex; justify-content: space-between; align-items: end; gap: 12px; border-top: 1px solid var(--ink); padding-top: 12px; margin-bottom: 18px }
@@ -482,7 +483,7 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
   <div class="mirrors" id="mirrors"></div>
 </section>
 <section class="street" aria-labelledby="streetTitle">
-  <div class="wrap"><div class="picks-head"><div><p class="eyebrow">Street notes</p><h2 id="streetTitle">世界各地的街拍：看看别人怎么穿</h2></div><div class="row"><button class="btn ghost sm" data-scroll="-1" aria-label="向左">←</button><button class="btn ghost sm" data-scroll="1" aria-label="向右">→</button></div></div></div>
+  <div class="wrap"><div class="picks-head"><div><p class="eyebrow">Street notes</p><h2 id="streetTitle">世界各地的街拍：看看别人怎么穿</h2><p class="small muted" style="margin-top:4px">女装也值得看：配色和比例的道理是相通的。</p></div><div class="row"><button class="btn ghost sm" data-scroll="-1" aria-label="向左">←</button><button class="btn ghost sm" data-scroll="1" aria-label="向右">→</button></div></div></div>
   <div class="street-row" id="streetRow"></div>
 </section>
 
@@ -1041,37 +1042,45 @@ const LOOKS = [
 /* 真人街拍：Unsplash 授权，文件在 photos/；选图标准和来源见 photos/CREDITS.md */
 const PHOTOS = [
   {"id": "wrWc4y-mk3s", "style": "日系 City Boy", "user": "Filip Rankovic Grobgaard", "un": "filipgrobgaard", "desc": "米兰街头，米色风衣配阔腿裤", "city": "Milano"},
-  {"id": "7ns69FH2QLM", "style": "学院 / 老钱", "user": "Mark Patterson", "un": "mrpatt", "desc": "藏青外套配白色牛仔裤、乐福鞋"},
+  {"id": "6OAgcfO2Ujo", "style": "极简", "user": "0xdosa", "un": "theborklar", "desc": "卡其风衣、白背心配黑色长裙、工装靴", "city": "London", "sex": "f"},
+  {"id": "-16FhoT1aSE", "style": "学院 / 老钱", "user": "Emmanuel Ogbonnaya", "un": "mannythegrapher", "desc": "驼色大衣、灰色 V 领毛衣叠黑高领、卡其裤"},
   {"id": "FyVM48yP-S4", "style": "商务休闲", "user": "Mike Cox", "un": "iprefermike", "desc": "黑色西装外套配牛仔衬衫、米白裤", "city": "New York"},
   {"id": "wcnboSP500M", "style": "户外机能", "user": "Yegor Makarenko", "un": "photochel228", "desc": "卡其连帽冲锋衣配同色宽松长裤", "city": "Budapest"},
-  {"id": "_AOGyLg_o5s", "style": "极简", "user": "Mohamad Khosravi", "un": "mohamadkhosravi", "desc": "黑色大衣、高领毛衣配黑色西裤", "city": "Tehran"},
-  {"id": "DlQhYZbti08", "style": "商务休闲", "user": "Fortune Vieyra", "un": "fortunevieyra", "desc": "白衬衫塞进炭灰西裤，外套搭在肩上"},
   {"id": "Nz93TtvjM5o", "style": "韩系清爽", "user": "Parsa foroughi", "un": "parsaforoughi", "desc": "白色短羽绒、白高领配橄榄绿裤、白球鞋", "city": "Isfahan"},
-  {"id": "IuMSyLBGRGE", "style": "美式复古", "user": "Raviraj Singh Tomar", "un": "ravirajsingh", "desc": "深色夹克、酒红内搭配黑色牛仔裤、短靴"},
+  {"id": "DsKcWDk6NEU", "style": "极简", "user": "The AW Creative Digital Marketing", "un": "theawguide", "desc": "驼色大衣配灰色针织连衣裙", "city": "New York", "sex": "f"},
+  {"id": "vx3oUtfha9s", "style": "美式复古", "user": "Joshua Loh", "un": "joshualohyj1", "desc": "芥末黄工装夹克、黑 T 配浅色牛仔、帆布鞋", "city": "Malaysia"},
+  {"id": "_AOGyLg_o5s", "style": "极简", "user": "Mohamad Khosravi", "un": "mohamadkhosravi", "desc": "黑色大衣、高领毛衣配黑色西裤", "city": "Tehran"},
   {"id": "7xNdaWtfmhQ", "style": "学院 / 老钱", "user": "Benjamin R.", "un": "dapperprofessional", "desc": "藏青格纹西装外套配深色牛仔、黑色乐福鞋", "city": "Chicago"},
+  {"id": "ZDDryICdJLc", "style": "日系 City Boy", "user": "Le Thanh Son", "un": "notoriousfan3012", "desc": "灰绿短袖衬衫配直筒牛仔、斜挎包"},
+  {"id": "fMDqUa8neLI", "style": "美式复古", "user": "Charles Chen", "un": "color0911", "desc": "格纹法兰绒衬衫配牛仔裤、渔夫帽", "city": "Yunlin", "sex": "f"},
   {"id": "hsZbpq_HCNk", "style": "极简", "user": "Gabriel Martin", "un": "diseniatica", "desc": "橄榄绿长大衣配一身黑"},
-  {"id": "qC7jvmbEmRQ", "style": "学院 / 老钱", "user": "Fortune Vieyra", "un": "fortunevieyra", "desc": "白色 Polo 衫塞进黑色西裤，配皮带"},
-  {"id": "kn5i9yLBO4Y", "style": "户外机能", "user": "Ali Kazal", "un": "lureofadventure", "desc": "薄荷绿防风外套配牛仔裤、针织帽", "city": "Tofino"},
   {"id": "zJBQr0bajIA", "style": "韩系清爽", "user": "Mitchell Luo", "un": "mitchel3uo", "desc": "灰色西装外套、黑 T 黑裤配斜挎包、白球鞋"},
-  {"id": "GvpVV5G51c8", "style": "美式复古", "user": "Maksym Tymchyk", "un": "maksym_tymchyk", "desc": "棕色皮夹克配黑色修身牛仔、白球鞋"},
+  {"id": "kn5i9yLBO4Y", "style": "户外机能", "user": "Ali Kazal", "un": "lureofadventure", "desc": "薄荷绿防风外套配牛仔裤、针织帽", "city": "Tofino"},
+  {"id": "dodzmVtjoKs", "style": "商务休闲", "user": "Nassim Boughazi", "un": "nassim_boughazi", "desc": "黑色收腰西装套装配尖头鞋", "city": "Paris", "sex": "f"},
+  {"id": "XITosdOCS8Q", "style": "极简", "user": "Fray Bekele", "un": "frayb_", "desc": "驼色大衣配深色牛仔，雪地街拍"},
+  {"id": "-LTUvxV18uk", "style": "街头", "user": "Ryan Foon", "un": "ryanfoon_", "desc": "黑 T 黑裤配棋盘格滑板鞋"},
+  {"id": "7ns69FH2QLM", "style": "学院 / 老钱", "user": "Mark Patterson", "un": "mrpatt", "desc": "藏青外套配白色牛仔裤、乐福鞋"},
+  {"id": "IuMSyLBGRGE", "style": "美式复古", "user": "Raviraj Singh Tomar", "un": "ravirajsingh", "desc": "深色夹克、酒红内搭配黑色牛仔裤、短靴"},
+  {"id": "ZfXMNqOPb9I", "style": "学院 / 老钱", "user": "Zulfugar Karimov", "un": "zulfugarkarimov", "desc": "藏青廓形西装外套配短裙、德训鞋", "sex": "f"},
   {"id": "Pf_ItvUfGVY", "style": "商务休闲", "user": "ALIREZA Pandkhahi", "un": "kroba313", "desc": "橄榄绿西装配同色高领、黑色皮鞋"},
   {"id": "o5g0Xkes7OI", "style": "韩系清爽", "user": "Farshad Sheikhzadeh", "un": "farshadsheikhzadeh", "desc": "牛仔夹克、白 T 配浅色牛仔裤"},
-  {"id": "f5P1emDHupU", "style": "街头", "user": "felirbe", "un": "felirbe", "desc": "黑色卫衣套装配白色球鞋"},
   {"id": "m3RxZs9TsO4", "style": "户外机能", "user": "Carlos Andres Gomez", "un": "carlosandres11", "desc": "橄榄棕轻羽绒配牛仔裤", "city": "Bogotá"},
-  {"id": "XITosdOCS8Q", "style": "极简", "user": "Fray Bekele", "un": "frayb_", "desc": "驼色大衣配深色牛仔，雪地街拍"},
   {"id": "3FVaBKPndPI", "style": "极简", "user": "otabek xatipov", "un": "arrogant_7007", "desc": "黑 T 配灰色西裤、黑色乐福鞋", "city": "Uzbekistan"},
   {"id": "v-ITYFOj1Fg", "style": "日系 City Boy", "user": "Ihor Rapita", "un": "rapitaihor", "desc": "长衬衫外搭配黑色阔腿裤、白袜"},
   {"id": "jhMkxP4rLO0", "style": "日系 City Boy", "user": "Ihor Rapita", "un": "rapitaihor", "desc": "卷袖亚麻长衬衫叠穿黑 T"},
   {"id": "0wC6FXsLAM0", "style": "美式复古", "user": "Irham Setyaki", "un": "setyaki", "desc": "格纹里衬夹克配米白 T、原色牛仔"},
   {"id": "QmMuxzPmsfY", "style": "美式复古", "user": "Ravi Sharma", "un": "ravinepz", "desc": "棕色麂皮夹克配灰色宽松西裤"},
   {"id": "j8pksmCohBM", "style": "学院 / 老钱", "user": "otabek xatipov", "un": "arrogant_7007", "desc": "黑色针织配卡其西裤、乐福鞋"},
+  {"id": "f5P1emDHupU", "style": "街头", "user": "felirbe", "un": "felirbe", "desc": "黑色卫衣套装配白色球鞋"},
   {"id": "IL1oeY0pN2k", "style": "街头", "user": "Good Faces", "un": "goodfacesagency", "desc": "黑色羽绒服配宽裤"},
   {"id": "4ecCpwg62Kk", "style": "街头", "user": "K X I T H V I S U A L S", "un": "keithlwm", "desc": "黑夹克白 T、白球鞋"},
   {"id": "AZVU2iGedz8", "style": "韩系清爽", "user": "Amir Esrafili", "un": "amirvisuals", "desc": "深色长大衣配白衬衫、灰西裤"},
   {"id": "J_9xThkkGEM", "style": "商务休闲", "user": "Bibek Thakuri", "un": "bibekthakuri", "desc": "三件套西装"}
 ];
 const photoSrc = ph => 'photos/' + ph.id + '.jpg';
-const photosOf = st => PHOTOS.filter(ph => ph.style === st);
+// sex 缺省为男装；卡片和封面跟随档案里的穿搭方向，街拍栏男女都展示
+const photoDirOk = ph => { const d = S.profile.direction; return d === 'u' || (ph.sex || 'm') === d };
+const photosOf = st => { const all = PHOTOS.filter(ph => ph.style === st), mine = all.filter(photoDirOk); return mine.length ? mine : all };
 const TYPE_NAME = { coat: '大衣', trench: '风衣', blazer: '西装外套', jacket: '短夹克', chore: '工装夹克', cardigan: '开衫', shell: '冲锋衣', tee: 'T 恤', shirt: '衬衫', knit: '针织衫', hoodie: '卫衣', polo: 'Polo 衫', turtle: '高领针织', stripe: '条纹衫', straight: '直筒裤', wide: '阔腿裤', slim: '锥形裤', shorts: '短裤', skirt: '半身裙', pleated: '百褶裙', sneaker: '板鞋', loafer: '乐福鞋', boot: '靴子', derby: '德比鞋', runner: '跑鞋' };
 const PART_CAT = { o: ['外套'], t: ['上衣', '衬衫', '针织/卫衣'], b: ['裤装', '裙装'], s: ['鞋'] };
 
@@ -1398,14 +1407,14 @@ function wearToday() {
 
 /* ============ 首页图片 ============ */
 function coverPhotos() {
-  const day = dayNo(), mine = photosOf((S.profile.styles || [])[0]);
-  const main = (mine.length ? mine : PHOTOS)[day % (mine.length || PHOTOS.length)];
-  const rest = PHOTOS.filter(ph => ph.style !== main.style), pick = [];
+  const day = dayNo(), mine = photosOf((S.profile.styles || [])[0]), pool = PHOTOS.filter(photoDirOk);
+  const main = (mine.length ? mine : pool)[day % (mine.length || pool.length)];
+  const rest = pool.filter(ph => ph.style !== main.style), pick = [];
   for (let k = 0; pick.length < 2 && k < rest.length; k++) { const ph = rest[(day * 5 + k * 7) % rest.length]; if (!pick.some(x => x.style === ph.style || x.id === ph.id)) pick.push(ph) }
   return [main, ...pick];
 }
 function renderStreet() {
-  $('#streetRow').innerHTML = PHOTOS.map(ph => `<button class="street-card" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}"><span class="street-img"><img src="${photoSrc(ph)}" alt="${esc(ph.style)}街拍：${esc(ph.desc)}" loading="lazy"></span><span class="street-cap"><i>${esc(ph.city || (STYLES.find(x => x.k === ph.style) || {}).en || ph.style)}</i>${esc(ph.desc)}</span></button>`).join('');
+  $('#streetRow').innerHTML = PHOTOS.map(ph => `<button class="street-card" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}"><span class="street-img"><img src="${photoSrc(ph)}" alt="${esc(ph.style)}街拍：${esc(ph.desc)}" loading="lazy"></span><span class="street-cap"><i>${esc(ph.city || (STYLES.find(x => x.k === ph.style) || {}).en || ph.style)}</i>${ph.sex === 'f' ? '<b class="sex">女装</b> ' : ''}${esc(ph.desc)}</span></button>`).join('');
 }
 
 /* ============ 灵感库 ============ */

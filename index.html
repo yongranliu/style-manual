@@ -167,6 +167,18 @@ nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; bac
 .tabs-in { display: flex; gap: clamp(4px, 1.6vw, 22px); overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity }
 .tabs-in::-webkit-scrollbar { display: none }
 .tab { flex: none; border: 0; background: none; padding: 14px 2px 12px; cursor: pointer; color: var(--muted); font-weight: 500; white-space: nowrap; position: relative; display: inline-flex; gap: 6px; align-items: baseline; scroll-snap-align: start }
+.tab-group { flex: none; align-self: center; font-family: var(--f-mono); font-size: .6rem; letter-spacing: .16em; color: var(--muted); opacity: .75; padding: 2px 0 0 14px; margin-left: 6px; border-left: 1px solid var(--line) }
+.tab-group:first-child { border-left: 0; padding-left: 0; margin-left: 0 }
+.dock { display: none }
+@media (max-width: 720px) {
+  .dock { display: grid; grid-template-columns: repeat(5, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; padding: 6px max(8px, env(safe-area-inset-left, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); border-top: 1px solid var(--line) }
+  .dock button { border: 0; background: none; display: grid; justify-items: center; gap: 2px; padding: 4px 0; font-size: .66rem; color: var(--muted); cursor: pointer }
+  .dock svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+  .dock button[aria-current="true"] { color: var(--ink) }
+  .dock button[aria-current="true"] svg { stroke: var(--accent) }
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)) }
+  .toast { bottom: calc(78px + env(safe-area-inset-bottom, 0px)) }
+}
 .tab::before { content: attr(data-n); font-family: var(--f-mono); font-size: .64rem; letter-spacing: .06em; opacity: .7 }
 .tab::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .3s ease }
 .tab:hover { color: var(--ink) }
@@ -382,6 +394,8 @@ th { font-family: var(--f-mono); font-weight: 500; color: var(--muted); font-siz
 .garment-add { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 18px; align-items: start }
 @media (max-width: 520px) { .garment-add { grid-template-columns: minmax(0, 1fr) } .garment-shot { max-width: 160px } }
 .garments { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 14px 12px }
+.g-edit { display: grid; gap: 6px; cursor: pointer; border-radius: 3px }
+.g-edit:hover .g-img { outline: 1px solid var(--ink); outline-offset: 2px }
 .garment { position: relative; display: grid; gap: 6px; align-content: start; min-width: 0 }
 .g-img { aspect-ratio: 3 / 4; border-radius: 3px; overflow: hidden; background: var(--c); border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent); position: relative }
 .g-img.cut, .shot.cut { background: var(--card) }
@@ -460,6 +474,7 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
 .foot .latin { font-size: 2.2rem; color: var(--ink); line-height: 1 }
 .foot > :last-child { text-align: right }
 @media (max-width: 640px) { .foot { grid-template-columns: minmax(0, 1fr) } .foot > :last-child { text-align: left } }
+.street-img img, .photo img, .cover-photo img, .g-img img, .sq-photo img { animation: fade .6s ease both }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
 </style>
 
@@ -498,16 +513,19 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
 
 <nav class="tabs" aria-label="页面">
   <div class="wrap"><div class="tabs-in" role="tablist" id="tabs">
+    <span class="tab-group" aria-hidden="true">日常</span>
     <button class="tab" role="tab" data-v="look" data-n="01">穿搭灵感</button>
-    <button class="tab" role="tab" data-v="board" data-n="02">灵感墙</button>
-    <button class="tab" role="tab" data-v="train" data-n="03">练眼力</button>
-    <button class="tab" role="tab" data-v="learn" data-n="04">审美课堂</button>
-    <button class="tab" role="tab" data-v="profile" data-n="05">我的档案</button>
-    <button class="tab" role="tab" data-v="shop" data-n="06">买衣服</button>
-    <button class="tab" role="tab" data-v="glasses" data-n="07">选眼镜</button>
-    <button class="tab" role="tab" data-v="hair" data-n="08">理发</button>
-    <button class="tab" role="tab" data-v="closet" data-n="09">我的衣橱</button>
-    <button class="tab" role="tab" data-v="ask" data-n="10">问顾问</button>
+    <button class="tab" role="tab" data-v="closet" data-n="02">我的衣橱</button>
+    <button class="tab" role="tab" data-v="board" data-n="03">灵感墙</button>
+    <button class="tab" role="tab" data-v="ask" data-n="04">问顾问</button>
+    <span class="tab-group" aria-hidden="true">学习</span>
+    <button class="tab" role="tab" data-v="train" data-n="05">练眼力</button>
+    <button class="tab" role="tab" data-v="learn" data-n="06">审美课堂</button>
+    <span class="tab-group" aria-hidden="true">工具</span>
+    <button class="tab" role="tab" data-v="profile" data-n="07">我的档案</button>
+    <button class="tab" role="tab" data-v="shop" data-n="08">买衣服</button>
+    <button class="tab" role="tab" data-v="glasses" data-n="09">选眼镜</button>
+    <button class="tab" role="tab" data-v="hair" data-n="10">理发</button>
   </div></div>
 </nav>
 
@@ -694,6 +712,13 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
   </section>
 </main>
 <footer><div class="wrap foot"><div style="display:grid;gap:8px"><span class="latin">Dress like you mean it.</span><span>豪然形象手册 · 插画均为示意；街拍照片来自 Unsplash 和 Pexels，摄影师见每张照片。</span></div><div style="display:grid;gap:4px"><span id="footNote"></span><span class="mono" style="font-size:.72rem;letter-spacing:.12em">VOL. 01 — MMXXVI</span></div></div></footer>
+<nav class="dock" aria-label="常用">
+  <button data-dock="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></svg><span>今天</span></button>
+  <button data-dock="closet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5a2 2 0 1 1 2 2c-1 .4-2 1-2 2M12 9 3 15.5c-.6.5-.3 1.5.5 1.5h17c.8 0 1.1-1 .5-1.5z"/></svg><span>衣橱</span></button>
+  <button data-dock="board"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v9H4zM13 4h7v5h-7zM13 11h7v9h-7zM4 15h7v5H4z"/></svg><span>灵感墙</span></button>
+  <button data-dock="ask"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H9l-4 4z"/></svg><span>问顾问</span></button>
+  <button data-dock="more"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h.01M12 12h.01M19 12h.01"/></svg><span>全部</span></button>
+</nav>
 <div id="sheet"></div>
 <div id="lightbox"></div>
 <div class="toast" id="toast" hidden></div>
@@ -2032,17 +2057,17 @@ function renderHair() {
 }
 
 /* ============ 衣橱 ============ */
-const CF = { name: '', cat: '上衣', color: '#F7F7F5', note: '', blob: null, preview: '', status: '', busy: false, cut: false };
+const CF = { name: '', cat: '上衣', color: '#F7F7F5', note: '', blob: null, preview: '', status: '', busy: false, cut: false, editId: '' };
 function renderClosetForm() {
   const ai = aiReady() && aiVision();
   $('#closetForm').innerHTML = `
-    <label class="shot garment-shot${CF.cut ? ' cut' : ''}" for="c-file">${CF.preview ? `<img src="${CF.preview}" alt="单品照片"><button type="button" class="x" id="c-unphoto" aria-label="移除照片">×</button>` : `<span><b>拍一张或上传</b>平铺或挂起来拍，背景越干净颜色越准</span>`}<input type="file" id="c-file" accept="image/*" hidden></label>
+    <label class="shot garment-shot${CF.cut ? ' cut' : ''}" for="c-file">${CF.preview ? `<img src="${CF.preview}" alt="单品照片"><button type="button" class="x" id="c-unphoto" aria-label="移除照片">×</button>` : `<span><b>拍照或上传</b>可一次选多张；平铺或挂起来拍，背景越干净颜色越准</span>`}<input type="file" id="c-file" accept="image/*" multiple hidden></label>
     <div class="form">
       <div class="field full"><label for="c-name">单品名称</label><input type="text" id="c-name" value="${esc(CF.name)}" placeholder="比如：优衣库 U 白色圆领 T"></div>
       <div class="field"><label for="c-cat">类别</label><select id="c-cat">${opt(CLOSET_CATS.map(c => [c, c]), CF.cat)}</select></div>
       <div class="field"><label for="c-note">备注（可选）</label><input type="text" id="c-note" value="${esc(CF.note)}" placeholder="材质、尺码、购入时间"></div>
       <div class="field full"><span class="lab">颜色：${esc(colorInfo(CF.color).n)}</span><div class="pick-row" id="c-colors">${LAB_COLORS.map(c => `<button type="button" class="dot" style="background:${c.h}" data-ccol="${c.h}" aria-pressed="${CF.color === c.h}" title="${c.n}" aria-label="${c.n}"></button>`).join('')}</div></div>
-      <div class="full row"><button class="btn" id="c-add"${CF.busy ? ' disabled' : ''}>加入衣橱</button>${CF.blob && !CF.cut ? `<button class="btn ghost sm" id="c-cut"${CF.busy ? ' disabled' : ''}>去背景</button>` : ''}${CF.cut && CF.orig ? '<button class="btn ghost sm" id="c-uncut">还原原图</button>' : ''}${CF.blob && ai ? `<button class="btn ghost sm" id="c-ai"${CF.busy ? ' disabled' : ''}>重新识别</button>` : ''}<span class="small muted" id="c-status">${CF.status || (ai ? '上传照片后会自动识别名称、类别和颜色。' : '上传照片会自动取颜色；设置 AI 模型后还能识别名称和类别。')}</span></div>
+      <div class="full row"><button class="btn" id="c-add"${CF.busy ? ' disabled' : ''}>${CF.editId ? '保存修改' : '加入衣橱'}</button>${CF.editId ? '<button class="btn ghost sm" id="c-cancel">取消</button>' : ''}${CF.blob && !CF.cut ? `<button class="btn ghost sm" id="c-cut"${CF.busy ? ' disabled' : ''}>去背景</button>` : ''}${CF.cut && CF.orig ? '<button class="btn ghost sm" id="c-uncut">还原原图</button>' : ''}${CF.blob && ai ? `<button class="btn ghost sm" id="c-ai"${CF.busy ? ' disabled' : ''}>重新识别</button>` : ''}<span class="small muted" id="c-status">${CF.status || (ai ? '上传照片后会自动识别名称、类别和颜色。' : '上传照片会自动取颜色；设置 AI 模型后还能识别名称和类别。')}</span></div>
     </div>`;
 }
 // 去背景：从四边往里“漫水”，和背景色接近、或和相邻像素渐变连续的都算背景；适合平铺或挂墙拍的单品
@@ -2106,21 +2131,41 @@ async function garmentPhoto(file) {
     if (aiReady() && aiVision()) recognizeGarment();
   } catch (e) { toast('这张图片读不了，换一张 JPG 或 PNG') }
 }
+// 让 AI 看一张单品照片，返回 { name, cat, color, note } 中认出来的部分
+async function aiGarment(blob) {
+  const prompt = `照片里是一件衣物（或一双鞋、一件配饰）。只输出一个 JSON 对象，不要其他文字：
+{"name": "简短的中文名称，带颜色和款式，比如「白色重磅圆领 T 恤」「深棕麂皮乐福鞋」，能看出品牌就加上", "cat": 类别，只能是 ${CLOSET_CATS.map(c => `「${c}」`).join('')} 之一, "color": 主色，只能是 ${LAB_COLORS.map(c => c.n).join('、')} 之一, "note": "材质和版型，15 字以内，比如「纯棉 落肩 宽松」"}`;
+  const text = await aiCall({ prompt, images: [await prepImage(blob)] });
+  const j = JSON.parse((String(text).match(/\{[\s\S]*\}/) || ['{}'])[0]), r = {};
+  if (j.name) r.name = String(j.name).slice(0, 80);
+  if (CLOSET_CATS.includes(j.cat)) r.cat = j.cat;
+  const col = LAB_COLORS.find(c => c.n === j.color); if (col) r.color = col.h;
+  if (j.note) r.note = String(j.note).slice(0, 80);
+  return r;
+}
 async function recognizeGarment() {
   if (!CF.blob) return;
   CF.busy = true; CF.status = `${aiLabel()} 识别中…`; renderClosetForm();
-  const prompt = `照片里是一件衣物（或一双鞋、一件配饰）。只输出一个 JSON 对象，不要其他文字：
-{"name": "简短的中文名称，带颜色和款式，比如「白色重磅圆领 T 恤」「深棕麂皮乐福鞋」，能看出品牌就加上", "cat": 类别，只能是 ${CLOSET_CATS.map(c => `「${c}」`).join('')} 之一, "color": 主色，只能是 ${LAB_COLORS.map(c => c.n).join('、')} 之一, "note": "材质和版型，15 字以内，比如「纯棉 落肩 宽松」"}`;
-  try {
-    const text = await aiCall({ prompt, images: [await prepImage(CF.blob)] });
-    const j = JSON.parse((String(text).match(/\{[\s\S]*\}/) || ['{}'])[0]);
-    if (j.name) CF.name = String(j.name).slice(0, 80);
-    if (CLOSET_CATS.includes(j.cat)) CF.cat = j.cat;
-    const col = LAB_COLORS.find(c => c.n === j.color); if (col) CF.color = col.h;
-    if (j.note) CF.note = String(j.note).slice(0, 80);
-    CF.status = j.name ? '已识别，确认无误就加入衣橱。' : '没认出来，手动填一下吧。';
-  } catch (e) { CF.status = '识别失败：' + (e instanceof SyntaxError ? '模型没按格式回答' : e.message) }
+  try { const r = await aiGarment(CF.blob); Object.assign(CF, r); CF.status = r.name ? '已识别，确认无误就保存。' : '没认出来，手动填一下吧。' }
+  catch (e) { CF.status = '识别失败：' + (e instanceof SyntaxError ? '模型没按格式回答' : e.message) }
   CF.busy = false; renderClosetForm();
+}
+// 一次选多张：每张先按照片取色存进衣橱，标「待完善」；设置了能看图的 AI 就逐张识别
+async function batchGarments(files) {
+  const list = [...files].filter(f => f.type.startsWith('image/')); if (!list.length) return;
+  const ai = aiReady() && aiVision(); let n = 0;
+  for (const f of list) {
+    toast(`正在处理第 ${++n} / ${list.length} 张…`);
+    try {
+      const blob = await shrinkTo(f, 1200), img = await storeImage(blob); if (!img) continue;
+      const it = { id: uid(), name: '新单品', cat: '上衣', color: colorInfo(dominantColor(await createImageBitmap(blob))).h, note: '', img, wears: 0, last: 0, draft: true };
+      if (ai) { try { const r = await aiGarment(blob); Object.assign(it, r); if (r.name) it.draft = false } catch (e) {} }
+      S.closet.items.push(it); save('closet'); renderCloset();
+    } catch (e) {}
+  }
+  renderToday();
+  const left = S.closet.items.filter(i => i.draft).length;
+  toast(left ? `已加入，${left} 件待完善：点开补名称和类别` : `已加入 ${list.length} 件`);
 }
 async function cutGarmentForm() {
   CF.busy = true; renderClosetForm();
@@ -2153,6 +2198,7 @@ async function dropImage(src) {
 }
 async function addGarment() {
   if (!CF.name.trim()) { toast('先写单品名称'); $('#c-name').focus(); return }
+  if (CF.editId) return saveGarmentEdit();
   CF.busy = true; renderClosetForm();
   const img = CF.blob ? await storeImage(CF.blob) : '';  // 只保存最终用的图，原图不留
   if (CF.blob && !img) toast('照片没存上，先只记文字');
@@ -2160,6 +2206,20 @@ async function addGarment() {
   if (CF.preview) URL.revokeObjectURL(CF.preview);
   Object.assign(CF, { name: '', note: '', blob: null, orig: null, preview: '', status: '', busy: false, cut: false });
   save('closet'); renderClosetForm(); renderCloset(); renderToday(); toast('已加入衣橱');
+}
+function resetCF() { if (CF.preview && CF.blob) URL.revokeObjectURL(CF.preview); Object.assign(CF, { name: '', note: '', blob: null, orig: null, preview: '', status: '', busy: false, cut: false, editId: '' }) }
+async function editGarment(id) {
+  const it = S.closet.items.find(i => i.id === id); if (!it) return;
+  resetCF();
+  Object.assign(CF, { editId: id, name: it.draft ? '' : it.name, cat: it.cat, color: it.color, note: it.note || '', cut: !!it.cut, preview: it.img ? await imgURL(it.img) : '', status: '修改后点「保存修改」。换照片就重新上传一张。' });
+  renderClosetForm(); $('#closetForm').scrollIntoView({ behavior: 'smooth', block: 'center' }); $('#c-name').focus();
+}
+async function saveGarmentEdit() {
+  const it = S.closet.items.find(i => i.id === CF.editId); if (!it) { resetCF(); renderClosetForm(); return }
+  CF.busy = true; renderClosetForm();
+  if (CF.blob) { const img = await storeImage(CF.blob); if (img) { [it.img, it.orig].filter(Boolean).forEach(dropImage); Object.assign(it, { img, cut: CF.cut }); delete it.orig } }
+  Object.assign(it, { name: CF.name.trim().slice(0, 80), cat: CF.cat, color: CF.color, note: CF.note.trim().slice(0, 80) }); delete it.draft;
+  resetCF(); save('closet'); renderClosetForm(); renderCloset(); renderToday(); toast('已保存');
 }
 async function delGarment(id) {
   const it = S.closet.items.find(i => i.id === id); if (!it) return;
@@ -2171,7 +2231,7 @@ function renderCloset() {
   const items = S.closet.items;
   $('#closetList').innerHTML = items.length ? CLOSET_CATS.filter(c => items.some(i => i.cat === c)).map(c => `
     <div class="blk"><div class="blk-h"><h4>${c}</h4><span class="small muted mono">${items.filter(i => i.cat === c).length}</span></div>
-      <div class="garments">${items.filter(i => i.cat === c).map(i => `<div class="garment">${garmentTile(i)}<div class="g-meta"><b>${esc(i.name)}</b><span>${esc(colorInfo(i.color).n)}${i.note ? ' · ' + esc(i.note) : ''}</span>${i.wears ? `<span class="mono">穿过 ${i.wears} 次</span>` : ''}</div><button class="x" data-del="${esc(i.id)}" aria-label="删除 ${esc(i.name)}">×</button>${i.img && !i.cut ? `<button class="g-cut" data-gcut="${esc(i.id)}">去背景</button>` : i.orig ? `<button class="g-cut" data-guncut="${esc(i.id)}">还原</button>` : ''}</div>`).join('')}</div></div>`).join('')
+      <div class="garments">${items.filter(i => i.cat === c).map(i => `<div class="garment"><div class="g-edit" data-gedit="${esc(i.id)}" role="button" tabindex="0" aria-label="编辑 ${esc(i.name)}">${garmentTile(i)}<div class="g-meta"><b>${i.draft ? '<span class="pill warn">待完善</span> ' : ''}${esc(i.name)}</b><span>${esc(colorInfo(i.color).n)}${i.note ? ' · ' + esc(i.note) : ''}</span>${i.wears ? `<span class="mono">穿过 ${i.wears} 次</span>` : ''}</div></div><button class="x" data-del="${esc(i.id)}" aria-label="删除 ${esc(i.name)}">×</button>${i.img && !i.cut ? `<button class="g-cut" data-gcut="${esc(i.id)}">去背景</button>` : i.orig ? `<button class="g-cut" data-guncut="${esc(i.id)}">还原</button>` : ''}</div>`).join('')}</div></div>`).join('')
     : `<div class="empty"><b>衣橱还是空的</b><span>从最常穿的 10 件开始登记：每天穿的外套、两三件上衣、两条裤子、常穿的鞋。拍照上传最快。</span><span>对照课堂第 6 课的胶囊清单，就能看出还缺什么。</span></div>`;
   const pal = PALETTES[paletteKey(S.profile)].sw.map(x => x[1]);
   const counts = CLOSET_CATS.map(c => [c, items.filter(i => i.cat === c).length]), max = Math.max(1, ...counts.map(x => x[1]));
@@ -2585,6 +2645,7 @@ function show(v, scroll) {
   if (!VIEWS.includes(v)) v = 'look';
   VIEWS.forEach(x => { $('#v-' + x).hidden = x !== v });
   document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.v === v));
+  document.querySelectorAll('[data-dock]').forEach(b => b.setAttribute('aria-current', b.dataset.dock === v));
   try { history.replaceState(null, '', '#' + v) } catch (e) {}
   try { localStorage.setItem('xing_tab', v) } catch (e) {}
   if (scroll) document.querySelector('nav.tabs').scrollIntoView({ behavior: 'smooth' });
@@ -2627,7 +2688,7 @@ document.addEventListener('change', e => {
   if (e.target.id === 'boardFile') { addImages(e.target.files); e.target.value = ''; return }
   if (e.target.id === 'ask-img') { const f = e.target.files[0]; ASK.img = f || null; if (ASK.imgURL) URL.revokeObjectURL(ASK.imgURL); ASK.imgURL = f ? URL.createObjectURL(f) : ''; const th = $('#ask-thumb'); th.src = ASK.imgURL; th.hidden = !f }
   if (e.target.id === 'bkIn') { if (e.target.files[0]) importBackup(e.target.files[0]); e.target.value = ''; return }
-  if (e.target.id === 'c-file') { garmentPhoto(e.target.files[0]); e.target.value = '' }
+  if (e.target.id === 'c-file') { const fs = e.target.files; if (fs.length > 1 && !CF.editId) batchGarments(fs); else garmentPhoto(fs[0]); e.target.value = '' }
   if (e.target.id === 'scan-file-face' || e.target.id === 'scan-file-body') { loadShot(e.target.id.slice(10), e.target.files[0]); e.target.value = '' }
 });
 document.addEventListener('paste', e => {
@@ -2637,7 +2698,7 @@ document.addEventListener('paste', e => {
 ['dragover', 'dragenter'].forEach(ev => document.addEventListener(ev, e => { const z = e.target.closest && e.target.closest('#dropZone'); if (z) { e.preventDefault(); z.classList.add('over') } }));
 document.addEventListener('dragleave', e => { const z = e.target.closest && e.target.closest('#dropZone'); if (z) z.classList.remove('over') });
 document.addEventListener('drop', e => { const z = e.target.closest && e.target.closest('#dropZone'); if (z) { e.preventDefault(); z.classList.remove('over'); addImages(e.dataTransfer.files) } });
-document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'wx-city') { TODAY.editCity = false; setCity(e.target.value); return } if (e.key !== 'Escape') return; if ($('#lightbox').innerHTML) $('#lightbox').innerHTML = ''; else if ($('#sheet').innerHTML) closeSheet() });
+document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.dataset && e.target.dataset.gedit) { e.preventDefault(); editGarment(e.target.dataset.gedit); return } if (e.key === 'Enter' && e.target.id === 'wx-city') { TODAY.editCity = false; setCity(e.target.value); return } if (e.key !== 'Escape') return; if ($('#lightbox').innerHTML) $('#lightbox').innerHTML = ''; else if ($('#sheet').innerHTML) closeSheet() });
 document.addEventListener('click', e => {
   const pk = e.target.closest && e.target.closest('#picker');
   if (pk && SCAN.mode) {
@@ -2646,10 +2707,17 @@ document.addEventListener('click', e => {
     if (SCAN.pts.length >= SCAN_STEPS[SCAN.mode].length) finishPicks(); else renderScan();
     return;
   }
+  const ge = e.target.closest && !e.target.closest('button') && e.target.closest('[data-gedit]'); if (ge) return editGarment(ge.dataset.gedit);
   if (e.target.dataset && e.target.dataset.lbclose) { $('#lightbox').innerHTML = ''; return }
   if (e.target.dataset && e.target.dataset.close) { closeSheet(); return }
   const t = e.target.closest('button'); if (!t) return;
   if (t.classList.contains('tab')) return show(t.dataset.v);
+  if (t.dataset.dock) {
+    const d = t.dataset.dock;
+    if (d === 'home') { window.scrollTo({ top: 0, behavior: 'smooth' }); return }
+    if (d === 'more') { document.querySelector('nav.tabs').scrollIntoView({ behavior: 'smooth' }); return }
+    return show(d, true);
+  }
   if (t.dataset.go) return show(t.dataset.go, true);
   if (t.dataset.photo) return openPhoto(t.dataset.photo);
   if (t.dataset.look) return openLook(t.dataset.look);
@@ -2706,6 +2774,7 @@ document.addEventListener('click', e => {
   }
   if (t.dataset.ccol) { CF.color = t.dataset.ccol; renderClosetForm(); return }
   if (t.id === 'c-add') return addGarment();
+  if (t.id === 'c-cancel') { resetCF(); renderClosetForm(); return }
   if (t.id === 'c-ai') return recognizeGarment();
   if (t.id === 'c-cut') return cutGarmentForm();
   if (t.id === 'c-uncut') { URL.revokeObjectURL(CF.preview); Object.assign(CF, { blob: CF.orig, orig: null, cut: false, preview: URL.createObjectURL(CF.orig), status: '已还原原图。' }); renderClosetForm(); return }

@@ -162,6 +162,17 @@ button, input, select, textarea { font: inherit; color: inherit }
 .picks-head { display: flex; justify-content: space-between; align-items: end; gap: 12px; border-top: 1px solid var(--ink); padding-top: 12px; margin-bottom: 18px }
 .picks-head h2 { font-size: clamp(1.3rem, 2.4vw, 1.7rem) }
 
+/* 点击反馈：按下时轻微缩小，松开回弹 */
+.btn, .chip, .prov, .opt, .dot, .tab, .dock button, .look, .street-card, .ab-pick, .photo, .linkbtn, .shot, .g-edit, .close, .x, .g-cut { -webkit-tap-highlight-color: transparent; transition-property: transform, background, color, border-color, box-shadow, opacity; transition-duration: .16s; transition-timing-function: cubic-bezier(.2,.8,.2,1) }
+.btn:active, .chip:active, .prov:active, .opt:active, .linkbtn:active, .close:active, .x:active, .g-cut:active { transform: scale(.96) }
+.dot:active { transform: scale(.88) }
+.tab:active, .dock button:active { transform: translateY(1px) }
+.look:active, .street-card:active, .ab-pick:active, .photo:active, .shot:active, .g-edit:active { transform: scale(.985) }
+.btn:not(.ghost):hover { box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--ink) 60%, transparent) }
+.street-card:hover .street-cap i { color: var(--accent) }
+.look:hover .meta b { color: var(--accent) }
+.look .meta b { transition: color .2s }
+
 /* 目录式导航 */
 nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: saturate(1.4) blur(12px); -webkit-backdrop-filter: saturate(1.4) blur(12px); border-block: 1px solid var(--line) }
 .tabs-in { display: flex; gap: clamp(4px, 1.6vw, 22px); overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity }
@@ -288,6 +299,22 @@ ul.tick.no li::before { content: "−"; color: var(--bad) }
 .sheet-bg { position: fixed; inset: 0; background: rgba(14,12,10,.5); backdrop-filter: blur(4px); z-index: 30; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); animation: fade .25s ease }
 @keyframes fade { from { opacity: 0 } }
 .sheet { background: var(--card); border-radius: var(--r); max-width: 980px; width: 100%; max-height: 100%; overflow: auto; display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); box-shadow: 0 40px 100px -30px rgba(0,0,0,.6); animation: rise .35s cubic-bezier(.2,.7,.2,1) }
+.sheet-bg.closing { animation: fade-out .2s ease both }
+.sheet-bg.closing .sheet { animation: sheet-out .2s ease both }
+@keyframes fade-out { to { opacity: 0 } }
+@keyframes sheet-out { to { opacity: 0; transform: translateY(12px) scale(.985) } }
+.lightbox.closing { animation: fade-out .18s ease both }
+.lightbox img { animation: zoom-in .3s cubic-bezier(.2,.8,.2,1) both }
+@keyframes zoom-in { from { opacity: 0; transform: scale(.94) } }
+/* 手机上详情页从底部滑出 */
+@media (max-width: 720px) {
+  .sheet-bg { place-items: end stretch; padding: 40px 0 0 }
+  .sheet { border-radius: 16px 16px 0 0; max-height: 92vh; animation: sheet-up .38s cubic-bezier(.2,.85,.25,1) both }
+  .sheet .arch { border-radius: 16px 16px 0 0 }
+  .sheet-bg.closing .sheet { animation: sheet-down .22s ease both }
+}
+@keyframes sheet-up { from { transform: translateY(100%) } }
+@keyframes sheet-down { to { transform: translateY(100%) } }
 @media (max-width: 720px) { .sheet { grid-template-columns: minmax(0, 1fr) } .sheet .arch { max-height: 420px } .sheet .arch svg { max-height: 380px; width: auto } }
 .sheet .arch { background: var(--tint); display: grid; place-items: end center; padding: 40px 28px 12px; border-radius: var(--r) 0 0 var(--r) }
 @media (max-width: 720px) { .sheet .arch { border-radius: var(--r) var(--r) 0 0 } }
@@ -312,6 +339,14 @@ ul.tick.no li::before { content: "−"; color: var(--bad) }
 .drop.over { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--card)) }
 .board { columns: 260px; column-gap: 18px }
 .pin { break-inside: avoid; margin-bottom: 18px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; display: grid; box-shadow: var(--shadow) }
+.pic-search { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px }
+.pics { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px 10px }
+.pic { margin: 0; display: grid; gap: 6px; align-content: start }
+.pic img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 3px; background: var(--soft); animation: fade .5s ease both }
+.pic figcaption { font-size: .72rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.pic figcaption a { color: inherit }
+.pin-credit { font-size: .7rem; color: var(--muted); padding: 6px 14px 0 }
+.pin-credit a { color: inherit }
 .pin img { width: 100%; height: auto; display: block; background: var(--soft); min-height: 120px }
 .pin-body { padding: 12px 14px 14px; display: grid; gap: 8px }
 .pin-body textarea { min-height: 52px; font-size: .86rem; padding: 6px 8px }
@@ -390,6 +425,25 @@ th { font-family: var(--f-mono); font-weight: 500; color: var(--muted); font-siz
 .score { display: flex; align-items: baseline; gap: 10px }
 .score b { font-family: var(--f-latin); font-weight: 400; font-size: 3.4rem; line-height: 1 }
 
+/* 工具页（买衣服、选眼镜、理发）：编号小节、清单用大号衬线数字、关键数字放大 */
+.tool { counter-reset: sec }
+.tool .panel { counter-increment: sec; gap: 16px }
+.tool .panel > h3, .tool .panel > .row:first-child > h3 { font-size: 1.25rem }
+.tool .panel > h3::before, .tool .panel > .row:first-child > h3::before { content: "§ " counter(sec, decimal-leading-zero); display: block; font-family: var(--f-mono); font-size: .62rem; font-weight: 500; letter-spacing: .16em; color: var(--accent); margin-bottom: 6px }
+.tool .panel ul { list-style: none; margin: 0 !important; padding: 0 !important; display: grid; gap: 0 !important; counter-reset: li; border-bottom: 1px solid var(--line) }
+.tool .panel ul li { counter-increment: li; display: block; position: relative; padding: 11px 0 11px 2.4em !important; border-top: 1px solid var(--line) }
+.tool .panel ul li::before { content: counter(li); position: absolute; left: 0; top: 9px; font-family: var(--f-latin); font-style: italic; font-weight: 400; font-size: 1.45rem; line-height: 1; color: var(--accent) }
+.tool .panel ul li b { font-family: var(--f-display) }
+.tool .script { position: relative; background: var(--paper); border: 0; border-left: 3px solid var(--accent); border-radius: 0 4px 4px 0; padding: 14px 38px 14px 18px; font-family: var(--f-display); font-size: .95rem; line-height: 1.8 }
+.tool .script::before { content: "“"; position: absolute; right: 12px; top: -6px; font-family: var(--f-latin); font-size: 3rem; color: color-mix(in srgb, var(--accent) 35%, transparent) }
+.tool .style-card { gap: 10px; transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s }
+.tool .style-card:hover { transform: translateY(-3px); box-shadow: var(--shadow) }
+.tool .frames { gap: 10px }
+.tool .frame.big { background: var(--paper); border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px 10px; min-width: 150px; transition: border-color .2s }
+.tool .frame.big:hover { border-color: var(--ink) }
+.tool b.mono { font-family: var(--f-latin); font-weight: 400; letter-spacing: 0 }
+.tool .blk p b.mono[style] { font-size: 2.6rem !important; line-height: 1 }
+
 /* 衣橱 */
 .garment-add { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 18px; align-items: start }
 @media (max-width: 520px) { .garment-add { grid-template-columns: minmax(0, 1fr) } .garment-shot { max-width: 160px } }
@@ -467,7 +521,10 @@ th { font-family: var(--f-mono); font-weight: 500; color: var(--muted); font-siz
 .prop .v small { display: block; color: var(--muted); font-size: .78rem; line-height: 1.5 }
 .swatch-chip { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: -1px; margin-right: 4px; border: 1px solid rgba(0,0,0,.15) }
 
-.toast { position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 9px 18px; border-radius: 3px; font-size: .88rem; z-index: 40; box-shadow: 0 10px 30px -10px rgba(0,0,0,.4); animation: rise .25s ease }
+.toast { position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 10px 18px; border-radius: 999px; font-size: .86rem; z-index: 40; box-shadow: 0 14px 34px -12px rgba(0,0,0,.45); animation: toast-in .32s cubic-bezier(.2,.9,.25,1.2) both; max-width: calc(100vw - 32px); text-align: center }
+.toast.out { animation: toast-out .22s ease both }
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 14px) scale(.96) } }
+@keyframes toast-out { to { opacity: 0; transform: translate(-50%, 8px) } }
 .script { background: var(--paper); border: 1px dashed var(--line); border-radius: 4px; padding: 12px 14px; white-space: pre-wrap; font-size: .9rem }
 footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(--muted); font-size: .82rem }
 .foot { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; align-items: end }
@@ -546,6 +603,7 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
       <h2>我的灵感墙</h2>
       <p class="muted">把在小红书、Pinterest、杂志上看到的真人穿搭截图存进来，每张按「颜色 → 廓形 → 材质 → 细节」写一句拆解。存满 30 张，你会发现自己反复喜欢的是同一类东西，那就是你的风格。</p>
     </div>
+    <div class="scan" id="picPanel"></div>
     <label class="drop" id="dropZone" for="boardFile">
       <b>拖进图片、直接粘贴截图，或点这里选择</b>
       <span class="small muted" id="boardWhere"></span>
@@ -608,7 +666,7 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
     </div>
   </section>
 
-  <section class="view" id="v-shop" hidden>
+  <section class="view tool" id="v-shop" hidden>
     <div class="view-head">
       <p class="eyebrow">Shopping</p>
       <h2>进试衣间之前看这一页</h2>
@@ -658,7 +716,7 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
     </div>
   </section>
 
-  <section class="view" id="v-glasses" hidden>
+  <section class="view tool" id="v-glasses" hidden>
     <div class="view-head">
       <p class="eyebrow">Eyewear</p>
       <h2>眼镜是脸上面积最大的配饰</h2>
@@ -667,7 +725,7 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
     <div id="glassesView" style="display:grid;gap:22px"></div>
   </section>
 
-  <section class="view" id="v-hair" hidden>
+  <section class="view tool" id="v-hair" hidden>
     <div class="view-head">
       <p class="eyebrow">Haircut</p>
       <h2>带着这段话去理发店</h2>
@@ -1335,7 +1393,9 @@ async function initCloud() {
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const uid = () => Math.random().toString(36).slice(2, 10);
-function toast(msg) { const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 1800) }
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.hidden = false; t.classList.remove('out'); void t.offsetWidth; clearTimeout(toast.t); clearTimeout(toast.h); toast.t = setTimeout(() => { t.classList.add('out'); toast.h = setTimeout(() => t.hidden = true, 220) }, 1900) }
+// 手机上的轻触反馈（不支持的设备什么都不做）
+const buzz = (ms = 8) => { try { navigator.vibrate && navigator.vibrate(ms) } catch (e) {} };
 function rgb(h) { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255] }
 function light(h) { const [r, g, b] = rgb(h); return (0.299 * r + 0.587 * g + 0.114 * b) / 255 * 100 }
 function hue(h) {
@@ -1577,7 +1637,12 @@ function openLook(id) {
   document.body.style.overflow = 'hidden';
   $('#sheet .close').focus();
 }
-function closeSheet() { $('#sheet').innerHTML = ''; document.body.style.overflow = '' }
+function closeSheet() {
+  const bg = $('#sheet .sheet-bg'); if (!bg) return;
+  bg.classList.add('closing'); document.body.style.overflow = '';
+  setTimeout(() => { $('#sheet').innerHTML = '' }, 200);
+}
+function closeLightbox() { const lb = $('#lightbox .lightbox'); if (!lb) return; lb.classList.add('closing'); setTimeout(() => { $('#lightbox').innerHTML = '' }, 180) }
 
 /* ============ 真人照片 ============ */
 function photoBtn(ph) { return `<button class="photo" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}">${photoImg(ph, '150px', ' loading="lazy"')}</button>` }
@@ -1623,6 +1688,69 @@ async function addImages(files) {
 async function fillImgs(root) {
   for (const im of root.querySelectorAll('img[data-src]')) { const u = await imgURL(im.dataset.src); if (u) im.src = u; else im.alt = '图片在另一台设备或浏览器里' }
 }
+/* ============ 搜图：Pexels / Unsplash 接口（用自己的免费密钥），喜欢的存进灵感墙 ============ */
+const PICS = { lib: 'pexels', keys: {}, q: '', page: 1, res: [], busy: false, err: '', more: false };
+const PIC_LIBS_KEYS = ['pexels', 'unsplash'];
+{ const saved = lsGet('pics'); if (saved) { if (PIC_LIBS_KEYS.includes(saved.lib)) PICS.lib = saved.lib; if (saved.keys) PICS.keys = saved.keys } }
+const PIC_LIBS = {
+  pexels: { n: 'Pexels', keyUrl: 'https://www.pexels.com/api/', hint: '注册后在 API 页面直接给出，免费，每小时 200 次' },
+  unsplash: { n: 'Unsplash', keyUrl: 'https://unsplash.com/oauth/applications', hint: '新建一个应用，复制 Access Key，免费，每小时 50 次' }
+};
+const savePics = () => lsSet('pics', { lib: PICS.lib, keys: PICS.keys });
+const picQuery = st => ({ '极简': 'minimalist men outfit', '日系 City Boy': 'city boy fashion', '美式复古': 'americana menswear', '学院 / 老钱': 'preppy menswear', '户外机能': 'gorpcore outfit', '街头': 'men streetwear', '韩系清爽': 'korean men fashion', '商务休闲': 'smart casual men' })[st] || 'men street style';
+async function searchPics(more) {
+  const key = PICS.keys[PICS.lib]; if (!key || !PICS.q.trim()) return;
+  PICS.busy = true; PICS.err = ''; if (!more) { PICS.page = 1; PICS.res = [] } renderPics();
+  const q = encodeURIComponent(PICS.q.trim());
+  try {
+    let list, more_;
+    if (PICS.lib === 'pexels') {
+      const r = await fetch(`https://api.pexels.com/v1/search?query=${q}&orientation=portrait&per_page=24&page=${PICS.page}`, { headers: { authorization: key } });
+      if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? '密钥无效' : r.status === 429 ? '本小时次数用完了' : '搜索失败（' + r.status + '）');
+      const j = await r.json(); more_ = !!j.next_page;
+      list = j.photos.map(p => ({ id: 'pexels-' + p.id, thumb: p.src.medium, full: p.src.large2x || p.src.large, by: p.photographer, byUrl: p.photographer_url, page: p.url, lib: 'Pexels', alt: p.alt || '' }));
+    } else {
+      const r = await fetch(`https://api.unsplash.com/search/photos?query=${q}&orientation=portrait&per_page=24&page=${PICS.page}&client_id=${encodeURIComponent(key)}`);
+      if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? '密钥无效' : r.status === 429 ? '本小时次数用完了' : '搜索失败（' + r.status + '）');
+      const j = await r.json(); more_ = PICS.page < j.total_pages;
+      list = j.results.filter(p => !p.premium && !p.plus).map(p => ({ id: 'unsplash-' + p.id, thumb: p.urls.small, full: p.urls.regular, by: p.user.name, byUrl: p.user.links.html + '?utm_source=xing&utm_medium=referral', page: p.links.html, lib: 'Unsplash', alt: p.alt_description || '', dl: p.links.download_location }));
+    }
+    PICS.res = PICS.res.concat(list); PICS.more = more_; PICS.page++;
+    if (!PICS.res.length) PICS.err = '没搜到，换个关键词（英文效果更好）';
+  } catch (e) { PICS.err = e.message === 'Failed to fetch' ? '网络不通' : e.message }
+  PICS.busy = false; renderPics();
+}
+async function savePic(id) {
+  const p = PICS.res.find(x => x.id === id); if (!p || p.saved) return;
+  p.saving = true; renderPics();
+  try {
+    if (p.dl) fetch(`${p.dl}&client_id=${encodeURIComponent(PICS.keys.unsplash)}`).catch(() => {}); // Unsplash 要求下载时通知一次
+    const blob = await shrinkTo(await (await fetch(p.full)).blob(), 1400), src = await storeImage(blob);
+    if (!src) throw new Error();
+    S.board.items.unshift({ id: uid(), src, note: { c: '', s: '', m: '', d: '' }, look: '', style: boardStyle || '', at: Date.now(), credit: { by: p.by, url: p.byUrl, page: p.page, lib: p.lib } });
+    save('board'); renderBoard(); p.saved = true; buzz(); toast('已存到灵感墙，记得写一句拆解');
+  } catch (e) { toast('没存上，换一张试试') }
+  p.saving = false; renderPics();
+}
+function renderPics() {
+  const el = $('#picPanel'); if (!el) return;
+  const L = PIC_LIBS[PICS.lib], key = PICS.keys[PICS.lib];
+  el.innerHTML = `
+    <div class="scan-head"><div style="display:grid;gap:4px"><p class="eyebrow">Search</p><h3>搜真人穿搭图</h3></div>
+      <div class="chips">${Object.entries(PIC_LIBS).map(([k, v]) => `<button class="chip" data-plib="${k}" aria-pressed="${PICS.lib === k}">${v.n}</button>`).join('')}</div></div>
+    ${key ? `<div class="pic-search"><input type="text" id="pic-q" value="${esc(PICS.q)}" placeholder="英文关键词效果最好，比如 trench coat men"><button class="btn" id="pic-go"${PICS.busy ? ' disabled' : ''}>${PICS.busy ? '搜索中…' : '搜索'}</button></div>
+      <div class="chips">${STYLES.map(s => `<button class="chip" data-pq="${esc(picQuery(s.k))}">${esc(s.k)}</button>`).join('')}</div>`
+    : `<div class="pic-search"><input type="password" id="pic-key" placeholder="粘贴 ${L.n} API 密钥" autocomplete="off"><button class="btn" id="pic-savekey">保存</button></div>
+      <p class="hint">${L.hint}。<a href="${L.keyUrl}" target="_blank" rel="noopener">去申请 ↗</a> 密钥只存在这台设备的浏览器里。</p>`}
+    ${PICS.err ? `<p class="small"><span class="pill bad">提示</span> ${esc(PICS.err)}</p>` : ''}
+    ${PICS.res.length ? `<p class="hint">存之前按选图标准看一眼：全身或大半身、比例好、搭配能照着穿。</p>
+      <div class="pics">${PICS.res.map(p => `<figure class="pic"><img src="${esc(p.thumb)}" alt="${esc(p.alt)}" loading="lazy">
+        <figcaption><a href="${esc(p.byUrl)}" target="_blank" rel="noopener">${esc(p.by)}</a> · ${p.lib}</figcaption>
+        <button class="btn sm${p.saved ? ' ghost' : ''}" data-psave="${esc(p.id)}"${p.saved || p.saving ? ' disabled' : ''}>${p.saved ? '已存' : p.saving ? '存储中…' : '存到灵感墙'}</button></figure>`).join('')}</div>
+      ${PICS.more ? `<div><button class="btn ghost sm" id="pic-more"${PICS.busy ? ' disabled' : ''}>加载更多</button></div>` : ''}` : ''}
+    ${key ? `<button class="linkbtn" id="pic-forget" style="justify-self:start">清除 ${L.n} 密钥</button>` : ''}`;
+}
+
 function renderBoard() {
   renderStreet();
   const where = $('#boardWhere');
@@ -1633,7 +1761,7 @@ function renderBoard() {
   const N = [['c', '颜色'], ['s', '廓形'], ['m', '材质'], ['d', '细节']];
   $('#board').innerHTML = items.length ? items.map(i => `
     <div class="pin" data-pin="${esc(i.id)}">
-      <img data-src="${esc(i.src)}" alt="灵感图片">
+      <img data-src="${esc(i.src)}" alt="灵感图片">${i.credit ? `<p class="pin-credit">摄影 <a href="${esc(i.credit.url)}" target="_blank" rel="noopener">${esc(i.credit.by)}</a> · <a href="${esc(i.credit.page)}" target="_blank" rel="noopener">${esc(i.credit.lib)}</a></p>` : ''}
       <div class="pin-body">
         <div class="row">
           <select data-pf="style" aria-label="风格" style="width:auto;flex:1">${opt([['', '选风格'], ...STYLES.map(s => [s.k, s.k])], i.style)}</select>
@@ -2698,7 +2826,7 @@ document.addEventListener('paste', e => {
 ['dragover', 'dragenter'].forEach(ev => document.addEventListener(ev, e => { const z = e.target.closest && e.target.closest('#dropZone'); if (z) { e.preventDefault(); z.classList.add('over') } }));
 document.addEventListener('dragleave', e => { const z = e.target.closest && e.target.closest('#dropZone'); if (z) z.classList.remove('over') });
 document.addEventListener('drop', e => { const z = e.target.closest && e.target.closest('#dropZone'); if (z) { e.preventDefault(); z.classList.remove('over'); addImages(e.dataTransfer.files) } });
-document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.dataset && e.target.dataset.gedit) { e.preventDefault(); editGarment(e.target.dataset.gedit); return } if (e.key === 'Enter' && e.target.id === 'wx-city') { TODAY.editCity = false; setCity(e.target.value); return } if (e.key !== 'Escape') return; if ($('#lightbox').innerHTML) $('#lightbox').innerHTML = ''; else if ($('#sheet').innerHTML) closeSheet() });
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'pic-q') { PICS.q = e.target.value; searchPics(); return } if ((e.key === 'Enter' || e.key === ' ') && e.target.dataset && e.target.dataset.gedit) { e.preventDefault(); editGarment(e.target.dataset.gedit); return } if (e.key === 'Enter' && e.target.id === 'wx-city') { TODAY.editCity = false; setCity(e.target.value); return } if (e.key !== 'Escape') return; if ($('#lightbox').innerHTML) closeLightbox(); else if ($('#sheet').innerHTML) closeSheet() });
 document.addEventListener('click', e => {
   const pk = e.target.closest && e.target.closest('#picker');
   if (pk && SCAN.mode) {
@@ -2708,7 +2836,7 @@ document.addEventListener('click', e => {
     return;
   }
   const ge = e.target.closest && !e.target.closest('button') && e.target.closest('[data-gedit]'); if (ge) return editGarment(ge.dataset.gedit);
-  if (e.target.dataset && e.target.dataset.lbclose) { $('#lightbox').innerHTML = ''; return }
+  if (e.target.dataset && e.target.dataset.lbclose) { closeLightbox(); return }
   if (e.target.dataset && e.target.dataset.close) { closeSheet(); return }
   const t = e.target.closest('button'); if (!t) return;
   if (t.classList.contains('tab')) return show(t.dataset.v);
@@ -2722,6 +2850,7 @@ document.addEventListener('click', e => {
   if (t.dataset.photo) return openPhoto(t.dataset.photo);
   if (t.dataset.look) return openLook(t.dataset.look);
   if (t.dataset.save) {
+    buzz();
     const sv = S.progress.saved = S.progress.saved || [], i = sv.indexOf(t.dataset.save);
     if (i >= 0) sv.splice(i, 1); else sv.push(t.dataset.save);
     save('progress'); openLook(t.dataset.save); renderLooks(); toast(i >= 0 ? '已取消收藏' : '已收藏'); return;
@@ -2742,13 +2871,13 @@ document.addEventListener('click', e => {
   if (t.id === 'faceCalc') return guessFace();
   if (t.dataset.setface) { setProfile('face', t.dataset.setface); renderProfileForm(); renderDerived(); toast('已设为' + FACES[t.dataset.setface].n); return }
   if (t.dataset.lesson) { const id = t.dataset.lesson; S.progress.lessons[id] = !S.progress.lessons[id]; save('progress'); renderLearn(); renderHead(); return }
-  if (t.dataset.ab && ABS.pick === null) { ABS.pick = t.dataset.ab; if (ABS.pick === AB[ABS.i].ok) ABS.score++; renderAB(); return }
+  if (t.dataset.ab && ABS.pick === null) { ABS.pick = t.dataset.ab; buzz(ABS.pick === AB[ABS.i].ok ? 8 : [12, 60, 12]); if (ABS.pick === AB[ABS.i].ok) ABS.score++; renderAB(); return }
   if (t.id === 'abNext') {
     ABS.i++; ABS.pick = null;
     if (ABS.i >= AB.length && ABS.score > (S.progress.abBest || 0)) { S.progress.abBest = ABS.score; save('progress'); renderLearn() }
     renderAB(); return;
   }
-  if (t.dataset.sq !== undefined && SQ.pick === null) { SQ.pick = +t.dataset.sq; if (SQ.pick === 0) SQ.score++; renderSQ(); return }
+  if (t.dataset.sq !== undefined && SQ.pick === null) { SQ.pick = +t.dataset.sq; buzz(SQ.pick === 0 ? 8 : [12, 60, 12]); if (SQ.pick === 0) SQ.score++; renderSQ(); return }
   if (t.id === 'sqNext') { SQ.i++; SQ.pick = null; if (SQ.i >= SQ_DATA.length && SQ.score > (S.progress.sqBest || 0)) { S.progress.sqBest = SQ.score; save('progress'); renderLearn() } renderSQ(); return }
   if (t.id === 'sqRestart') { Object.assign(SQ, { i: 0, score: 0, pick: null }); sqShuffle(); renderSQ(); return }
   if (t.id === 'abRestart') { Object.assign(ABS, { i: 0, score: 0, pick: null, order: AB.map(() => Math.random() < .5) }); renderAB(); return }
@@ -2773,7 +2902,7 @@ document.addEventListener('click', e => {
     return;
   }
   if (t.dataset.ccol) { CF.color = t.dataset.ccol; renderClosetForm(); return }
-  if (t.id === 'c-add') return addGarment();
+  if (t.id === 'c-add') { buzz(); return addGarment() }
   if (t.id === 'c-cancel') { resetCF(); renderClosetForm(); return }
   if (t.id === 'c-ai') return recognizeGarment();
   if (t.id === 'c-cut') return cutGarmentForm();
@@ -2791,8 +2920,15 @@ document.addEventListener('click', e => {
   if (t.dataset.wdel) { S.closet.wish = S.closet.wish.filter(w => w.id !== t.dataset.wdel); save('closet'); renderWish(); return }
   if (t.dataset.preset !== undefined) { $('#ask-q').value = PRESETS[+t.dataset.preset][1]; $('#ask-q').focus(); return }
   if (t.id === 'ask-go') return ask();
+  if (t.dataset.plib) { PICS.lib = t.dataset.plib; PICS.res = []; PICS.err = ''; savePics(); renderPics(); return }
+  if (t.id === 'pic-savekey') { const k = $('#pic-key').value.trim(); if (!k) return; PICS.keys[PICS.lib] = k; savePics(); renderPics(); $('#pic-q').focus(); return }
+  if (t.id === 'pic-forget') { delete PICS.keys[PICS.lib]; PICS.res = []; savePics(); renderPics(); return }
+  if (t.dataset.pq) { PICS.q = t.dataset.pq; return searchPics() }
+  if (t.id === 'pic-go') { PICS.q = $('#pic-q').value; return searchPics() }
+  if (t.id === 'pic-more') return searchPics(true);
+  if (t.dataset.psave) return savePic(t.dataset.psave);
   if (t.id === 'todayNext') { TODAY.n++; renderToday(); return }
-  if (t.id === 'todayWear') return wearToday();
+  if (t.id === 'todayWear') { buzz(12); return wearToday() }
   if (t.id === 'wxSet') { TODAY.editCity = false; return setCity($('#wx-city').value) }
   if (t.id === 'wxEdit') { TODAY.editCity = true; WX.data = null; renderToday(); $('#wx-city').focus(); return }
   if (t.dataset.scroll) { const r = $('#streetRow'); r.scrollBy({ left: +t.dataset.scroll * r.clientWidth * .8, behavior: 'smooth' }); return }
@@ -2813,7 +2949,7 @@ document.addEventListener('click', e => {
 /* ============ 启动 ============ */
 $('#todayLabel').textContent = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long' });
 $('#footNote').textContent = window.claude ? '在 Claude 中打开 · 数据同步到你的 Claude 账号' : '网页版 · 数据只存在本浏览器，记得用档案页的「复制备份」';
-renderClosetForm(); renderAISettings(); renderAsk(); renderScan(); renderStreet(); renderAll(true);
+renderClosetForm(); renderAISettings(); renderAsk(); renderScan(); renderPics(); renderStreet(); renderAll(true);
 let startTab = (location.hash || '').slice(1);
 if (!VIEWS.includes(startTab)) { try { startTab = localStorage.getItem('xing_tab') || 'look' } catch (e) { startTab = 'look' } }
 show(startTab);

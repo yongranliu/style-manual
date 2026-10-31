@@ -4,9 +4,14 @@
 
 - `artifact.html`：页面源文件（同时用于 Claude Artifact 版本）
 - `index.html`：GitHub Pages 用的页面，由 `./build.sh` 从 `artifact.html` 生成——**改完 artifact.html 记得先跑一次 `./build.sh`**
+- `grade.py`：给新街拍统一调色（降一点饱和、抬暗部、偏暖），新加的照片先跑它再跑 build
 - `thumbs.py`：给街拍生成 480px 缩略图到 `photos/s/`（`./build.sh` 会自动跑，需要 Pillow）
 - `photos/`：Unsplash / Pexels 免费授权街拍，选图标准与来源见 `photos/CREDITS.md`（新增照片必须先过标准）
 - `proxy/worker.js`：可选的 AI 请求转发（Cloudflare Workers）
+
+## 搜图
+
+灵感墙顶部可以直接搜 Pexels 或 Unsplash 的真人穿搭图（需要各自的免费 API 密钥，只存在本机），喜欢的一键存进灵感墙，自动带上摄影师署名。
 
 ## 装到手机上
 

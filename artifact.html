@@ -146,17 +146,6 @@ button, input, select, textarea { font: inherit; color: inherit }
 .picks-head { display: flex; justify-content: space-between; align-items: end; gap: 12px; border-top: 1px solid var(--ink); padding-top: 12px; margin-bottom: 18px }
 .picks-head h2 { font-size: clamp(1.3rem, 2.4vw, 1.7rem) }
 
-/* 点击反馈：按下时轻微缩小，松开回弹 */
-.btn, .chip, .prov, .opt, .dot, .tab, .dock button, .look, .street-card, .ab-pick, .photo, .linkbtn, .shot, .g-edit, .close, .x, .g-cut { -webkit-tap-highlight-color: transparent; transition-property: transform, background, color, border-color, box-shadow, opacity; transition-duration: .16s; transition-timing-function: cubic-bezier(.2,.8,.2,1) }
-.btn:active, .chip:active, .prov:active, .opt:active, .linkbtn:active, .close:active, .x:active, .g-cut:active { transform: scale(.96) }
-.dot:active { transform: scale(.88) }
-.tab:active, .dock button:active { transform: translateY(1px) }
-.look:active, .street-card:active, .ab-pick:active, .photo:active, .shot:active, .g-edit:active { transform: scale(.985) }
-.btn:not(.ghost):hover { box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--ink) 60%, transparent) }
-.street-card:hover .street-cap i { color: var(--accent) }
-.look:hover .meta b { color: var(--accent) }
-.look .meta b { transition: color .2s }
-
 /* 目录式导航 */
 nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: saturate(1.4) blur(12px); -webkit-backdrop-filter: saturate(1.4) blur(12px); border-block: 1px solid var(--line) }
 .tabs-in { display: flex; gap: clamp(4px, 1.6vw, 22px); overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity }
@@ -516,6 +505,25 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
 .foot > :last-child { text-align: right }
 @media (max-width: 640px) { .foot { grid-template-columns: minmax(0, 1fr) } .foot > :last-child { text-align: left } }
 .street-img img, .photo img, .cover-photo img, .g-img img, .sq-photo img { animation: fade .6s ease both }
+/* 点击反馈（放在最后，保证不被前面组件自己的 transition 覆盖）：按下明显缩小并加深，松开回弹；按钮上有一圈涟漪 */
+.btn, .chip, .prov, .opt, .dot, .tab, .dock button, .look, .street-card, .ab-pick, .photo, .linkbtn, .shot, .g-edit, .close, .x, .g-cut, .mirror { -webkit-tap-highlight-color: transparent; transition: transform .22s cubic-bezier(.3,1.6,.5,1), background-color .18s, color .18s, border-color .18s, box-shadow .2s, opacity .18s; touch-action: manipulation }
+.btn:active, .chip:active, .prov:active, .opt:active, .close:active, .g-cut:active { transform: scale(.94); transition-duration: .08s }
+.btn:not(.ghost):active { background: color-mix(in srgb, var(--ink) 82%, var(--accent)) }
+.btn.ghost:active, .chip:not([aria-pressed="true"]):active, .opt:active, .prov:active { background: var(--soft) }
+.linkbtn:active, .x:active { transform: scale(.9) }
+.dot:active { transform: scale(.82) }
+.tab:active { color: var(--ink); transform: translateY(1px) }
+.dock button:active { transform: scale(.9); transition-duration: .08s }
+.look:active, .street-card:active, .ab-pick:active, .photo:active, .shot:active, .g-edit:active { transform: scale(.97); transition-duration: .1s }
+.btn:not(.ghost):hover { box-shadow: 0 8px 18px -8px color-mix(in srgb, var(--ink) 65%, transparent); transform: translateY(-1px) }
+.btn.ghost:hover, .chip:hover { border-color: var(--ink) }
+.look:hover .meta b, .street-card:hover .street-cap i { color: var(--accent) }
+.look .meta b, .street-cap i { transition: color .2s }
+.ripple-box { position: fixed; z-index: 60; overflow: hidden; pointer-events: none }
+.ripple { position: absolute; border-radius: 50%; opacity: .32; transform: scale(0); animation: ripple .6s cubic-bezier(.2,.7,.3,1) forwards }
+@keyframes ripple { to { transform: scale(1); opacity: 0 } }
+.chip[aria-pressed="true"], .prov[aria-pressed="true"] { animation: pop .3s cubic-bezier(.3,1.6,.5,1) }
+@keyframes pop { 50% { transform: scale(1.06) } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
 </style>
 
@@ -1378,6 +1386,17 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const uid = () => Math.random().toString(36).slice(2, 10);
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.hidden = false; t.classList.remove('out'); void t.offsetWidth; clearTimeout(toast.t); clearTimeout(toast.h); toast.t = setTimeout(() => { t.classList.add('out'); toast.h = setTimeout(() => t.hidden = true, 220) }, 1900) }
+// iPhone 的 Safari 需要页面监听触摸，按下样式（:active）才会生效
+document.addEventListener('touchstart', () => {}, { passive: true });
+// 按钮涟漪：画在页面最上层、裁成按钮的形状，按钮点完被重绘也不会消失
+document.addEventListener('pointerdown', e => {
+  const b = e.target.closest && e.target.closest('.btn, .chip, .prov, .opt, .tab, .dock button, .dot'); if (!b || b.disabled || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const r = b.getBoundingClientRect(), cs = getComputedStyle(b), d = Math.max(r.width, r.height) * 2.4;
+  const box = document.createElement('span'), dot = document.createElement('span');
+  box.className = 'ripple-box'; box.style.cssText = `left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;border-radius:${cs.borderRadius}`;
+  dot.className = 'ripple'; dot.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - r.left - d / 2}px;top:${e.clientY - r.top - d / 2}px;background:${b.classList.contains('dot') ? 'var(--ink)' : cs.color}`;
+  box.append(dot); document.body.append(box); setTimeout(() => box.remove(), 650);
+}, { passive: true });
 // 手机上的轻触反馈（不支持的设备什么都不做）
 const buzz = (ms = 8) => { try { navigator.vibrate && navigator.vibrate(ms) } catch (e) {} };
 function rgb(h) { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255] }

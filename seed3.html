@@ -1,0 +1,7 @@
+<meta charset="utf-8"><script>
+const it=[['白色重磅 T 恤','上衣','#F7F7F5'],['灰色羊毛针织','针织/卫衣','#8A8D91'],['原色直筒牛仔裤','裤装','#2B3A55'],['炭灰西裤','裤装','#3E4147'],['驼色羊毛大衣','外套','#B48A5E'],['橄榄工装夹克','外套','#6B6B3A'],['白色板鞋','鞋','#F7F7F5'],['深棕乐福鞋','鞋','#5A3E2B']];
+localStorage.setItem('xing_closet',JSON.stringify({items:it.map(([n,c,col],i)=>({id:'t'+i,name:n,cat:c,color:col,note:'',img:'',wears:0,last:0})),wish:[]}));
+const p=JSON.parse(localStorage.getItem('xing_profile')||'null')||{};
+localStorage.setItem('xing_profile',JSON.stringify({...p,city:{name:'上海',lat:31.222,lon:121.458}}));
+location.replace('index.html'+location.hash);
+</script>

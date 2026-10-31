@@ -497,7 +497,7 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
     <div class="view-head">
       <p class="eyebrow">Lookbook</p>
       <h2>25 套值得学的穿搭</h2>
-      <p class="muted">点开任意一套，能看到单品清单、按「颜色 → 廓形 → 材质 → 细节」的拆解，以及怎么用你衣橱里的东西复刻。标着「为你推荐」的是按你的档案算出来最适合的。</p>
+      <p class="muted">小人按你档案里的体型绘制。点开任意一套，能看到单品清单、按「颜色 → 廓形 → 材质 → 细节」的拆解，以及怎么用你衣橱里的东西复刻。标着「为你推荐」的是按你的档案算出来最适合的。</p>
     </div>
     <div class="filters" id="lookFilters"></div>
     <div class="looks" id="looks"></div>
@@ -753,19 +753,27 @@ const ARM = {
   short: { L: 'M66 81 L53 93 L50 134 L68 136 L74 116 Z', P: 'M134 81 L147 93 L151 134 L132 137 L126 116 Z' },
   outer: { L: 'M64 79 L51 92 L45 231 L67 233 L73 156 L80 122 Z', P: 'M136 79 L151 92 L157 158 L136 219 L118 211 L138 160 L120 122 Z' }
 };
+// 体型：sh 肩宽增减、belly 腰腹外扩（负数是收腰）、hip 臀宽增减、waist 裤腰宽增减
+const BODY_SHAPE = { V: { sh: 5, belly: -1, hip: -2, waist: -1 }, H: { sh: 0, belly: 0, hip: 0, waist: 0 }, A: { sh: -3, belly: 0, hip: 8, waist: 1 }, O: { sh: 1, belly: 11, hip: 4, waist: 6 }, X: { sh: 2, belly: -5, hip: 4, waist: -3 } };
+const FIG = { dx: 0 };
+// 左右手臂随肩宽平移
+const armL = s => FIG.dx ? `<g transform="translate(${-FIG.dx} 0)">${s}</g>` : s;
+const armR = s => FIG.dx ? `<g transform="translate(${FIG.dx} 0)">${s}</g>` : s;
 function arms(kind, c, pose) {
-  let s = sh(ARM[kind].L, c) + (pose === 'P' ? sh(ARM[kind].P, c) : mir(sh(ARM[kind].L, c)));
-  if (kind === 'short') return s + fl('M52 128 L68 130', .45) + (pose === 'P' ? fl('M149 128 L133 131', .45) : mir(fl('M52 128 L68 130', .45)));
+  let L = sh(ARM[kind].L, c), R = pose === 'P' ? sh(ARM[kind].P, c) : mir(sh(ARM[kind].L, c));
+  if (kind === 'short') return armL(L + fl('M52 128 L68 130', .45)) + armR(R + (pose === 'P' ? fl('M149 128 L133 131', .45) : mir(fl('M52 128 L68 130', .45))));
   const o = kind === 'outer' ? 1.6 : 0;
   const cuffL = fl(`M${51 - o * 3} ${221 + o} L${66 + o} ${223 + o}`, .5), elbL = fl('M58 150 Q63 155 69 152', .35) + fl('M59 160 Q64 163 69 160', .25);
-  s += cuffL + elbL + (pose === 'P' ? fl('M134 210 L122 204', .5) + fl('M140 154 Q146 150 151 156', .35) + fl('M138 164 Q144 161 149 166', .25) : mir(cuffL + elbL));
-  return s;
+  L += cuffL + elbL;
+  R += pose === 'P' ? fl('M134 210 L122 204', .5) + fl('M140 154 Q146 150 151 156', .35) + fl('M138 164 Q144 161 149 166', .25) : mir(cuffL + elbL);
+  return armL(L) + armR(R);
 }
-function drawFig(f) {
+function drawFig(f, body) {
   const id = 'f' + (++figN), o = f.o, t = f.t, b = f.b, s = f.s, a = f.acc || {};
   const pose = f.pose || (a.bag ? 'H' : 'P');
   const big = (t[0] === 'hoodie' && !f.tuck) || f.big;
-  const sL = big ? 60 : 66, sR = 200 - sL;
+  const B = BODY_SHAPE[body || S.profile.body] || BODY_SHAPE.H; FIG.dx = B.sh; FIG.waist = B.waist;
+  const sL = (big ? 60 : 66) - B.sh, sR = 200 - sL;
   const hY = b[0] === 'shorts' ? 302 : f.pool ? 433 : f.crop ? 410 : 427;
   let g = '';
   if (f.hair === 'long') g += `<g transform="translate(100 63) scale(1.24) translate(-100 -53.5)"><path d="M83 28 Q77 66 80 100 Q90 106 100 103 Q110 106 120 100 Q123 66 117 28 Z" fill="${HAIRC}"/></g>`;
@@ -773,7 +781,7 @@ function drawFig(f) {
   if (o && o[0] === 'shell') g += sh('M72 88 Q68 46 100 42 Q132 46 128 88 Z', shade(o[1], .84));
   // 腿与手臂（皮肤）
   g += sh('M70 252 L99 260 L92 433 L80 433 Z', SKIN) + sh('M101 260 L130 252 L123 433 L111 433 Z', SKIN);
-  g += sh(ARM.skin.L, SKIN) + (pose === 'P' ? sh(ARM.skin.P, SKIN) : mir(sh(ARM.skin.L, SKIN)));
+  g += armL(sh(ARM.skin.L, SKIN)) + armR(pose === 'P' ? sh(ARM.skin.P, SKIN) : mir(sh(ARM.skin.L, SKIN)));
   // 脖子：短而有厚度，斜方肌把脖子和肩连起来
   g += sh('M90.5 52 L109.5 52 L110.5 73 Q118 76 126 80 L74 80 Q82 76 89.5 73 Z', SKIN) + sd('M90.5 58 Q100 71 109.5 58 L109.5 66 Q100 76 90.5 66 Z', .2);
   // 头部整体放大到约 1/8 身高（画在原坐标里，再缩放到下巴 y=63）
@@ -798,25 +806,25 @@ function drawFig(f) {
   // 袜子
   if (a.socks && hY < 430) g += sh(`M80 ${hY - 2} H92 L92 431 H80 Z`, a.socks) + sh(`M111 ${hY - 2} H123 L123 431 H111 Z`, a.socks);
   // 上衣、下装（塞衣角时上衣身片在下装之下；袖子总在最上）
-  const top = drawTop(t, f.tuck ? 210 : big ? 252 : 240, sL, sR, id, pose);
-  const bottom = drawBottom(b, hY, f.pool);
+  const top = drawTop(t, f.tuck ? 210 : big ? 252 : 240, sL, sR, id, pose, B);
+  const bottom = drawBottom(b, hY, f.pool, B);
   g += f.tuck ? top.body + bottom : bottom + top.body;
   g += top.sleeves;
-  if (f.tuck && a.belt) g += sh('M70 199 H130 V207 H70 Z', a.belt) + `<rect x="96" y="198.5" width="8" height="9" rx="1.2" fill="none" stroke="#C9B27A" stroke-width="1.6"/>`;
+  if (f.tuck && a.belt) g += sh(`M${70 - FIG.waist} 199 H${130 + FIG.waist} V207 H${70 - FIG.waist} Z`, a.belt) + `<rect x="96" y="198.5" width="8" height="9" rx="1.2" fill="none" stroke="#C9B27A" stroke-width="1.6"/>`;
   if (a.scarf) g += sh('M64 84 Q100 100 136 84 L136 94 Q100 112 64 94 Z', a.scarf) + sh('M95 104 L90 132 L99 128 L108 133 L104 104 Z', a.scarf) + fl('M70 90 Q100 104 130 90', .3);
   if (o) g += drawOuter(o, sL, sR, pose);
   // 鞋
   g += drawShoe(s, 86, 1) + drawShoe(s, 117, -1);
   // 手
   const hand = `<ellipse cx="61" cy="239" rx="5.4" ry="8.6" fill="${SKIN}" ${INK}/>` + fl('M57.5 236 Q57 241 59 244', .35);
-  g += hand + (pose === 'P' ? sd('M121 204 Q127 212 134 209 L133 213 Q126 216 120 208 Z', .25) : mir(hand));
-  if (a.bag) g += fl('M134 246 Q135 229 141 229 Q147 229 149 246', .8, 2.2) + sh('M126 245 H161 L159 291 H128 Z', a.bag) + sd('M150 246 H161 L159 291 H152 Z', .14) + fl('M129 252 H158', .3);
+  g += armL(hand) + armR(pose === 'P' ? sd('M121 204 Q127 212 134 209 L133 213 Q126 216 120 208 Z', .25) : mir(hand));
+  if (a.bag) g += armR(fl('M134 246 Q135 229 141 229 Q147 229 149 246', .8, 2.2) + sh('M126 245 H161 L159 291 H128 Z', a.bag) + sd('M150 246 H161 L159 291 H152 Z', .14) + fl('M129 252 H158', .3));
   return `<svg viewBox="0 0 200 452" role="img" aria-label="穿搭插画"><ellipse cx="102" cy="442" rx="46" ry="5" fill="#1A1410" fill-opacity=".14"/><g filter="url(#ill)">${g}</g></svg>`;
 }
-function drawTop(t, hem, sL, sR, id, pose) {
+function drawTop(t, hem, sL, sR, id, pose, B = BODY_SHAPE.H) {
   const [k, c] = t, dk = shade(c, .82), lt = shade(c, 1.07);
   const hL = sL + 4, hR = sR - 4, shortSl = ['tee', 'polo', 'stripe'].includes(k);
-  const bd = `M${sL} 84 Q${sL + 5} 78 89 75.5 Q100 78 111 75.5 Q${sR - 5} 78 ${sR} 84 Q${sR + 1} 150 ${hR} ${hem} L${hL} ${hem} Q${sL - 1} 150 ${sL} 82 Z`;
+  const bd = `M${sL} 84 Q${sL + 5} 78 89 75.5 Q100 78 111 75.5 Q${sR - 5} 78 ${sR} 84 Q${sR + 1 + B.belly} 150 ${hR} ${hem} L${hL} ${hem} Q${sL - 1 - B.belly} 150 ${sL} 82 Z`;
   let s = sh(bd, c);
   if (k === 'stripe') s += `<clipPath id="${id}"><path d="${bd}"/></clipPath><g clip-path="url(#${id})">${Array.from({ length: 15 }, (_, i) => `<path d="M40 ${97 + i * 10.5} Q100 ${100 + i * 10.5} 160 ${97 + i * 10.5}" stroke="#1F2A44" stroke-width="3.6" fill="none"/>`).join('')}</g><path d="${bd}" fill="url(#shd)"/>`;
   s += sd(`M${sR - 15} 92 Q${sR - 1} 150 ${hR} ${hem} L${hR - 11} ${hem} Q${sR - 11} 150 ${sR - 15} 92 Z`, .1);
@@ -844,11 +852,11 @@ function drawTop(t, hem, sL, sR, id, pose) {
   }
   if (k === 'polo') s += `<circle cx="100.5" cy="104" r="1.4" fill="${dk}"/><circle cx="100.5" cy="114" r="1.4" fill="${dk}"/>`;
   let sl = arms(shortSl ? 'short' : 'long', c, pose);
-  if (k === 'knit' || k === 'turtle' || k === 'hoodie') sl += sh('M50.5 220 L66 222 L66 230 L50 228 Z', dk) + (pose === 'P' ? sh('M135 213 L122 206 L120 208 L133 215 Z', dk) : mir(sh('M50.5 220 L66 222 L66 230 L50 228 Z', dk)));
-  if (k === 'stripe') sl += fl('M51.5 120 L68.5 122', .9, 3.4, '#1F2A44') + (pose === 'P' ? fl('M150 120 L133 123', .9, 3.4, '#1F2A44') : mir(fl('M51.5 120 L68.5 122', .9, 3.4, '#1F2A44')));
+  if (k === 'knit' || k === 'turtle' || k === 'hoodie') sl += armL(sh('M50.5 220 L66 222 L66 230 L50 228 Z', dk)) + armR(pose === 'P' ? sh('M135 213 L122 206 L120 208 L133 215 Z', dk) : mir(sh('M50.5 220 L66 222 L66 230 L50 228 Z', dk)));
+  if (k === 'stripe') sl += armL(fl('M51.5 120 L68.5 122', .9, 3.4, '#1F2A44')) + armR(pose === 'P' ? fl('M150 120 L133 123', .9, 3.4, '#1F2A44') : mir(fl('M51.5 120 L68.5 122', .9, 3.4, '#1F2A44')));
   return { body: s, sleeves: sl };
 }
-function drawBottom(b, hY, pool) {
+function drawBottom(b, hY, pool, B = BODY_SHAPE.H) {
   const [k, c, v] = b, dk = shade(c, .8), cL = 86, cR = 117;
   let s;
   if (k === 'skirt' || k === 'pleated') {
@@ -860,10 +868,10 @@ function drawBottom(b, hY, pool) {
     return s;
   }
   const sho = k === 'shorts', w = sho ? 16 : { wide: 17, slim: 7 }[k] || 11, L = sho ? 83 : cL, R = sho ? 118 : cR, y = sho ? 302 : hY;
-  const p = `M70 200 H130 L133 255 L${R + w} ${y} L${R - w} ${y} L100 266 L${L + w} ${y} L${L - w} ${y} L67 255 Z`;
+  const p = `M${70 - B.waist} 200 H${130 + B.waist} L${133 + B.hip} 255 L${R + w} ${y} L${R - w} ${y} L100 266 L${L + w} ${y} L${L - w} ${y} L${67 - B.hip} 255 Z`;
   s = sh(p, c);
   s += sd(`M96 252 L100 266 L104 252 Z`, .2) + sd(`M${R + w - 7} 270 L${R + w} ${y} L${R + w - 6} ${y} L${R + 2} 270 Z`, .1);
-  s += fl('M70 208 H130', .5) + fl('M100 208 Q99.5 236 96.5 248', .38);
+  s += fl(`M${70 - B.waist} 208 H${130 + B.waist}`, .5) + fl('M100 208 Q99.5 236 96.5 248', .38);
   s += fl('M73 211 Q78 224 85 230', .4) + fl('M127 211 Q122 224 115 230', .4);
   s += [76, 92, 108, 124].map(x => fl(`M${x} 199 V209`, .4, 1.4)).join('');
   if (!v && !sho) s += fl(`M85 266 L${L} ${y - 4}`, .2) + fl(`M116 266 L${R} ${y - 4}`, .2);
@@ -1060,6 +1068,8 @@ const PHOTOS = [
   {"id": "IL1oeY0pN2k", "style": "街头", "user": "Good Faces", "un": "goodfacesagency", "desc": "黑色羽绒服配宽裤"}
 ];
 const photoSrc = ph => 'photos/' + ph.id + '.jpg';
+// 列表和卡片先用 480px 缩略图，高分屏或大图位再取原图
+const photoImg = (ph, sizes, extra = '') => `<img src="photos/s/${ph.id}.jpg" srcset="photos/s/${ph.id}.jpg 480w, ${photoSrc(ph)} 900w" sizes="${sizes}" alt="${esc(ph.style)}街拍：${esc(ph.desc)}"${extra}>`;
 // sex 缺省为男装；卡片和封面跟随档案里的穿搭方向，街拍栏男女都展示
 const photoDirOk = ph => { const d = S.profile.direction; return d === 'u' || (ph.sex || 'm') === d };
 const photosOf = st => { const all = PHOTOS.filter(ph => ph.style === st), mine = all.filter(photoDirOk); return mine.length ? mine : all };
@@ -1332,7 +1342,7 @@ function renderHead() {
   const [main, ...side] = coverPhotos(), en = ph => (STYLES.find(x => x.k === ph.style) || {}).en || 'Street';
   $('#coverPhoto').innerHTML = `<figure class="cover-photo main"><button class="ph-btn" data-photo="${main.id}" aria-label="放大封面照片"><img src="${photoSrc(main)}" alt="${esc(main.style)}街拍：${esc(main.desc)}" fetchpriority="high"></button><div class="issue"><span>Cover look${main.city ? ' · ' + esc(main.city) : ''}</span><span>${esc(main.style)}</span></div>
     <figcaption><span class="latin">${esc(en(main))}</span><span>${esc(main.desc)}</span><small>摄影 <a href="https://unsplash.com/@${esc(main.un)}" target="_blank" rel="noopener">${esc(main.user)}</a> · Unsplash</small></figcaption></figure>
-    ${side.map(ph => `<figure class="cover-photo"><button class="ph-btn" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}"><img src="${photoSrc(ph)}" alt="${esc(ph.style)}街拍：${esc(ph.desc)}"></button><figcaption><span class="latin">${esc(en(ph))}</span><small>${esc(ph.city || ph.style)}</small></figcaption></figure>`).join('')}`;
+    ${side.map(ph => `<figure class="cover-photo"><button class="ph-btn" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}">${photoImg(ph, '220px')}</button><figcaption><span class="latin">${esc(en(ph))}</span><small>${esc(ph.city || ph.style)}</small></figcaption></figure>`).join('')}`;
 }
 
 /* ============ 今天穿什么：用衣橱里的衣服配一套 ============ */
@@ -1447,7 +1457,7 @@ function coverPhotos() {
   return [main, ...pick];
 }
 function renderStreet() {
-  $('#streetRow').innerHTML = PHOTOS.map(ph => `<button class="street-card" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}"><span class="street-img"><img src="${photoSrc(ph)}" alt="${esc(ph.style)}街拍：${esc(ph.desc)}" loading="lazy"></span><span class="street-cap"><i>${esc(ph.city || (STYLES.find(x => x.k === ph.style) || {}).en || ph.style)}</i>${ph.sex === 'f' ? '<b class="sex">女装</b> ' : ''}${esc(ph.desc)}</span></button>`).join('');
+  $('#streetRow').innerHTML = PHOTOS.map(ph => `<button class="street-card" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}"><span class="street-img">${photoImg(ph, '(max-width: 720px) 45vw, 240px', ' loading="lazy"')}</span><span class="street-cap"><i>${esc(ph.city || (STYLES.find(x => x.k === ph.style) || {}).en || ph.style)}</i>${ph.sex === 'f' ? '<b class="sex">女装</b> ' : ''}${esc(ph.desc)}</span></button>`).join('');
 }
 
 /* ============ 灵感库 ============ */
@@ -1510,7 +1520,7 @@ function openLook(id) {
 function closeSheet() { $('#sheet').innerHTML = ''; document.body.style.overflow = '' }
 
 /* ============ 真人照片 ============ */
-function photoBtn(ph) { return `<button class="photo" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}"><img src="${photoSrc(ph)}" alt="${esc(ph.style)}街拍：${esc(ph.desc)}" loading="lazy"></button>` }
+function photoBtn(ph) { return `<button class="photo" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}">${photoImg(ph, '150px', ' loading="lazy"')}</button>` }
 function openPhoto(id) {
   const ph = PHOTOS.find(x => x.id === id); if (!ph) return;
   $('#lightbox').innerHTML = `<div class="lightbox" data-lbclose="1"><figure><img src="${photoSrc(ph)}" alt="${esc(ph.desc)}"><figcaption><b>${esc(ph.style)} · ${esc(ph.desc)}</b><span>摄影 <a href="https://unsplash.com/@${esc(ph.un)}" target="_blank" rel="noopener">${esc(ph.user)}</a> · <a href="https://unsplash.com/photos/${esc(ph.id)}" target="_blank" rel="noopener">Unsplash 原图</a></span></figcaption></figure></div>`;
@@ -1646,6 +1656,8 @@ function renderProfileForm() {
       <div class="field"><label for="p-notes">想改善的地方 / 其他情况</label><textarea id="p-notes" data-k="notes" placeholder="比如：肩窄想显宽一点；上班要穿得正式但不想太老气；戴近视镜 500 度">${esc(p.notes)}</textarea></div>
     </div>
     <div class="fs"><h3>备份 <small>换设备或清缓存前用</small></h3>
+      <div class="row"><button class="btn sm" id="bkFile">导出备份文件（含照片）</button><label class="btn ghost sm" for="bkIn">导入备份文件</label><input type="file" id="bkIn" accept=".json,application/json" hidden></div>
+      <p class="hint">备份文件包含档案、进度、衣橱和灵感墙的照片，换手机或电脑时导入就能接着用。只要文字的话，也可以用下面的复制粘贴。</p>
       <div class="row"><button class="btn ghost sm" id="bkCopy">复制备份</button><button class="btn ghost sm" id="bkShow">从备份恢复</button></div>
       <div id="bkBox" hidden style="display:grid;gap:8px"><textarea id="bkText" rows="4" placeholder="把之前复制的备份粘贴到这里"></textarea><div><button class="btn sm" id="bkLoad">恢复</button></div></div>
     </div>`;
@@ -1685,6 +1697,39 @@ function guessFace() {
   if (!(f && c && j && l)) { $('#faceResult').textContent = '四个数都填上才能判断。'; return }
   const r = l / c, k = faceKind(f, c, j, l);
   $('#faceResult').innerHTML = `粗略判断：<b>${FACES[k].n}</b>（脸长/颧骨宽 = ${r.toFixed(2)}） <button class="btn sm tape" data-setface="${k}">用这个</button>`;
+}
+
+/* ============ 备份文件：文字数据 + 衣橱和灵感墙的照片 ============ */
+const imgSrcs = () => [...S.closet.items.flatMap(i => [i.img, i.orig]), ...S.board.items.map(i => i.src)].filter(Boolean);
+const blobToData = b => new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(b) });
+async function exportBackup() {
+  toast('正在打包…');
+  const images = {};
+  for (const src of [...new Set(imgSrcs())]) {
+    try { const u = await imgURL(src); if (u) images[src] = await blobToData(await (await fetch(u)).blob()) } catch (e) {}
+  }
+  const data = { app: 'xing', v: 2, at: new Date().toISOString(), profile: S.profile, progress: S.progress, closet: S.closet, board: S.board, images };
+  const a = document.createElement('a'), d = new Date();
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' }));
+  a.download = `形象手册备份-${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}.json`;
+  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast(`已导出，含 ${Object.keys(images).length} 张照片`);
+}
+async function importBackup(file) {
+  let d; try { d = JSON.parse(await file.text()) } catch (e) { toast('这不是形象手册的备份文件'); return }
+  if (!d || (!d.profile && !d.closet)) { toast('这不是形象手册的备份文件'); return }
+  toast('正在恢复…');
+  // 照片重新存进本机，旧的存储键换成新的
+  const map = {};
+  for (const [src, url] of Object.entries(d.images || {})) {
+    try { const n = await storeImage(await (await fetch(url)).blob()); if (n) map[src] = n } catch (e) {}
+  }
+  const fix = v => v && (map[v] || v);
+  if (d.closet) d.closet.items = (d.closet.items || []).map(i => ({ ...i, img: fix(i.img), orig: fix(i.orig) }));
+  if (d.board) d.board.items = (d.board.items || []).map(i => ({ ...i, src: fix(i.src) }));
+  KEYS.forEach(k => { if (d[k]) { merge(k, d[k]); save(k) } });
+  renderAll(true); renderClosetForm(); renderScan();
+  toast(`已恢复${Object.keys(map).length ? `，含 ${Object.keys(map).length} 张照片` : ''}`);
 }
 
 /* ============ 课堂 ============ */
@@ -2507,6 +2552,7 @@ document.addEventListener('change', e => {
   if (e.target.dataset.pf) { const it = S.board.items.find(x => x.id === e.target.closest('[data-pin]').dataset.pin); if (it) { it[e.target.dataset.pf] = e.target.value; save('board'); if (e.target.dataset.pf === 'style') renderBoard() } return }
   if (e.target.id === 'boardFile') { addImages(e.target.files); e.target.value = ''; return }
   if (e.target.id === 'ask-img') { const f = e.target.files[0]; ASK.img = f || null; if (ASK.imgURL) URL.revokeObjectURL(ASK.imgURL); ASK.imgURL = f ? URL.createObjectURL(f) : ''; const th = $('#ask-thumb'); th.src = ASK.imgURL; th.hidden = !f }
+  if (e.target.id === 'bkIn') { if (e.target.files[0]) importBackup(e.target.files[0]); e.target.value = ''; return }
   if (e.target.id === 'c-file') { garmentPhoto(e.target.files[0]); e.target.value = '' }
   if (e.target.id === 'scan-file-face' || e.target.id === 'scan-file-body') { loadShot(e.target.id.slice(10), e.target.files[0]); e.target.value = '' }
 });
@@ -2574,6 +2620,7 @@ document.addEventListener('click', e => {
   if (t.dataset.fit) { fitCat = t.dataset.fit; renderFit(); return }
   if (t.dataset.copy !== undefined) return copyText(t.dataset.copy);
   if (t.id === 'bkCopy') return copyText(JSON.stringify({ v: 1, profile: S.profile, progress: S.progress, closet: S.closet }));
+  if (t.id === 'bkFile') return exportBackup();
   if (t.id === 'bkShow') { const b = $('#bkBox'); b.hidden = !b.hidden; return }
   if (t.id === 'bkLoad') {
     try { const d = JSON.parse($('#bkText').value); KEYS.forEach(k => { if (d[k]) { merge(k, d[k]); save(k) } }); renderAll(true); toast('已恢复') }

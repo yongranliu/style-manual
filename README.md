@@ -4,6 +4,7 @@
 
 - `artifact.html`：页面源文件（同时用于 Claude Artifact 版本）
 - `index.html`：GitHub Pages 用的页面，由 `./build.sh` 从 `artifact.html` 生成——**改完 artifact.html 记得先跑一次 `./build.sh`**
+- `thumbs.py`：给街拍生成 480px 缩略图到 `photos/s/`（`./build.sh` 会自动跑，需要 Pillow）
 - `photos/`：Unsplash 授权街拍，选图标准与来源见 `photos/CREDITS.md`（新增照片必须先过标准）
 - `proxy/worker.js`：可选的 AI 请求转发（Cloudflare Workers）
 
@@ -13,7 +14,7 @@
 
 ## 数据
 
-网页版的数据只存在本浏览器，可在「我的档案 → 备份」里复制和恢复。在 Claude 中打开时会同步到你的 Claude 账号。
+网页版的数据只存在本浏览器。换设备前在「我的档案 → 备份」导出备份文件（含衣橱和灵感墙照片），在新设备上导入即可。在 Claude 中打开时会同步到你的 Claude 账号。
 
 ## AI（问顾问、照片识别档案）
 

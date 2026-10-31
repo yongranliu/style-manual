@@ -5,7 +5,7 @@
 - `artifact.html`：页面源文件（同时用于 Claude Artifact 版本）
 - `index.html`：GitHub Pages 用的页面，由 `./build.sh` 从 `artifact.html` 生成——**改完 artifact.html 记得先跑一次 `./build.sh`**
 - `thumbs.py`：给街拍生成 480px 缩略图到 `photos/s/`（`./build.sh` 会自动跑，需要 Pillow）
-- `photos/`：Unsplash 授权街拍，选图标准与来源见 `photos/CREDITS.md`（新增照片必须先过标准）
+- `photos/`：Unsplash / Pexels 免费授权街拍，选图标准与来源见 `photos/CREDITS.md`（新增照片必须先过标准）
 - `proxy/worker.js`：可选的 AI 请求转发（Cloudflare Workers）
 
 ## 装到手机上

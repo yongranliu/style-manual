@@ -693,7 +693,7 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
     </div>
   </section>
 </main>
-<footer><div class="wrap foot"><div style="display:grid;gap:8px"><span class="latin">Dress like you mean it.</span><span>豪然形象手册 · 插画均为示意；街拍照片来自 Unsplash，摄影师见每张照片。</span></div><div style="display:grid;gap:4px"><span id="footNote"></span><span class="mono" style="font-size:.72rem;letter-spacing:.12em">VOL. 01 — MMXXVI</span></div></div></footer>
+<footer><div class="wrap foot"><div style="display:grid;gap:8px"><span class="latin">Dress like you mean it.</span><span>豪然形象手册 · 插画均为示意；街拍照片来自 Unsplash 和 Pexels，摄影师见每张照片。</span></div><div style="display:grid;gap:4px"><span id="footNote"></span><span class="mono" style="font-size:.72rem;letter-spacing:.12em">VOL. 01 — MMXXVI</span></div></div></footer>
 <div id="sheet"></div>
 <div id="lightbox"></div>
 <div class="toast" id="toast" hidden></div>
@@ -1058,30 +1058,37 @@ const LOOKS = [
     ['藏青条纹＋米白，图案本身就是点缀', '条纹衫不塞，配直筒裤，休闲松弛', '厚实的布列塔尼条纹棉衫', '有了条纹，其他单品都要素净'],
     '一件条纹衫等于一次「点缀色」，别再加其他图案。', '海魂衫 条纹衫 穿搭')
 ];
-/* 真人街拍：Unsplash 授权，文件在 photos/；选图标准和来源见 photos/CREDITS.md */
+/* 真人街拍：来自 Unsplash 和 Pexels（均为免费授权），文件在 photos/；选图标准和来源见 photos/CREDITS.md */
 const PHOTOS = [
   {"id": "wrWc4y-mk3s", "style": "日系 City Boy", "user": "Filip Rankovic Grobgaard", "un": "filipgrobgaard", "desc": "米兰街头，米色风衣配阔腿裤", "city": "Milano"},
+  {"id": "px-20406859", "site": "pexels", "style": "极简", "user": "Bùi Hoàng Long", "un": "dxaxoxfz", "desc": "黑色西装外套、黑色阔腿西裤配托特包"},
   {"id": "6OAgcfO2Ujo", "style": "极简", "user": "0xdosa", "un": "theborklar", "desc": "卡其风衣、白背心配黑色长裙、工装靴", "city": "London", "sex": "f"},
+  {"id": "px-20132981", "site": "pexels", "style": "户外机能", "user": "Johnson Hie", "un": "johnson-hie-753086688", "desc": "蓝色羽绒服配深色长裤，雪天街头", "city": "Takayama"},
   {"id": "-16FhoT1aSE", "style": "学院 / 老钱", "user": "Emmanuel Ogbonnaya", "un": "mannythegrapher", "desc": "驼色大衣、灰色 V 领毛衣叠黑高领、卡其裤"},
+  {"id": "px-20567766", "site": "pexels", "style": "韩系清爽", "user": "Hoàng Ngọc Long", "un": "hoanglong0108", "desc": "黑色夹克、棕色针织背心叠白衬衫"},
   {"id": "owjsLTY-iNY", "style": "商务休闲", "user": "Mohamad Khosravi", "un": "mohamadkhosravi", "desc": "铁锈色大衣叠藏青西装、棕色皮鞋", "city": "Tehran"},
+  {"id": "px-33666574", "site": "pexels", "style": "学院 / 老钱", "user": "Nguyễn Tiến Thịnh", "un": "nguy-n-ti-n-th-nh-2150376175", "desc": "浅蓝衬衫配卡其裤、白球鞋、斜挎包"},
   {"id": "FyVM48yP-S4", "style": "商务休闲", "user": "Mike Cox", "un": "iprefermike", "desc": "黑色西装外套配牛仔衬衫、米白裤", "city": "New York"},
+  {"id": "px-37347065", "site": "pexels", "style": "极简", "user": "𝑂𝑠𝑤𝑎𝑙𝑑", "un": "147012990", "desc": "米白长大衣配黑色高领"},
   {"id": "wcnboSP500M", "style": "户外机能", "user": "Yegor Makarenko", "un": "photochel228", "desc": "卡其连帽冲锋衣配同色宽松长裤", "city": "Budapest"},
+  {"id": "px-4882834", "site": "pexels", "style": "街头", "user": "Eun Suk", "un": "eun-suk-2095354", "desc": "黑色皮夹克、黑裤配白球鞋", "city": "Vancouver"},
   {"id": "Nz93TtvjM5o", "style": "韩系清爽", "user": "Parsa foroughi", "un": "parsaforoughi", "desc": "白色短羽绒、白高领配橄榄绿裤、白球鞋", "city": "Isfahan"},
+  {"id": "px-31188620", "site": "pexels", "style": "日系 City Boy", "user": "Đậu Photograph", "un": "dauphotographer", "desc": "白色亨利衫、黑短裤配白袜、斜挎包"},
   {"id": "DsKcWDk6NEU", "style": "极简", "user": "The AW Creative Digital Marketing", "un": "theawguide", "desc": "驼色大衣配灰色针织连衣裙", "city": "New York", "sex": "f"},
+  {"id": "px-11220078", "site": "pexels", "style": "商务休闲", "user": "Fadhilah Shaleh", "un": "fadhilah-shaleh-22995050", "desc": "灰色针织叠衬衫、深色牛仔配皮质公文包"},
   {"id": "vx3oUtfha9s", "style": "美式复古", "user": "Joshua Loh", "un": "joshualohyj1", "desc": "芥末黄工装夹克、黑 T 配浅色牛仔、帆布鞋", "city": "Malaysia"},
+  {"id": "px-8460714", "site": "pexels", "style": "学院 / 老钱", "user": "Joon Tae Kim", "un": "joon-tae-kim-72545476", "desc": "藏青针织、外套搭肩、深色长裤配棕色乐福鞋"},
   {"id": "xMto1NkxgWA", "style": "商务休闲", "user": "Cemrecan Yurtman", "un": "cmrcn_", "desc": "米白大衣、黑高领配米白西裤", "city": "Istanbul"},
-  {"id": "_AOGyLg_o5s", "style": "极简", "user": "Mohamad Khosravi", "un": "mohamadkhosravi", "desc": "黑色大衣、高领毛衣配黑色西裤", "city": "Tehran"},
-  {"id": "7xNdaWtfmhQ", "style": "学院 / 老钱", "user": "Benjamin R.", "un": "dapperprofessional", "desc": "藏青格纹西装外套配深色牛仔、黑色乐福鞋", "city": "Chicago"},
+  {"id": "px-17894647", "site": "pexels", "style": "美式复古", "user": "Toàn Văn", "un": "toan-van-1745332", "desc": "灰色水洗牛仔夹克配同色牛仔裤"},
   {"id": "hsZbpq_HCNk", "style": "极简", "user": "Gabriel Martin", "un": "diseniatica", "desc": "橄榄绿长大衣配一身黑"},
+  {"id": "px-8284856", "site": "pexels", "style": "户外机能", "user": "Sujal _ Singh__5", "un": "sujal-_-singh__5-67500647", "desc": "黑色连帽军装风衣配黑 T、白球鞋"},
   {"id": "zJBQr0bajIA", "style": "韩系清爽", "user": "Mitchell Luo", "un": "mitchel3uo", "desc": "灰色西装外套、黑 T 黑裤配斜挎包、白球鞋"},
   {"id": "dodzmVtjoKs", "style": "商务休闲", "user": "Nassim Boughazi", "un": "nassim_boughazi", "desc": "黑色收腰西装套装配尖头鞋", "city": "Paris", "sex": "f"},
   {"id": "XITosdOCS8Q", "style": "极简", "user": "Fray Bekele", "un": "frayb_", "desc": "驼色大衣配深色牛仔，雪地街拍"},
   {"id": "-LTUvxV18uk", "style": "街头", "user": "Ryan Foon", "un": "ryanfoon_", "desc": "黑 T 黑裤配棋盘格滑板鞋"},
   {"id": "7ns69FH2QLM", "style": "学院 / 老钱", "user": "Mark Patterson", "un": "mrpatt", "desc": "藏青外套配白色牛仔裤、乐福鞋"},
   {"id": "IuMSyLBGRGE", "style": "美式复古", "user": "Raviraj Singh Tomar", "un": "ravirajsingh", "desc": "深色夹克、酒红内搭配黑色牛仔裤、短靴"},
-  {"id": "Pf_ItvUfGVY", "style": "商务休闲", "user": "ALIREZA Pandkhahi", "un": "kroba313", "desc": "橄榄绿西装配同色高领、黑色皮鞋"},
   {"id": "o5g0Xkes7OI", "style": "韩系清爽", "user": "Farshad Sheikhzadeh", "un": "farshadsheikhzadeh", "desc": "牛仔夹克、白 T 配浅色牛仔裤"},
-  {"id": "3FVaBKPndPI", "style": "极简", "user": "otabek xatipov", "un": "arrogant_7007", "desc": "黑 T 配灰色西裤、黑色乐福鞋", "city": "Uzbekistan"},
   {"id": "v-ITYFOj1Fg", "style": "日系 City Boy", "user": "Ihor Rapita", "un": "rapitaihor", "desc": "长衬衫外搭配黑色阔腿裤、白袜"},
   {"id": "jhMkxP4rLO0", "style": "日系 City Boy", "user": "Ihor Rapita", "un": "rapitaihor", "desc": "卷袖亚麻长衬衫叠穿黑 T"},
   {"id": "QmMuxzPmsfY", "style": "美式复古", "user": "Ravi Sharma", "un": "ravinepz", "desc": "棕色麂皮夹克配灰色宽松西裤"},
@@ -1089,6 +1096,10 @@ const PHOTOS = [
   {"id": "IL1oeY0pN2k", "style": "街头", "user": "Good Faces", "un": "goodfacesagency", "desc": "黑色羽绒服配宽裤"}
 ];
 const photoSrc = ph => 'photos/' + ph.id + '.jpg';
+// 署名链接：摄影师主页、原图页、图库名
+const photoCredit = ph => ph.site === 'pexels'
+  ? { who: `https://www.pexels.com/@${ph.un}`, page: `https://www.pexels.com/photo/${ph.id.slice(3)}/`, lib: 'Pexels' }
+  : { who: `https://unsplash.com/@${ph.un}`, page: `https://unsplash.com/photos/${ph.id}`, lib: 'Unsplash' };
 // 列表和卡片先用 480px 缩略图，高分屏或大图位再取原图
 const photoImg = (ph, sizes, extra = '') => `<img src="photos/s/${ph.id}.jpg" srcset="photos/s/${ph.id}.jpg 480w, ${photoSrc(ph)} 900w" sizes="${sizes}" alt="${esc(ph.style)}街拍：${esc(ph.desc)}"${extra}>`;
 // sex 缺省为男装；卡片和封面跟随档案里的穿搭方向，街拍栏男女都展示
@@ -1362,7 +1373,7 @@ function renderHead() {
   setSync(P.sync || 'local');
   const [main, ...side] = coverPhotos(), en = ph => (STYLES.find(x => x.k === ph.style) || {}).en || 'Street';
   $('#coverPhoto').innerHTML = `<figure class="cover-photo main"><button class="ph-btn" data-photo="${main.id}" aria-label="放大封面照片"><img src="${photoSrc(main)}" alt="${esc(main.style)}街拍：${esc(main.desc)}" fetchpriority="high"></button><div class="issue"><span>Cover look${main.city ? ' · ' + esc(main.city) : ''}</span><span>${esc(main.style)}</span></div>
-    <figcaption><span class="latin">${esc(en(main))}</span><span>${esc(main.desc)}</span><small>摄影 <a href="https://unsplash.com/@${esc(main.un)}" target="_blank" rel="noopener">${esc(main.user)}</a> · Unsplash</small></figcaption></figure>
+    <figcaption><span class="latin">${esc(en(main))}</span><span>${esc(main.desc)}</span><small>摄影 <a href="${photoCredit(main).who}" target="_blank" rel="noopener">${esc(main.user)}</a> · ${photoCredit(main).lib}</small></figcaption></figure>
     ${side.map(ph => `<figure class="cover-photo"><button class="ph-btn" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}">${photoImg(ph, '220px')}</button><figcaption><span class="latin">${esc(en(ph))}</span><small>${esc(ph.city || ph.style)}</small></figcaption></figure>`).join('')}`;
 }
 
@@ -1547,7 +1558,7 @@ function closeSheet() { $('#sheet').innerHTML = ''; document.body.style.overflow
 function photoBtn(ph) { return `<button class="photo" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}">${photoImg(ph, '150px', ' loading="lazy"')}</button>` }
 function openPhoto(id) {
   const ph = PHOTOS.find(x => x.id === id); if (!ph) return;
-  $('#lightbox').innerHTML = `<div class="lightbox" data-lbclose="1"><figure><img src="${photoSrc(ph)}" alt="${esc(ph.desc)}"><figcaption><b>${esc(ph.style)} · ${esc(ph.desc)}</b><span>摄影 <a href="https://unsplash.com/@${esc(ph.un)}" target="_blank" rel="noopener">${esc(ph.user)}</a> · <a href="https://unsplash.com/photos/${esc(ph.id)}" target="_blank" rel="noopener">Unsplash 原图</a></span></figcaption></figure></div>`;
+  $('#lightbox').innerHTML = `<div class="lightbox" data-lbclose="1"><figure><img src="${photoSrc(ph)}" alt="${esc(ph.desc)}"><figcaption><b>${esc(ph.style)} · ${esc(ph.desc)}</b><span>摄影 <a href="${photoCredit(ph).who}" target="_blank" rel="noopener">${esc(ph.user)}</a> · <a href="${photoCredit(ph).page}" target="_blank" rel="noopener">${photoCredit(ph).lib} 原图</a></span></figcaption></figure></div>`;
 }
 
 /* ============ 灵感墙 ============ */
@@ -1632,7 +1643,7 @@ const SQ_DATA = [
   ['o5g0Xkes7OI', '上下都是牛仔，怎么避免像一身工作服？', ['中间用白 T 隔开，脚上配白鞋，整体变成清爽的浅色调', '牛仔衣一定要扣上', '要选不同品牌的牛仔', '戴墨镜'], '“牛仔配牛仔”时，深浅接近、中间加一层白色隔断，就不会像连体工装。白鞋再把白色重复一次。'],
   ['IuMSyLBGRGE', '酒红色高领在这套里扮演什么角色？', ['唯一的点缀色，而且放在靠近脸的位置', '主色', '和背景呼应', '只是为了保暖'], '深色夹克和黑色牛仔组成大面积中性色，一小块酒红在领口提亮。点缀色占全身 10% 左右最合适，靠近脸更显气色。'],
   ['v-ITYFOj1Fg', '黑色阔腿裤配黑皮鞋，中间露出白袜子，是为了？', ['呼应上身的浅色长衬衫，在一片黑里提亮', '因为袜子不够长', '为了显腿长', '为了舒服'], '白袜子是 City Boy 风格的常用细节：在大面积深色下装里放一小块浅色，和上半身的浅色呼应，整体就不会“上轻下重”。'],
-  ['_AOGyLg_o5s', '一身全黑，怎么不显得闷？', ['大衣的羊毛、针织高领、皮鞋光泽不同，长大衣又形成竖线', '全黑本来就不闷', '因为背景是宫殿', '因为戴了墨镜'], '同色系穿法靠材质分层：哑光的羊毛、有纹理的针织、反光的皮鞋，深浅一样也能看出层次。黑色要选同一种“黑”，偏蓝偏灰的混在一起会显旧。']
+  ['px-20406859', '一身全黑，怎么不显得闷？', ['西装的羊毛、阔腿裤的垂坠、皮包皮鞋的光泽各不相同，宽裤又拉出一条长竖线', '全黑本来就不闷', '因为背景是铁门', '因为戴了墨镜'], '同色系穿法靠材质分层：哑光的羊毛、垂坠的裤料、反光的皮具，深浅一样也能看出层次。黑色要选同一种“黑”，偏蓝偏灰的混在一起会显旧。']
 ].map(([id, q, opts, why]) => ({ ph: PHOTOS.find(p => p.id === id), q, opts, why })).filter(x => x.ph);
 const SQ = { i: 0, score: 0, pick: null, order: [] };
 function sqShuffle() { SQ.order = SQ_DATA.map(() => [0, 1, 2, 3].sort(() => Math.random() - .5)) }

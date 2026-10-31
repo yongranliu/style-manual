@@ -346,6 +346,9 @@ th { font-family: var(--f-mono); font-weight: 500; color: var(--muted); font-siz
 .ab-pick svg { width: 70%; max-width: 170px; height: auto }
 .ab-pick.right { border: 2px solid var(--good) }
 .ab-pick.wrong { border: 2px solid var(--bad) }
+.sq { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 26px; align-items: start }
+.sq-photo { aspect-ratio: 3 / 4; border-radius: 3px }
+@media (max-width: 640px) { .sq { grid-template-columns: minmax(0, 1fr) } .sq-photo { max-width: 340px; width: 100% } }
 .lab { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; align-items: start }
 @media (max-width: 640px) { .lab { grid-template-columns: minmax(0, 1fr) } .lab .fig { max-width: 190px; margin: 0 auto } }
 .fig { background: var(--soft); border-radius: 999px 999px 4px 4px; padding: 26px 14px 8px }
@@ -525,6 +528,8 @@ footer { border-top: 1px solid var(--ink); padding-block: 28px 48px; color: var(
       <p class="muted">每题两套只差一个地方。先凭直觉选，再看解释。做多了，你在街上一眼就能看出问题在哪。</p>
     </div>
     <div class="panel" id="abPanel" style="max-width:760px"></div>
+    <div class="sub-head"><div class="view-head"><p class="eyebrow">Read the street</p><h2>看街拍：好在哪里</h2><p class="muted">每张都是达标的好穿搭。看图，选出它好看的真正原因。练多了，看任何穿搭都能说出颜色、廓形、材质、细节里哪一处起了作用。</p></div></div>
+    <div class="panel" id="sqPanel" style="max-width:920px"></div>
     <div class="sub-head"><div class="view-head"><p class="eyebrow">Color lab</p><h2>配色实验</h2><p class="muted">给小人换颜色，按你的肤调和身高打分，并解释原因。</p></div></div>
     <div class="panel">
       <div class="lab">
@@ -1457,7 +1462,10 @@ function coverPhotos() {
   return [main, ...pick];
 }
 function renderStreet() {
-  $('#streetRow').innerHTML = PHOTOS.map(ph => `<button class="street-card" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}"><span class="street-img">${photoImg(ph, '(max-width: 720px) 45vw, 240px', ' loading="lazy"')}</span><span class="street-cap"><i>${esc(ph.city || (STYLES.find(x => x.k === ph.style) || {}).en || ph.style)}</i>${ph.sex === 'f' ? '<b class="sex">女装</b> ' : ''}${esc(ph.desc)}</span></button>`).join('');
+  // 灵感墙里自己存的图排在最前面
+  const mine = S.board.items.slice(0, 8).map(i => `<button class="street-card" data-go="board" aria-label="去灵感墙"><span class="street-img"><img data-src="${esc(i.src)}" alt="我存的灵感图" loading="lazy"></span><span class="street-cap"><i>Saved</i><b class="sex">我存的</b> ${esc(i.style || (i.note && (i.note.c || i.note.s)) || '灵感墙')}</span></button>`).join('');
+  $('#streetRow').innerHTML = mine + PHOTOS.map(ph => `<button class="street-card" data-photo="${ph.id}" aria-label="放大：${esc(ph.desc)}"><span class="street-img">${photoImg(ph, '(max-width: 720px) 45vw, 240px', ' loading="lazy"')}</span><span class="street-cap"><i>${esc(ph.city || (STYLES.find(x => x.k === ph.style) || {}).en || ph.style)}</i>${ph.sex === 'f' ? '<b class="sex">女装</b> ' : ''}${esc(ph.desc)}</span></button>`).join('');
+  if (mine) fillImgs($('#streetRow'));
 }
 
 /* ============ 灵感库 ============ */
@@ -1564,6 +1572,7 @@ async function fillImgs(root) {
   for (const im of root.querySelectorAll('img[data-src]')) { const u = await imgURL(im.dataset.src); if (u) im.src = u; else im.alt = '图片在另一台设备或浏览器里' }
 }
 function renderBoard() {
+  renderStreet();
   const where = $('#boardWhere');
   if (where) where.textContent = IMG.assets ? '图片会存进这个页面，只有你和你分享的人能看到。' : '网页版：图片只存在这个浏览器里，换设备不会同步。';
   const items = S.board.items.filter(i => !boardStyle || i.style === boardStyle);
@@ -1593,6 +1602,44 @@ async function delPin(id) {
 }
 
 /* ============ 练眼力 ============ */
+/* ============ 看街拍：读懂好照片为什么好（第一个选项是正确答案，显示时打乱） ============ */
+const SQ_DATA = [
+  ['wrWc4y-mk3s', '风衣和裤子都很宽松，为什么整体不显臃肿？', ['风衣和裤子是同一个米色，从肩到脚连成一条长竖线', '因为配了白色球鞋', '因为背景比较暗', '因为戴了墨镜'], '同色系把两件宽松单品“连”成一整块，眼睛看到的是一条长竖线，而不是两段堆起来的体积。宽松穿法最怕上下颜色断开。'],
+  ['6OAgcfO2Ujo', '黑色长裙在这套里最主要的作用是？', ['上浅下深，把重心压在下面，浅色风衣不会显得飘', '让人显得更瘦', '和红砖墙形成对比', '因为黑色百搭，随便配'], '风衣和白背心都是浅色，如果下身也浅，整个人会像一团没有重心的颜色。深色长裙把视觉重心落到地面，再用工装靴收住。'],
+  ['-16FhoT1aSE', '黑色高领外面再套一件灰色 V 领毛衣，主要是为了？', ['领口叠出“黑—灰—驼”三层深浅，视线被引向脸部', '因为天气冷', '为了遮住肚子', '为了和背包颜色一致'], '叠穿最有用的地方在领口：V 领露出一块深色高领，形成一个指向脸的“V”，层次多但颜色都是中性色，所以不乱。'],
+  ['owjsLTY-iNY', '铁锈色大衣这么醒目，为什么不突兀？', ['鞋子同为棕色系呼应，里面的藏青西装是沉稳的中性色', '因为大衣很长', '因为戴了墨镜', '因为台阶是灰色的'], '一个醒目颜色要“有人接应”：棕色皮鞋在脚下重复了大衣的暖色，藏青西装负责压住。有呼应的颜色看起来是故意的，没呼应的看起来是意外。'],
+  ['xMto1NkxgWA', '整身米白只有一件黑色，放在哪里效果最好？', ['靠近脸的高领：形成焦点，也把脸框出来', '换成黑裤子', '换成黑大衣', '哪里都一样'], '全身浅色时，唯一的深色会成为视觉焦点。放在领口，焦点就在脸上，人显得精神；放在裤子上，焦点会跑到腿。'],
+  ['hsZbpq_HCNk', '全黑内搭外面套一件橄榄绿长大衣，大衣起什么作用？', ['带来唯一的颜色，敞开的长线条也把人拉高', '保暖', '遮住身材', '让黑色看起来更黑'], '全黑容易沉闷，一件有颜色的长外套既打破单调，敞开穿时两侧门襟又形成两条竖线，比扣上更显高。'],
+  ['Nz93TtvjM5o', '上身白、裤子橄榄绿、再配白鞋，为什么协调？', ['白色在上下两端重复出现，把中间的绿色“夹住”', '因为橄榄绿是流行色', '因为背景是黑白的', '因为手插口袋'], '同一个颜色在头和脚各出现一次，会形成首尾呼应，中间的颜色就显得稳定。这是“三明治配色”，非常好复刻。'],
+  ['zJBQr0bajIA', '西装外套配黑 T、白球鞋和斜挎包，是哪种思路？', ['正式单品配休闲单品，降低正式感，日常也能穿西装', '商务正式着装', '运动风', '完全随意的搭配'], '混搭的关键是“一正一松”：西装外套撑起轮廓，T 恤和球鞋把它拉回日常。颜色只有灰、黑、白，所以不会乱。'],
+  ['FyVM48yP-S4', '这套的材质组合，亮点在哪？', ['挺括的西装配水洗牛仔衬衫，一硬一软、一正式一随意', '全身都是同一种面料', '裤子是皮质的', '没有特别之处'], '材质对比和颜色对比一样重要。羊毛西装的平整、牛仔的粗糙纹理、米白裤子的柔和，三种质感叠在一起，画面才耐看。'],
+  ['o5g0Xkes7OI', '上下都是牛仔，怎么避免像一身工作服？', ['中间用白 T 隔开，脚上配白鞋，整体变成清爽的浅色调', '牛仔衣一定要扣上', '要选不同品牌的牛仔', '戴墨镜'], '“牛仔配牛仔”时，深浅接近、中间加一层白色隔断，就不会像连体工装。白鞋再把白色重复一次。'],
+  ['IuMSyLBGRGE', '酒红色高领在这套里扮演什么角色？', ['唯一的点缀色，而且放在靠近脸的位置', '主色', '和背景呼应', '只是为了保暖'], '深色夹克和黑色牛仔组成大面积中性色，一小块酒红在领口提亮。点缀色占全身 10% 左右最合适，靠近脸更显气色。'],
+  ['v-ITYFOj1Fg', '黑色阔腿裤配黑皮鞋，中间露出白袜子，是为了？', ['呼应上身的浅色长衬衫，在一片黑里提亮', '因为袜子不够长', '为了显腿长', '为了舒服'], '白袜子是 City Boy 风格的常用细节：在大面积深色下装里放一小块浅色，和上半身的浅色呼应，整体就不会“上轻下重”。'],
+  ['_AOGyLg_o5s', '一身全黑，怎么不显得闷？', ['大衣的羊毛、针织高领、皮鞋光泽不同，长大衣又形成竖线', '全黑本来就不闷', '因为背景是宫殿', '因为戴了墨镜'], '同色系穿法靠材质分层：哑光的羊毛、有纹理的针织、反光的皮鞋，深浅一样也能看出层次。黑色要选同一种“黑”，偏蓝偏灰的混在一起会显旧。']
+].map(([id, q, opts, why]) => ({ ph: PHOTOS.find(p => p.id === id), q, opts, why })).filter(x => x.ph);
+const SQ = { i: 0, score: 0, pick: null, order: [] };
+function sqShuffle() { SQ.order = SQ_DATA.map(() => [0, 1, 2, 3].sort(() => Math.random() - .5)) }
+sqShuffle();
+function renderSQ() {
+  const el = $('#sqPanel'); if (!el) return;
+  if (SQ.i >= SQ_DATA.length) {
+    el.innerHTML = `<span class="eyebrow">完成</span><h3>读懂 ${SQ.score} / ${SQ_DATA.length} 张</h3>
+      <p class="small muted">${SQ.score >= 11 ? '会看了。以后在街上、小红书上看到好看的穿搭，试着用同样的四个角度说出它为什么好。' : '多做几轮。每题的解释都对应一个能直接用的规律：同色系连竖线、深色压重心、点缀色靠近脸、材质分层。'}</p>
+      <div><button class="btn" id="sqRestart">再来一轮</button></div>`;
+    return;
+  }
+  const it = SQ_DATA[SQ.i], ord = SQ.order[SQ.i];
+  el.innerHTML = `<div class="sq">
+    <button class="photo sq-photo" data-photo="${it.ph.id}" aria-label="放大照片">${photoImg(it.ph, '(max-width: 640px) 90vw, 320px')}</button>
+    <div style="display:grid;gap:14px;align-content:start;min-width:0">
+      <div class="row" style="justify-content:space-between"><span class="eyebrow">第 ${SQ.i + 1} / ${SQ_DATA.length} 张 · ${esc(it.ph.style)}</span><span class="small muted mono">答对 ${SQ.score}${S.progress.sqBest ? ` · 最好 ${S.progress.sqBest}` : ''}</span></div>
+      <h3>${esc(it.q)}</h3>
+      <div class="quiz-opts">${ord.map(k => `<button class="opt${SQ.pick !== null ? (k === 0 ? ' right' : SQ.pick === k ? ' wrong' : '') : ''}" data-sq="${k}"${SQ.pick !== null ? ' disabled' : ''}>${esc(it.opts[k])}</button>`).join('')}</div>
+      ${SQ.pick !== null ? `<p class="small">${SQ.pick === 0 ? '<span class="pill good">答对了</span>' : '<span class="pill bad">再看看</span>'} ${esc(it.why)}</p><div><button class="btn" id="sqNext">${SQ.i + 1 < SQ_DATA.length ? '下一张' : '看结果'}</button></div>` : ''}
+    </div></div>`;
+}
+
 const ABS = { i: 0, score: 0, pick: null, order: AB.map(() => Math.random() < .5) };
 function renderAB() {
   const el = $('#abPanel');
@@ -1736,7 +1783,7 @@ async function importBackup(file) {
 function renderLearn() {
   const done = S.progress.lessons, n = LESSONS.filter(l => done[l.id]).length;
   $('#learnCount').textContent = `已学 ${n} / ${LESSONS.length} 节`;
-  $('#quizBest').textContent = [S.progress.abBest ? `二选一最好 ${S.progress.abBest}/${AB.length}` : '', S.progress.quizBest ? `测验最好 ${S.progress.quizBest}/${QUIZ.length}` : ''].filter(Boolean).join(' · ') || '还没做过练习';
+  $('#quizBest').textContent = [S.progress.abBest ? `二选一最好 ${S.progress.abBest}/${AB.length}` : '', S.progress.sqBest ? `看街拍最好 ${S.progress.sqBest}/${SQ_DATA.length}` : '', S.progress.quizBest ? `测验最好 ${S.progress.quizBest}/${QUIZ.length}` : ''].filter(Boolean).join(' · ') || '还没做过练习';
   $('#learnBar').style.width = (n / LESSONS.length * 100) + '%';
   const openIds = [...document.querySelectorAll('details.lesson[open]')].map(d => d.dataset.id);
   $('#lessons').innerHTML = LESSONS.map(l => `
@@ -2519,7 +2566,7 @@ function renderDerived() {
   renderHead(); renderToday(); renderBanner(); renderIdCard(); renderLearn(); evalLab(); renderSizeCard(); renderGlasses(); renderHair(); renderCloset(); renderLooks();
 }
 function renderAll(full) {
-  renderProfileForm(); renderMeasureForm(); renderLookFilters(); renderDerived(); renderBoard(); renderQuiz(); renderAB(); renderFit();
+  renderProfileForm(); renderMeasureForm(); renderLookFilters(); renderDerived(); renderBoard(); renderQuiz(); renderAB(); renderSQ(); renderFit();
   if (full) renderLab();
 }
 function setProfile(k, v) {
@@ -2606,6 +2653,9 @@ document.addEventListener('click', e => {
     if (ABS.i >= AB.length && ABS.score > (S.progress.abBest || 0)) { S.progress.abBest = ABS.score; save('progress'); renderLearn() }
     renderAB(); return;
   }
+  if (t.dataset.sq !== undefined && SQ.pick === null) { SQ.pick = +t.dataset.sq; if (SQ.pick === 0) SQ.score++; renderSQ(); return }
+  if (t.id === 'sqNext') { SQ.i++; SQ.pick = null; if (SQ.i >= SQ_DATA.length && SQ.score > (S.progress.sqBest || 0)) { S.progress.sqBest = SQ.score; save('progress'); renderLearn() } renderSQ(); return }
+  if (t.id === 'sqRestart') { Object.assign(SQ, { i: 0, score: 0, pick: null }); sqShuffle(); renderSQ(); return }
   if (t.id === 'abRestart') { Object.assign(ABS, { i: 0, score: 0, pick: null, order: AB.map(() => Math.random() < .5) }); renderAB(); return }
   if (t.dataset.opt !== undefined && Q.answered === null) { Q.answered = +t.dataset.opt; if (Q.answered === QUIZ[Q.i][2]) Q.score++; renderQuiz(); return }
   if (t.id === 'quizNext') {
